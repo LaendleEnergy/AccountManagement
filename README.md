@@ -31,21 +31,16 @@ If you want to build an _über-jar_, execute the following command:
 
 The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
 
-## Creating a native executable
+## Docker
 
-You can create a native executable using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native
-```
+Before building the container image run:
+`./gradlew build`
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-```
+Then, build the image with:
+`docker build -f src/main/docker/Dockerfile.jvm -t quarkus/account-management-jvm .`
 
-You can then execute your native executable with: `./build/account-management-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
+Then run the container using:
+`docker run -i --rm -p 8080:8080 quarkus/account-management-jvm`
 
 ## Provided Code
 
