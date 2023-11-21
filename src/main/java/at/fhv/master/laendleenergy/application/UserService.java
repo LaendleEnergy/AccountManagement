@@ -9,4 +9,5 @@ public interface UserService {
     void addEmailAddress(String email);
     void changePassword(String userId);
     void editInformation(User user);
+    User getUserById(String id);
 }

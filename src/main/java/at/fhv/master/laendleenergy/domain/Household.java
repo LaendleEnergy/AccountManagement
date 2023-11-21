@@ -1,6 +1,6 @@
 package at.fhv.master.laendleenergy.domain;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Household {
@@ -9,13 +9,13 @@ public class Household {
     private String deviceId;
     private String incentive;
     private String savingTarget;
-    private List<Member> members;
+    private Map<String, Member> members;
 
     public Household() {
         this.householdId =  UUID.randomUUID().toString();
     }
 
-    public Household(ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, List<Member> members) {
+    public Household(ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, Map<String, Member> members) {
         this.householdId =  UUID.randomUUID().toString();
         this.pricingPlan = pricingPlan;
         this.deviceId = deviceId;
@@ -60,11 +60,19 @@ public class Household {
         this.savingTarget = savingTarget;
     }
 
-    public List<Member> getMembers() {
+    public Map<String, Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(Map<String, Member> members) {
         this.members = members;
+    }
+
+    public void addMember(Member member) {
+        this.members.put(member.getId(), member);
+    }
+
+    public void removeMember(String memberId) {
+        this.members.remove(memberId);
     }
 }

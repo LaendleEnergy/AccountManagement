@@ -2,13 +2,13 @@ package at.fhv.master.laendleenergy.domain;
 
 public class ElectricityPricingPlan {
     private Supplier supplier;
-    private long averagePricePerKwh;
+    private double averagePricePerKwh;
     private String name;
 
     public ElectricityPricingPlan() {
     }
 
-    public ElectricityPricingPlan(Supplier supplier, long averagePricePerKwh, String name) {
+    public ElectricityPricingPlan(Supplier supplier, double averagePricePerKwh, String name) {
         this.supplier = supplier;
         this.averagePricePerKwh = averagePricePerKwh;
         this.name = name;
@@ -22,11 +22,11 @@ public class ElectricityPricingPlan {
         this.supplier = supplier;
     }
 
-    public long getAveragePricePerKwh() {
+    public double getAveragePricePerKwh() {
         return averagePricePerKwh;
     }
 
-    public void setAveragePricePerKwh(long averagePricePerKwh) {
+    public void setAveragePricePerKwh(double averagePricePerKwh) {
         this.averagePricePerKwh = averagePricePerKwh;
     }
 

@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  accountmanagement:
+    container_name: accountmanagement
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8080:8080"

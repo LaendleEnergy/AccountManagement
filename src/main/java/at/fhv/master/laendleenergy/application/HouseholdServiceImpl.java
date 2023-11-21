@@ -2,11 +2,14 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+@ApplicationScoped
 public class HouseholdServiceImpl implements HouseholdService {
 
     private HouseholdRepository householdRepository;
@@ -14,11 +17,11 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     public void createHousehold(String emailAddress, String name, String password, ElectricityPricingPlan pricingPlan, String deviceId) {
         User user = new User(emailAddress, password, Role.ADMIN, name, Optional.empty(), Optional.empty());
-        LinkedList<Member> members = new LinkedList<>();
-        members.add(user);
+        Map<String, Member> members = new HashMap<>();
+        members.put(user.getId(), user);
 
         Household household = new Household(pricingPlan, deviceId, "", "", members);
-        householdRepository.createHousehold(household);
+        householdRepository.addHousehold(household);
     }
 
     @Override
@@ -27,13 +30,24 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public void addHouseholdMember(String name, LocalDate dateOfBirth, Gender gender) {
+    public void addHouseholdMember(String householdId, String name, LocalDate dateOfBirth, Gender gender) {
         Member member = new Member(name, Optional.of(dateOfBirth), Optional.of(gender));
-        householdRepository.addHouseholdMember(member);
+        Household household = householdRepository.getHouseholdById(householdId);
+        household.addMember(member);
+
+        householdRepository.addHouseholdMember(member, householdId);
     }
 
     @Override
-    public void removeHouseholdMember(String memberId) {
-        householdRepository.removeHouseholdMember(memberId);
+    public void removeHouseholdMember(String memberId, String householdId) {
+        Household household = householdRepository.getHouseholdById(householdId);
+        household.removeMember(memberId);
+
+        householdRepository.removeHouseholdMember(memberId, householdId);
+    }
+
+    @Override
+    public Household getHouseholdById(String householdId) {
+        return householdRepository.getHouseholdById(householdId);
     }
 }
