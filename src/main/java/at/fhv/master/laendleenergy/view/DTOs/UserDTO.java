@@ -1,10 +1,5 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Role;
-
-import java.time.LocalDate;
-
 public class UserDTO {
     private String emailAddress;
     private String password;

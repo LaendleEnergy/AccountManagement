@@ -7,8 +7,6 @@ import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 
-import java.time.LocalDate;
-
 public interface HouseholdService {
     void createHousehold(HouseholdDTO householdDTO, UserDTO userDTO);
     void deleteHousehold(String householdId);

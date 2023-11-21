@@ -1,7 +1,5 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
-import java.util.UUID;
-
 public class HouseholdDTO {
     private String householdId;
     private String pricingPlan;

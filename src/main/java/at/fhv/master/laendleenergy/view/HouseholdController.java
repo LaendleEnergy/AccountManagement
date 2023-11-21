@@ -48,6 +48,12 @@ public class HouseholdController {
         householdService.addHouseholdMember(householdId, memberDTO);
     }
 
+    @DELETE
+    @Path("/removeHouseholdMember/{householdId}")
+    public void removeHouseholdMember(String memberId, String householdId) {
+        this.householdService.removeHouseholdMember(memberId, householdId);
+    }
+
     @GET
     @Path("/get/{householdId}")
     public Household getHouseholdById(String householdId) {
