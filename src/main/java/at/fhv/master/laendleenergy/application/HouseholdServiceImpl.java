@@ -2,8 +2,9 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
+import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +16,12 @@ public class HouseholdServiceImpl implements HouseholdService {
     private HouseholdRepository householdRepository;
 
     @Override
-    public void createHousehold(String emailAddress, String name, String password, ElectricityPricingPlan pricingPlan, String deviceId) {
-        User user = new User(emailAddress, password, Role.ADMIN, name, Optional.empty(), Optional.empty());
+    public void createHousehold(HouseholdDTO householdDTO, UserDTO userDTO) {
+        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
+
         Map<String, Member> members = new HashMap<>();
         members.put(user.getId(), user);
-
-        Household household = new Household(pricingPlan, deviceId, "", "", members);
+        Household household = new Household(ElectricityPricingPlan.valueOf(householdDTO.getPricingPlan()), householdDTO.getDeviceId(), householdDTO.getIncentive(), householdDTO.getSavingTarget(), members);
         householdRepository.addHousehold(household);
     }
 

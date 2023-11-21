@@ -1,39 +1,37 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
-import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Supplier;
+import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-
-import java.util.*;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import java.util.UUID;
 
 @Path("/household")
 public class HouseholdController {
-
-    private final Map<String, Household> households = new HashMap<>();
-
-    public HouseholdController() {
-        households.put("HouseholdID1", new Household(new ElectricityPricingPlan(Supplier.VKW, 12.45, "Mein Haushalt"), "1234", "blabla", "123bla", new HashMap<>()));
-        households.put("HouseholdID2", new Household(new ElectricityPricingPlan(Supplier.VKW, 15.45, "Mein Haushalt Nr. 2"), "9090", "blabla2", "123bla2", new HashMap<>()));
-    }
 
     @Inject
     HouseholdService householdService;
 
     @POST
-    public Map<String, Household> add(Household household) {
-        households.put(UUID.randomUUID().toString(), household);
-        return households;
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void add(
+            @FormParam("email") String email,
+            @FormParam("name") String name,
+            @FormParam("password") String password,
+            @FormParam("pricingPlan") String pricingPlan,
+            @FormParam("deviceId") String deviceId)
+    {
+        UserDTO userDTO = new UserDTO(UUID.randomUUID().toString(), email, password, "Admin", name, "", "");
+        HouseholdDTO householdDTO = new HouseholdDTO(UUID.randomUUID().toString(), pricingPlan, deviceId, "", "");
+        householdService.createHousehold(householdDTO, userDTO);
     }
 
     @GET
     @Path("/get/{householdId}")
     public Household getHouseholdById(String householdId) {
-        return households.get(householdId);
-        //return householdService.getHouseholdById(householdId);
+        return householdService.getHouseholdById(householdId);
     }
 }

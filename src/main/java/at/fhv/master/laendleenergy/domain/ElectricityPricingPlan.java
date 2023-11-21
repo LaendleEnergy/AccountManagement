@@ -1,14 +1,14 @@
 package at.fhv.master.laendleenergy.domain;
 
-public class ElectricityPricingPlan {
-    private Supplier supplier;
-    private double averagePricePerKwh;
-    private String name;
+public enum ElectricityPricingPlan {
+    TAG_NACHT(Supplier.VKW, 12.12, "Tag/Nacht"),
+    NORMAL(Supplier.VKW, 14.76, "Normal");
 
-    public ElectricityPricingPlan() {
-    }
+    private final Supplier supplier;
+    private final double averagePricePerKwh;
+    private final String name;
 
-    public ElectricityPricingPlan(Supplier supplier, double averagePricePerKwh, String name) {
+    ElectricityPricingPlan(Supplier supplier, double averagePricePerKwh, String name) {
         this.supplier = supplier;
         this.averagePricePerKwh = averagePricePerKwh;
         this.name = name;
@@ -18,23 +18,11 @@ public class ElectricityPricingPlan {
         return supplier;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
     public double getAveragePricePerKwh() {
         return averagePricePerKwh;
     }
 
-    public void setAveragePricePerKwh(double averagePricePerKwh) {
-        this.averagePricePerKwh = averagePricePerKwh;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
