@@ -3,7 +3,6 @@ package at.fhv.master.laendleenergy.view;
 import at.fhv.master.laendleenergy.application.HouseholdService;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
-import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,6 +17,7 @@ public class HouseholdController {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/create")
     public void createHousehold(
             @FormParam("email") String email,
             @FormParam("name") String name,
@@ -34,24 +34,6 @@ public class HouseholdController {
     @Path("/deleteHousehold/{householdId}")
     public void deleteHousehold(String householdId) {
         this.householdService.deleteHousehold(householdId);
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addHouseholdMember(
-            @FormParam("householdId") String householdId,
-            @FormParam("name") String name,
-            @FormParam("dateOfBirth") String dateOfBirth,
-            @FormParam("gender") String gender)
-    {
-        MemberDTO memberDTO = new MemberDTO(name, dateOfBirth, gender);
-        householdService.addHouseholdMember(householdId, memberDTO);
-    }
-
-    @DELETE
-    @Path("/removeHouseholdMember/{householdId}")
-    public void removeHouseholdMember(String memberId, String householdId) {
-        this.householdService.removeHouseholdMember(memberId, householdId);
     }
 
     @GET

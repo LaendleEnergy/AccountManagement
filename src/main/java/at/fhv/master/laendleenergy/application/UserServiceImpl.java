@@ -7,7 +7,6 @@ import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +53,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return new LinkedList<>();
-        //return userRepository.getAllUsers().stream().map(user -> user.setRole());
+        List<UserDTO> users = new LinkedList<>();
+
+        for (User u : userRepository.getAllUsers()) {
+            UserDTO userDTO = new UserDTO(u.getEmailAddress(), u.getPassword(), u.getRole().getName(), u.getName(), u.getDateOfBirth().toString(), u.getGender().getName());
+            users.add(userDTO);
+        }
+
+        return users;
     }
 }

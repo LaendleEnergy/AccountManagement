@@ -1,7 +1,6 @@
 package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
-
 import java.util.List;
 
 public interface UserService {

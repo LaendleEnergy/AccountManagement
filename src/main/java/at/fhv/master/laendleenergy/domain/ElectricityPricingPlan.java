@@ -1,7 +1,7 @@
 package at.fhv.master.laendleenergy.domain;
 
 public enum ElectricityPricingPlan {
-    TAG_NACHT(Supplier.VKW, 12.12, "Tag/Nacht"),
+    DAYNIGHT(Supplier.VKW, 12.12, "Tag/Nacht"),
     NORMAL(Supplier.VKW, 14.76, "Normal");
 
     private final Supplier supplier;

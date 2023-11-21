@@ -1,14 +1,10 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
-import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
-import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-
 import java.util.List;
 
 @Path("/user")
@@ -16,13 +12,6 @@ public class UserController {
 
     @Inject
     UserService userService;
-
-    /*
-
-    void addEmailAddress(String email);
-    void changePassword(String userId);
-    void editInformation(UserDTO userDTO);
-     */
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -37,7 +26,7 @@ public class UserController {
 
     @DELETE
     @Path("/deleteUser/{userId}")
-    public void deleteHUser(String userId) {
+    public void deleteUser(String userId) {
         this.userService.deleteUser(userId);
     }
 
@@ -51,5 +40,11 @@ public class UserController {
     @Path("/get/all")
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @POST
+    @Path("/update")
+    public void updateUser(UserDTO userDTO) {
+        userService.editInformation(userDTO);
     }
 }

@@ -3,11 +3,9 @@ package at.fhv.master.laendleenergy.application;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
-import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,23 +30,6 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     public void deleteHousehold(String householdId) {
         householdRepository.deleteHousehold(householdId);
-    }
-
-    @Override
-    public void addHouseholdMember(String householdId, MemberDTO memberDTO) {
-        Member member = new Member(memberDTO.getName(), Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())), Optional.of(Gender.valueOf(memberDTO.getGender())));
-        Household household = householdRepository.getHouseholdById(householdId);
-        household.addMember(member);
-
-        householdRepository.addHouseholdMember(member, householdId);
-    }
-
-    @Override
-    public void removeHouseholdMember(String memberId, String householdId) {
-        Household household = householdRepository.getHouseholdById(householdId);
-        household.removeMember(memberId);
-
-        householdRepository.removeHouseholdMember(memberId, householdId);
     }
 
     @Override

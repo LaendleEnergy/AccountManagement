@@ -2,7 +2,6 @@ package at.fhv.master.laendleenergy.persistence;
 
 import at.fhv.master.laendleenergy.domain.User;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
