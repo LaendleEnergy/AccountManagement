@@ -1,11 +1,16 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
+import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -15,8 +20,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void createUser(String email, String password, String name, Role role) {
-        User user = new User(email, password, role, name, Optional.empty(), Optional.empty());
+    public void createUser(UserDTO userDTO) {
+        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
         userRepository.addUser(user);
     }
 
@@ -36,12 +41,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editInformation(User user) {
+    public void editInformation(UserDTO userDTO) {
+        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
         userRepository.updateUser(user);
     }
 
     @Override
-    public User getUserById(String id) {
-        return userRepository.getUserById(id);
+    public UserDTO getUserById(String id) {
+        User user = userRepository.getUserById(id);
+        return new UserDTO(user.getEmailAddress(),user.getPassword(), user.getRole().getName(), user.getName(), user.getDateOfBirth().toString(), user.getGender().getName());
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return new LinkedList<>();
+        //return userRepository.getAllUsers().stream().map(user -> user.setRole());
     }
 }
