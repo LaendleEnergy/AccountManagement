@@ -3,8 +3,11 @@ package at.fhv.master.laendleenergy.application;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +16,8 @@ import java.util.Optional;
 @ApplicationScoped
 public class HouseholdServiceImpl implements HouseholdService {
 
-    private HouseholdRepository householdRepository;
+    @Inject
+    HouseholdRepository householdRepository;
 
     @Override
     public void createHousehold(HouseholdDTO householdDTO, UserDTO userDTO) {
@@ -31,8 +35,8 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public void addHouseholdMember(String householdId, String name, LocalDate dateOfBirth, Gender gender) {
-        Member member = new Member(name, Optional.of(dateOfBirth), Optional.of(gender));
+    public void addHouseholdMember(String householdId, MemberDTO memberDTO) {
+        Member member = new Member(memberDTO.getName(), Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())), Optional.of(Gender.valueOf(memberDTO.getGender())));
         Household household = householdRepository.getHouseholdById(householdId);
         household.addMember(member);
 

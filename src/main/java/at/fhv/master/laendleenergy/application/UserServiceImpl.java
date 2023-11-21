@@ -4,13 +4,15 @@ import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    @Inject
+    UserRepository userRepository;
 
     @Override
     public void createUser(String email, String password, String name, Role role) {

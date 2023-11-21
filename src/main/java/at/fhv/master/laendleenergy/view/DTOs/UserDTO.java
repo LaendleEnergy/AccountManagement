@@ -6,7 +6,6 @@ import at.fhv.master.laendleenergy.domain.Role;
 import java.time.LocalDate;
 
 public class UserDTO {
-    private String userId;
     private String emailAddress;
     private String password;
     private String role;
@@ -14,22 +13,13 @@ public class UserDTO {
     private String dateOfBirth;
     private String gender;
 
-    public UserDTO(String userId, String emailAddress, String password, String role, String name, String dateOfBirth, String gender) {
-        this.userId = userId;
+    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getEmailAddress() {
