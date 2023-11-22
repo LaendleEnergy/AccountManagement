@@ -1,5 +1,7 @@
 package at.fhv.master.laendleenergy.domain;
 
+import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
+
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +22,15 @@ public class Member {
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
+    }
+
+    public static Member create(MemberDTO memberDTO) {
+        return new Member(
+                memberDTO.getName(),
+                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty()
+        );
+
     }
 
     public String getName() {

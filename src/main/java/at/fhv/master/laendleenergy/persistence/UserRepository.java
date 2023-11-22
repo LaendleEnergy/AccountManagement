@@ -10,4 +10,5 @@ public interface UserRepository {
     void deleteUser(String userId);
     User getUserById(String userId);
     List<User> getAllUsers();
+    boolean login(String email, String password);
 }

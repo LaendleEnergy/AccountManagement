@@ -1,5 +1,6 @@
 package at.fhv.master.laendleenergy.domain;
 
+import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,12 +17,32 @@ public class Household {
     }
 
     public Household(ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, Map<String, Member> members) {
-        this.householdId =  UUID.randomUUID().toString();
+        this.householdId = UUID.randomUUID().toString();
         this.pricingPlan = pricingPlan;
         this.deviceId = deviceId;
         this.incentive = incentive;
         this.savingTarget = savingTarget;
         this.members = members;
+    }
+
+    private Household(String householdId, ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, Map<String, Member> members) {
+        this.householdId = householdId;
+        this.pricingPlan = pricingPlan;
+        this.deviceId = deviceId;
+        this.incentive = incentive;
+        this.savingTarget = savingTarget;
+        this.members = members;
+    }
+
+    public static Household create(HouseholdDTO householdDTO, Map<String, Member> members) {
+        return new Household(
+                householdDTO.getHouseholdId(),
+                ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
+                householdDTO.getDeviceId(),
+                householdDTO.getIncentive(),
+                householdDTO.getSavingTarget(),
+                members
+        );
     }
 
     public String getHouseholdId() {

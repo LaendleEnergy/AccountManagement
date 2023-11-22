@@ -35,4 +35,15 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getAllUsers() {
         return new LinkedList<>(users.values());
     }
+
+    @Override
+    public boolean login(String email, String password) {
+        List<User> users = getAllUsers();
+        for (User u : users) {
+            if (u.getEmailAddress().equals(email) && u.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

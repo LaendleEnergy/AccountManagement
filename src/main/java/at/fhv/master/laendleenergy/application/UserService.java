@@ -11,4 +11,5 @@ public interface UserService {
     void editInformation(UserDTO userDTO);
     UserDTO getUserById(String id);
     List<UserDTO> getAllUsers();
+    boolean login(String email, String password);
 }

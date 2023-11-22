@@ -16,7 +16,7 @@ public class HouseholdController {
     HouseholdService householdService;
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/create")
     public void createHousehold(
             @FormParam("email") String email,
@@ -25,7 +25,7 @@ public class HouseholdController {
             @FormParam("pricingPlan") String pricingPlan,
             @FormParam("deviceId") String deviceId)
     {
-        UserDTO userDTO = new UserDTO(email, password, "Admin", name, "", "");
+        UserDTO userDTO = new UserDTO(email, password, "Admin", name, null, null);
         HouseholdDTO householdDTO = new HouseholdDTO(UUID.randomUUID().toString(), pricingPlan, deviceId, "", "");
         householdService.createHousehold(householdDTO, userDTO);
     }
@@ -41,4 +41,5 @@ public class HouseholdController {
     public Household getHouseholdById(String householdId) {
         return householdService.getHouseholdById(householdId);
     }
+
 }

@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO userDTO) {
-        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
+        User user = User.create(userDTO);
         userRepository.addUser(user);
     }
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editInformation(UserDTO userDTO) {
-        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
+        User user = User.create(userDTO);
         userRepository.updateUser(user);
     }
 
@@ -61,5 +61,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return users;
+    }
+
+    @Override
+    public boolean login(String email, String password) {
+        return userRepository.login(email, password);
     }
 }

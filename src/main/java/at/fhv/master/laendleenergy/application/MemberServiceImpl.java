@@ -1,14 +1,11 @@
 package at.fhv.master.laendleenergy.application;
 
-import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class MemberServiceImpl implements MemberService {
@@ -17,7 +14,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addHouseholdMember(String householdId, MemberDTO memberDTO) {
-        Member member = new Member(memberDTO.getName(), Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())), Optional.of(Gender.valueOf(memberDTO.getGender())));
+        Member member = Member.create(memberDTO);
         memberRepository.addHouseholdMember(member, householdId);
     }
 

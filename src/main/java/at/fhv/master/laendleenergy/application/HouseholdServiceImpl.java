@@ -6,10 +6,8 @@ import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @ApplicationScoped
 public class HouseholdServiceImpl implements HouseholdService {
@@ -19,11 +17,12 @@ public class HouseholdServiceImpl implements HouseholdService {
 
     @Override
     public void createHousehold(HouseholdDTO householdDTO, UserDTO userDTO) {
-        User user = new User(userDTO.getEmailAddress(), userDTO.getPassword(), Role.valueOf(userDTO.getRole()), userDTO.getName(), Optional.of(LocalDate.parse(userDTO.getDateOfBirth())), Optional.of(Gender.valueOf(userDTO.getGender())));
+        User user = User.create(userDTO);
 
         Map<String, Member> members = new HashMap<>();
         members.put(user.getId(), user);
-        Household household = new Household(ElectricityPricingPlan.valueOf(householdDTO.getPricingPlan()), householdDTO.getDeviceId(), householdDTO.getIncentive(), householdDTO.getSavingTarget(), members);
+
+        Household household = Household.create(householdDTO, members);
         householdRepository.addHousehold(household);
     }
 
