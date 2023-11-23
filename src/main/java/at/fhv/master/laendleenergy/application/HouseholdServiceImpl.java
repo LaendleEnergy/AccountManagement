@@ -32,6 +32,12 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
+    public void updateHousehold(HouseholdDTO householdDTO, Map<String, Member> members) {
+        Household household = Household.create(householdDTO, members);
+        householdRepository.updateHousehold(household);
+    }
+
+    @Override
     public Household getHouseholdById(String householdId) {
         return householdRepository.getHouseholdById(householdId);
     }

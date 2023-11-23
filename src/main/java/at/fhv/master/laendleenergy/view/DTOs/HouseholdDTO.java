@@ -18,6 +18,12 @@ public class HouseholdDTO {
         this.savingTarget = savingTarget;
     }
 
+    public HouseholdDTO(String householdId, String pricingPlan, String deviceId) {
+        this.householdId = householdId;
+        this.pricingPlan = pricingPlan;
+        this.deviceId = deviceId;
+    }
+
     public String getHouseholdId() {
         return householdId;
     }

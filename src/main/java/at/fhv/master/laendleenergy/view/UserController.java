@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @DELETE
-    @Path("/deleteUser/{userId}")
+    @Path("/delete/{userId}")
     public void deleteUser(String userId) {
         this.userService.deleteUser(userId);
     }

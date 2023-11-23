@@ -1,8 +1,11 @@
 package at.fhv.master.laendleenergy.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ElectricityPricingPlan {
     DAYNIGHT(Supplier.VKW, 12.12, "Tag/Nacht"),
     NORMAL(Supplier.VKW, 14.76, "Normal");

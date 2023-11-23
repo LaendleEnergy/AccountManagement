@@ -26,12 +26,13 @@ public class MemberController {
     }
 
     @DELETE
-    @Path("/removeHouseholdMember/{householdId}")
+    @Path("/remove/{householdId}")
     public void removeHouseholdMember(String memberId, String householdId) {
         memberService.removeHouseholdMember(memberId, householdId);
     }
 
     @GET
+    @Path("/get/{householdId}")
     public List<Member> getAllMembersOfHousehold(String householdId) {
         return memberService.getAllMembersOfHousehold(householdId);
     }
