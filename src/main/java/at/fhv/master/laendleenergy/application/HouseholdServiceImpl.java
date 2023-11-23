@@ -41,4 +41,5 @@ public class HouseholdServiceImpl implements HouseholdService {
     public Household getHouseholdById(String householdId) {
         return householdRepository.getHouseholdById(householdId);
     }
+
 }

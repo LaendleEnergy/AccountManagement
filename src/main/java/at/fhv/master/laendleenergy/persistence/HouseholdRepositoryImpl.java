@@ -33,7 +33,6 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
         String[] deviceIds = {"D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10"};
         String[] incentives = {"10% off", "Free energy audit", "20% off", "Free smart thermostat", "15% off", "Free LED bulbs", "25% off", "Free energy-saving workshop", "30% off", "Free solar panel consultation"};
         String[] savingTargets = {"$200 per year", "$150 per year", "$300 per year", "$250 per year", "$180 per year", "$120 per year", "$350 per year", "$280 per year", "$400 per year", "$320 per year"};
-        ElectricityPricingPlan[] pricingPlans = {ElectricityPricingPlan.NORMAL, ElectricityPricingPlan.DAYNIGHT};
 
         // Create and add households to the map
         for (int i = 0; i < 10; i++) {
@@ -45,7 +44,7 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
             currentMembers.put(members.get(id).getId(), members.get(id));
 
             Household household = new Household(
-                    pricingPlans[i],
+                    i % 2 == 0 ? ElectricityPricingPlan.NORMAL : ElectricityPricingPlan.DAYNIGHT,
                     deviceIds[i],
                     incentives[i],
                     savingTargets[i],

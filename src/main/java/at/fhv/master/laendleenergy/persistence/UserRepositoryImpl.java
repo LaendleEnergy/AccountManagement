@@ -4,7 +4,6 @@ import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.time.LocalDate;
 import java.util.*;
 

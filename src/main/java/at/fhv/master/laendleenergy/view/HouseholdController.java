@@ -1,23 +1,18 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
-import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Supplier;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.reactive.RestResponse;
-
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 @Path("/household")
 public class HouseholdController {

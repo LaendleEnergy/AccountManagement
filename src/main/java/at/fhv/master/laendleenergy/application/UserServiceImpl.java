@@ -1,16 +1,12 @@
 package at.fhv.master.laendleenergy.application;
 
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
