@@ -1,24 +1,43 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
-public class UserDTO {
+import at.fhv.master.laendleenergy.domain.Gender;
+import at.fhv.master.laendleenergy.domain.Role;
+import at.fhv.master.laendleenergy.domain.User;
+
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Optional;
+
+public class UpdateUserDTO {
+
     private String emailAddress;
     private String password;
-    private String role;
     private String name;
     private String dateOfBirth;
     private String gender;
 
-    public UserDTO() {
+    public UpdateUserDTO() {
 
     }
 
-    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender) {
+    public UpdateUserDTO(String emailAddress, String password, String name, String dateOfBirth, String gender) {
         this.emailAddress = emailAddress;
         this.password = password;
-        this.role = role;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public static User create(UpdateUserDTO userDTO, String role) {
+        System.out.println(userDTO.toString());
+        return new User(
+                userDTO.getEmailAddress(),
+                userDTO.getPassword(),
+                Role.get(role),
+                userDTO.getName(),
+                !Objects.equals(userDTO.getGender(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
+        );
     }
 
     public String getEmailAddress() {
@@ -35,14 +54,6 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getName() {

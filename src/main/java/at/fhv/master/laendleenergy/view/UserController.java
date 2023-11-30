@@ -1,19 +1,39 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
+import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
+import at.fhv.master.laendleenergy.authentication.TokenUtils;
+import at.fhv.master.laendleenergy.domain.User;
+import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
+import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
+import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
+import jakarta.annotation.security.PermitAll;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import org.jboss.resteasy.reactive.RestResponse;
-
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.jwt.JsonWebToken;
+import java.security.Principal;
 import java.util.List;
 
 @Path("/user")
+@RequestScoped
 public class UserController {
 
+    @ConfigProperty(name = "com.ard333.quarkusjwt.jwt.duration") public Long duration;
+    @ConfigProperty(name = "mp.jwt.verify.issuer") public String issuer;
+
+    @Inject
+    PBKDF2Encoder passwordEncoder;
     @Inject
     UserService userService;
+    @Inject
+    JsonWebToken jwt;
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -46,15 +66,30 @@ public class UserController {
 
     @POST
     @Path("/update")
-    public void updateUser(UserDTO userDTO) {
-        userService.editInformation(userDTO);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void updateUser(@Context SecurityContext ctx, UpdateUserDTO userDTO) {
+        Principal caller =  ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
+
+        userService.editInformation(userDTO, name);
     }
 
+    @PermitAll
     @POST
     @Path("/login")
-    public RestResponse<Boolean> login(@FormParam("email") String email, @FormParam("password") String password) {
-        return RestResponse.ResponseBuilder
-                .ok(userService.login(email, password), MediaType.TEXT_PLAIN)
-                .build();
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(AuthRequest authRequest) {
+        User u = userService.findUserByEmail(authRequest.getEmail());
+
+        if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.password))) {
+            try {
+                return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole(), duration, issuer))).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 }

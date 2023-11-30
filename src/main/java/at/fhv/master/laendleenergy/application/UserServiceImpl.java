@@ -2,6 +2,7 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
+import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -36,8 +37,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editInformation(UserDTO userDTO) {
-        User user = User.create(userDTO);
+    public void editInformation(UpdateUserDTO userDTO, String email) {
+        User userData = userRepository.findUserByEmail(email);
+        User user = UpdateUserDTO.create(userDTO, userData.getRole().getName());
         userRepository.updateUser(user);
     }
 
@@ -62,5 +64,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean login(String email, String password) {
         return userRepository.login(email, password);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 }

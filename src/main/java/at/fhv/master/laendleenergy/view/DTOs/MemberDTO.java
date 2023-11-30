@@ -5,6 +5,10 @@ public class MemberDTO {
     private String dateOfBirth;
     private String gender;
 
+    public MemberDTO() {
+
+    }
+
     public MemberDTO(String name, String dateOfBirth, String gender) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
