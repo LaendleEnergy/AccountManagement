@@ -9,7 +9,7 @@ public interface UserRepository {
     void updateUser(User newUser);
     void deleteUser(String userId);
     User getUserById(String userId);
-    User findUserByEmail(String email);
+    User getUserByEmail(String email);
     List<User> getAllUsers();
     boolean login(String email, String password);
 }

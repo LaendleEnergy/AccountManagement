@@ -52,7 +52,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         for (User u : getAllUsers()) {
             if (email.equals(u.getEmailAddress())) {
                 return u;

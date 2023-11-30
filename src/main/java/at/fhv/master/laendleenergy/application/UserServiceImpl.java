@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editInformation(UpdateUserDTO userDTO, String email) {
-        User userData = userRepository.findUserByEmail(email);
+        User userData = userRepository.getUserByEmail(email);
         User user = UpdateUserDTO.create(userDTO, userData.getRole().getName());
         userRepository.updateUser(user);
     }
@@ -67,7 +67,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public UserDTO getUserByEmail(String email) {
+        User u = userRepository.getUserByEmail(email);
+        return new UserDTO(u.getEmailAddress(), u.getPassword(), u.getRole().getName(), u.getName(), u.getDateOfBirth().toString(), u.getGender().getName());
     }
 }

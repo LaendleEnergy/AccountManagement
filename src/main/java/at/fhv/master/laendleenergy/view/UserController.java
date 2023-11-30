@@ -3,7 +3,7 @@ package at.fhv.master.laendleenergy.view;
 import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.authentication.TokenUtils;
-import at.fhv.master.laendleenergy.domain.User;
+import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
@@ -53,25 +53,39 @@ public class UserController {
     }
 
     @GET
-    @Path("/get/{id}")
-    public UserDTO getUserById(String id) {
-        return userService.getUserById(id);
-    }
-
-    @GET
     @Path("/get/all")
     public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
+    @PermitAll
+    @GET
+    @Path("/get/{email}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserByEmail(String email) {
+        try {
+            return Response.ok(userService.getUserByEmail(email)).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+    }
+
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateUser(@Context SecurityContext ctx, UpdateUserDTO userDTO) {
+    public Response updateUser(@Context SecurityContext ctx, UpdateUserDTO userDTO) {
         Principal caller =  ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();
 
-        userService.editInformation(userDTO, name);
+        try {
+            userService.editInformation(userDTO, name);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
     @PermitAll
@@ -80,11 +94,11 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(AuthRequest authRequest) {
-        User u = userService.findUserByEmail(authRequest.getEmail());
+        UserDTO u = userService.getUserByEmail(authRequest.getEmail());
 
         if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.password))) {
             try {
-                return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole(), duration, issuer))).build();
+                return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole()), duration, issuer))).build();
             } catch (Exception e) {
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }

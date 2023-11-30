@@ -14,5 +14,5 @@ public interface UserService {
     UserDTO getUserById(String id);
     List<UserDTO> getAllUsers();
     boolean login(String email, String password);
-    User findUserByEmail(String email);
+    UserDTO getUserByEmail(String email);
 }
