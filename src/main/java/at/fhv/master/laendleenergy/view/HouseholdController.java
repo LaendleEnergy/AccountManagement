@@ -4,9 +4,8 @@ import at.fhv.master.laendleenergy.application.HouseholdService;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
-import at.fhv.master.laendleenergy.view.DTOs.CreateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
-import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -21,6 +20,7 @@ public class HouseholdController {
     @Inject
     HouseholdService householdService;
 
+    @PermitAll
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)

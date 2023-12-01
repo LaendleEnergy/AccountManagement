@@ -3,7 +3,6 @@ package at.fhv.master.laendleenergy.authentication;
 import at.fhv.master.laendleenergy.domain.Role;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
-
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -12,7 +11,7 @@ import java.util.Base64;
 
 public class TokenUtils {
 
-    public static String generateToken(String email, Role role, Long duration, String issuer) throws Exception {
+    public static String generateToken(String emailAddress, Role role, Long duration, String issuer) throws Exception {
         String privateKeyLocation = "/privatekey.pem";
         PrivateKey privateKey = readPrivateKey(privateKeyLocation);
 
@@ -20,7 +19,7 @@ public class TokenUtils {
         long currentTimeInSecs = currentTimeInSecs();
 
         claimsBuilder.issuer(issuer);
-        claimsBuilder.subject(email);
+        claimsBuilder.subject(emailAddress);
         claimsBuilder.issuedAt(currentTimeInSecs);
         claimsBuilder.expiresAt(currentTimeInSecs + duration);
         claimsBuilder.groups(role.toString());

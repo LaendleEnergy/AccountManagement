@@ -1,7 +1,7 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
 public class CreateUserDTO {
-    private String email;
+    private String emailAddress;
     private String name;
     private String password;
 
@@ -9,18 +9,18 @@ public class CreateUserDTO {
 
     }
 
-    public CreateUserDTO(String email, String name, String password) {
-        this.email = email;
+    public CreateUserDTO(String emailAddress, String name, String password) {
+        this.emailAddress = emailAddress;
         this.name = name;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getName() {

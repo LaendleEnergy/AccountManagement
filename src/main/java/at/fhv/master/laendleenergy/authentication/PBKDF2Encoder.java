@@ -2,7 +2,6 @@ package at.fhv.master.laendleenergy.authentication;
 
 import jakarta.enterprise.context.RequestScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;

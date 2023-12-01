@@ -1,8 +1,10 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
+import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,16 +20,21 @@ public class HouseholdServiceImpl implements HouseholdService {
     HouseholdRepository householdRepository;
     @Inject
     MemberRepository memberRepository;
+    @Inject
+    UserRepository userRepository;
+    @Inject
+    PBKDF2Encoder passwordEncoder;
 
     @Override
     public void createHousehold(CreateHouseholdDTO createHouseholdDTO) {
-        User user = new User(createHouseholdDTO.getEmail(), createHouseholdDTO.getPassword(), Role.ADMIN, createHouseholdDTO.getName(), Optional.empty(), Optional.empty());
+        User user = new User(createHouseholdDTO.getEmailAddress(), passwordEncoder.encode(createHouseholdDTO.getPassword()), Role.ADMIN, createHouseholdDTO.getName(), Optional.empty(), Optional.empty());
 
         Map<String, Member> members = new HashMap<>();
         members.put(user.getId(), user);
 
         Household household = new Household(ElectricityPricingPlan.get(createHouseholdDTO.getPricingPlan()), createHouseholdDTO.getDeviceId(), "", "", members);
 
+        userRepository.addUser(user);
         householdRepository.addHousehold(household);
     }
 

@@ -28,4 +28,11 @@ public enum Role {
     public static Role get(String name) {
         return lookup.get(name);
     }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

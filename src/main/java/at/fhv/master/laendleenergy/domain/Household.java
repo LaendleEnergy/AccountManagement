@@ -88,4 +88,16 @@ public class Household {
     public void removeMember(String memberId) {
         this.members.remove(memberId);
     }
+
+    @Override
+    public String toString() {
+        return "Household{" +
+                "householdId='" + householdId + '\'' +
+                ", pricingPlan=" + pricingPlan +
+                ", deviceId='" + deviceId + '\'' +
+                ", incentive='" + incentive + '\'' +
+                ", savingTarget='" + savingTarget + '\'' +
+                ", members=" + members +
+                '}';
+    }
 }

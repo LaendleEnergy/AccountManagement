@@ -5,18 +5,17 @@ import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.time.LocalDate;
 import java.util.*;
 
 @ApplicationScoped
 public class HouseholdRepositoryImpl implements HouseholdRepository {
 
-    private final Map<String, Household> households = new HashMap<>();
-    private List<Member> members;
+    private final Map<String, Household> households;
 
     public HouseholdRepositoryImpl() {
-        members = new ArrayList<>();
+        List<Member> members = new ArrayList<>();
+        households = new HashMap<>();
 
         members.add(new Member("Alice", Optional.of(LocalDate.of(1990, 5, 15)), Optional.of(Gender.FEMALE)));
         members.add(new Member("Bob",  Optional.of(LocalDate.of(1985, 8, 22)),  Optional.of(Gender.MALE)));

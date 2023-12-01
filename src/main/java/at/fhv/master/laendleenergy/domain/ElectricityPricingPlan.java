@@ -43,4 +43,13 @@ public enum ElectricityPricingPlan {
     public static ElectricityPricingPlan get(String name) {
         return lookup.get(name);
     }
+
+    @Override
+    public String toString() {
+        return "ElectricityPricingPlan{" +
+                "supplier=" + supplier +
+                ", averagePricePerKwh=" + averagePricePerKwh +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -4,8 +4,6 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 @ApplicationScoped

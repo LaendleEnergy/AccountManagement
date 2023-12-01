@@ -2,24 +2,24 @@ package at.fhv.master.laendleenergy.view.DTOs;
 
 public class AuthRequest {
 
-    public String email;
-    public String password;
+    private String emailAddress;
+    private String password;
 
     public AuthRequest() {
 
     }
 
-    public AuthRequest(String email, String password) {
-        this.email = email;
+    public AuthRequest(String emailAddress, String password) {
+        this.emailAddress = emailAddress;
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {

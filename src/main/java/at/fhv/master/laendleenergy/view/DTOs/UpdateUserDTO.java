@@ -3,7 +3,6 @@ package at.fhv.master.laendleenergy.view.DTOs;
 import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,16 +28,14 @@ public class UpdateUserDTO {
     }
 
     public static User create(String userId, UpdateUserDTO userDTO, String role) {
-        System.out.println("updateuser id");
-        System.out.println(userId);
         return new User(
                 userId,
                 userDTO.getEmailAddress(),
                 userDTO.getPassword(),
                 Role.get(role),
                 userDTO.getName(),
-                !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
+                !Objects.equals(userDTO.getDateOfBirth(), null) ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(userDTO.getGender(), null) ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
         );
     }
 

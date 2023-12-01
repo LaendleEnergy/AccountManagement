@@ -3,7 +3,6 @@ package at.fhv.master.laendleenergy.view.DTOs;
 import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,8 +45,8 @@ public class UserDTO {
                 user.getPassword(),
                 user.getRole().getName(),
                 user.getName(),
-                !Objects.equals(user.getDateOfBirth(), "") ? user.getDateOfBirth().toString() : "",
-                !Objects.equals(user.getGender().getName(), "") ? user.getGender().getName() : ""
+                !Objects.equals(user.getDateOfBirth(), null) ? user.getDateOfBirth().toString() : "",
+                !Objects.equals(user.getGender(), null) ? user.getGender().getName() : ""
         );
     }
 

@@ -2,7 +2,7 @@ package at.fhv.master.laendleenergy.view.DTOs;
 
 public class CreateHouseholdDTO {
 
-    private String email;
+    private String emailAddress;
     private String password;
     private String name;
     private String pricingPlan;
@@ -10,20 +10,20 @@ public class CreateHouseholdDTO {
 
     public CreateHouseholdDTO() {}
 
-    public CreateHouseholdDTO(String email, String password, String name, String pricingPlan, String deviceId) {
-        this.email = email;
+    public CreateHouseholdDTO(String emailAddress, String password, String name, String pricingPlan, String deviceId) {
+        this.emailAddress = emailAddress;
         this.password = password;
         this.name = name;
         this.pricingPlan = pricingPlan;
         this.deviceId = deviceId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {

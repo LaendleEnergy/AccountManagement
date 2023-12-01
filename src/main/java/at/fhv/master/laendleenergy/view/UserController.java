@@ -4,6 +4,7 @@ import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.authentication.TokenUtils;
 import at.fhv.master.laendleenergy.domain.Role;
+import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
@@ -36,7 +37,7 @@ public class UserController {
     public Response createUser(CreateUserDTO createUserDTO)
     {
         try {
-            UserDTO userDTO = new UserDTO(createUserDTO.getEmail(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
+            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
             userService.createUser(userDTO);
             return Response.ok(true).build();
         } catch (Exception e) {
@@ -68,12 +69,12 @@ public class UserController {
     }
 
     @GET
-    @Path("/get/{email}")
+    @Path("/get/{emailAddress}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserByEmail(String email) {
+    public Response getUserByEmail(String emailAddress) {
         try {
-            return Response.ok(userService.getUserByEmail(email)).build();
+            return Response.ok(userService.getUserByEmail(emailAddress)).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -100,16 +101,19 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(AuthRequest authRequest) {
-        UserDTO u = userService.getUserByEmail(authRequest.getEmail());
-
-        if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.password))) {
-            try {
-                return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole()), duration, issuer))).build();
-            } catch (Exception e) {
+        try {
+            UserDTO u = userService.getUserByEmail(authRequest.getEmailAddress());
+            if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
+                try {
+                    return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole()), duration, issuer))).build();
+                } catch (Exception e) {
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+                }
+            } else {
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        } catch (EmailNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 }

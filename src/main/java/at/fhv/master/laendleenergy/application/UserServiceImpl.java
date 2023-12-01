@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.User;
+import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO userDTO) {
-        userRepository.addUser(User.create(userDTO));
+        userRepository.addUser(UserDTO.create(userDTO));
     }
 
     @Override
@@ -36,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editInformation(UpdateUserDTO userDTO, String email) {
-        User userData = userRepository.getUserByEmail(email);
+    public void editInformation(UpdateUserDTO userDTO, String emailAddress) throws EmailNotFoundException {
+        User userData = userRepository.getUserByEmail(emailAddress);
         User user = UpdateUserDTO.create(userData.getId(), userDTO, userData.getRole().getName());
         userRepository.updateUser(user);
     }
@@ -59,12 +60,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String email, String password) {
-        return userRepository.login(email, password);
+    public boolean login(String emailAddress, String password) {
+        return userRepository.login(emailAddress, password);
     }
 
     @Override
-    public UserDTO getUserByEmail(String email) {
-        return UserDTO.create(userRepository.getUserByEmail(email));
+    public UserDTO getUserByEmail(String emailAddress) throws EmailNotFoundException {
+        return UserDTO.create(userRepository.getUserByEmail(emailAddress));
     }
 }

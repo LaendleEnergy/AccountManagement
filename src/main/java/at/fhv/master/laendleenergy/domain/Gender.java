@@ -29,4 +29,11 @@ public enum Gender {
     public static Gender get(String name) {
         return lookup.get(name);
     }
+
+    @Override
+    public String toString() {
+        return "Gender{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
