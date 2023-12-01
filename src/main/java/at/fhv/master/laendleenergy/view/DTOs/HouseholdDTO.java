@@ -1,7 +1,12 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
+import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
+import at.fhv.master.laendleenergy.domain.Household;
+import at.fhv.master.laendleenergy.domain.Member;
+
+import java.util.Map;
+
 public class HouseholdDTO {
-    private String householdId;
     private String pricingPlan;
     private String deviceId;
     private String incentive;
@@ -10,26 +15,31 @@ public class HouseholdDTO {
     public HouseholdDTO() {
     }
 
-    public HouseholdDTO(String householdId, String pricingPlan, String deviceId, String incentive, String savingTarget) {
-        this.householdId = householdId;
+    public HouseholdDTO(String pricingPlan, String deviceId, String incentive, String savingTarget) {
         this.pricingPlan = pricingPlan;
         this.deviceId = deviceId;
         this.incentive = incentive;
         this.savingTarget = savingTarget;
     }
 
-    public HouseholdDTO(String householdId, String pricingPlan, String deviceId) {
-        this.householdId = householdId;
+    public HouseholdDTO(String pricingPlan, String deviceId) {
         this.pricingPlan = pricingPlan;
         this.deviceId = deviceId;
     }
 
-    public String getHouseholdId() {
-        return householdId;
+    public static HouseholdDTO create(Household household) {
+        return new HouseholdDTO(household.getPricingPlan().getName(), household.getDeviceId(), household.getIncentive(), household.getSavingTarget());
     }
 
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
+    public static Household create(String householdId, HouseholdDTO householdDTO, Map<String, Member> members) {
+        return new Household(
+                householdId,
+                ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
+                householdDTO.getDeviceId(),
+                householdDTO.getIncentive(),
+                householdDTO.getSavingTarget(),
+                members
+        );
     }
 
     public String getPricingPlan() {

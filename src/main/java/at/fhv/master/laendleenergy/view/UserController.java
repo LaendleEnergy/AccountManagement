@@ -4,10 +4,7 @@ import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.authentication.TokenUtils;
 import at.fhv.master.laendleenergy.domain.Role;
-import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
-import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
-import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
-import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
+import at.fhv.master.laendleenergy.view.DTOs.*;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -19,7 +16,6 @@ import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import java.security.Principal;
-import java.util.List;
 
 @Path("/user")
 @RequestScoped
@@ -36,29 +32,41 @@ public class UserController {
     JsonWebToken jwt;
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void createUser(
-            @FormParam("email") String email,
-            @FormParam("name") String name,
-            @FormParam("password") String password)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createUser(CreateUserDTO createUserDTO)
     {
-        UserDTO userDTO = new UserDTO(email, password, "Admin", name, null, null);
-        userService.createUser(userDTO);
+        try {
+            UserDTO userDTO = new UserDTO(createUserDTO.getEmail(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
+            userService.createUser(userDTO);
+            return Response.ok(true).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @DELETE
     @Path("/delete/{userId}")
-    public void deleteUser(String userId) {
-        this.userService.deleteUser(userId);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(String userId) {
+        try {
+            userService.deleteUser(userId);
+            return Response.ok(true).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @GET
     @Path("/get/all")
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUsers() {
+        try {
+            return Response.ok(userService.getAllUsers()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
-    @PermitAll
     @GET
     @Path("/get/{email}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -69,7 +77,6 @@ public class UserController {
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-
     }
 
     @POST
@@ -85,7 +92,6 @@ public class UserController {
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @PermitAll

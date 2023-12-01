@@ -1,6 +1,5 @@
 package at.fhv.master.laendleenergy.application;
 
-import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import java.util.List;

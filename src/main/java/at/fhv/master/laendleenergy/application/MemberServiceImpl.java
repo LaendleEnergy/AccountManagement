@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.LinkedList;
 import java.util.List;
 
 @ApplicationScoped
@@ -14,8 +15,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void addHouseholdMember(String householdId, MemberDTO memberDTO) {
-        Member member = Member.create(memberDTO);
-        memberRepository.addHouseholdMember(member, householdId);
+        memberRepository.addHouseholdMember(Member.create(memberDTO), householdId);
     }
 
     @Override
@@ -24,7 +24,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getAllMembersOfHousehold(String householdId) {
-        return memberRepository.getAllMembersOfHousehold(householdId);
+    public List<MemberDTO> getAllMembersOfHousehold(String householdId) {
+        List<Member> members = new LinkedList<>(memberRepository.getAllMembersOfHousehold(householdId).values());
+        List<MemberDTO> memberDTOS = new LinkedList<>();
+
+        for (Member m : members) {
+            memberDTOS.add(MemberDTO.create(m));
+        }
+
+        return memberDTOS;
     }
 }

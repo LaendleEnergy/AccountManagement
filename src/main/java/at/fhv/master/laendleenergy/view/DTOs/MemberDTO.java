@@ -1,5 +1,7 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
+import at.fhv.master.laendleenergy.domain.Member;
+
 public class MemberDTO {
     private String name;
     private String dateOfBirth;
@@ -13,6 +15,10 @@ public class MemberDTO {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public static MemberDTO create(Member member) {
+        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName());
     }
 
     public String getName() {

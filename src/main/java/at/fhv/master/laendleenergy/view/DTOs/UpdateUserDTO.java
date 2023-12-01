@@ -28,14 +28,16 @@ public class UpdateUserDTO {
         this.gender = gender;
     }
 
-    public static User create(UpdateUserDTO userDTO, String role) {
-        System.out.println(userDTO.toString());
+    public static User create(String userId, UpdateUserDTO userDTO, String role) {
+        System.out.println("updateuser id");
+        System.out.println(userId);
         return new User(
+                userId,
                 userDTO.getEmailAddress(),
                 userDTO.getPassword(),
                 Role.get(role),
                 userDTO.getName(),
-                !Objects.equals(userDTO.getGender(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
         );
     }

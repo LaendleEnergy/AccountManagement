@@ -7,19 +7,23 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class User extends Member {
-    private final String userId;
     private String emailAddress;
     private String password;
     private Role role;
 
     public User() {
         super();
-        this.userId = UUID.randomUUID().toString();
     }
 
     public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
         super(name, dateOfBirth, gender);
-        this.userId = UUID.randomUUID().toString();
+        this.emailAddress = emailAddress;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
+        super(id, name, dateOfBirth, gender);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
@@ -61,7 +65,16 @@ public class User extends Member {
         this.role = role;
     }
 
-    public String getUserId() {
-        return userId;
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + getId() + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", name=" + getName() +
+                ", gender= " + getGender() +
+                ", dateOfBirth= " + getDateOfBirth() +
+                '}';
     }
 }

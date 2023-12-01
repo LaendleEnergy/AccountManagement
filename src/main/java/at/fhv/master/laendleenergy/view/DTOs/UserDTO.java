@@ -1,5 +1,13 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
+import at.fhv.master.laendleenergy.domain.Gender;
+import at.fhv.master.laendleenergy.domain.Role;
+import at.fhv.master.laendleenergy.domain.User;
+
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Optional;
+
 public class UserDTO {
     private String emailAddress;
     private String password;
@@ -19,6 +27,28 @@ public class UserDTO {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+    }
+
+    public static User create(UserDTO userDTO) {
+        return new User(
+                userDTO.getEmailAddress(),
+                userDTO.getPassword(),
+                Role.get(userDTO.getRole()),
+                userDTO.getName(),
+                !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
+        );
+    }
+
+    public static UserDTO create(User user) {
+        return new UserDTO(
+                user.getEmailAddress(),
+                user.getPassword(),
+                user.getRole().getName(),
+                user.getName(),
+                !Objects.equals(user.getDateOfBirth(), "") ? user.getDateOfBirth().toString() : "",
+                !Objects.equals(user.getGender().getName(), "") ? user.getGender().getName() : ""
+        );
     }
 
     public String getEmailAddress() {
@@ -67,5 +97,17 @@ public class UserDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "emailAddress='" + emailAddress + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", name='" + name + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }

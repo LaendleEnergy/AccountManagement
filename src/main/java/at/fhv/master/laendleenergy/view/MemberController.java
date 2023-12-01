@@ -33,7 +33,7 @@ public class MemberController {
 
     @GET
     @Path("/get/{householdId}")
-    public List<Member> getAllMembersOfHousehold(String householdId) {
+    public List<MemberDTO> getAllMembersOfHousehold(String householdId) {
         return memberService.getAllMembersOfHousehold(householdId);
     }
 }

@@ -1,13 +1,11 @@
 package at.fhv.master.laendleenergy.domain;
 
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
-
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
 public class Member {
-
     private String id;
     private String name;
     private LocalDate dateOfBirth;
@@ -19,6 +17,13 @@ public class Member {
 
     public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
         this.id =  UUID.randomUUID().toString();
+        this.name = name;
+        this.dateOfBirth = dateOfBirth.orElse(null);
+        this.gender = gender.orElse(null);
+    }
+
+    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
+        this.id =  id;
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
@@ -59,5 +64,15 @@ public class Member {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                '}';
     }
 }

@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class MemberRepositoryImpl implements MemberRepository {
@@ -26,7 +27,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public List<Member> getAllMembersOfHousehold(String householdId) {
-        return new LinkedList<>(householdRepository.getHouseholdById(householdId).getMembers().values());
+    public Map<String,Member> getAllMembersOfHousehold(String householdId) {
+        return householdRepository.getHouseholdById(householdId).getMembers();
     }
 }
