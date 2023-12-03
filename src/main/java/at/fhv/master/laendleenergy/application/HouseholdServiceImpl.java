@@ -27,13 +27,12 @@ public class HouseholdServiceImpl implements HouseholdService {
 
     @Override
     public void createHousehold(CreateHouseholdDTO householdDTO) {
-        User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty());
+        User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), householdDTO.getDeviceId());
 
         Map<String, Member> members = new HashMap<>();
         members.put(user.getId(), user);
 
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
-        user.setHousehold(household);
 
         userRepository.addUser(user);
         householdRepository.addHousehold(household);

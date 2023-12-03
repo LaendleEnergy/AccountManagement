@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import at.fhv.master.laendleenergy.view.DTOs.LoginDTO;
+import io.quarkus.security.UnauthorizedException;
 import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -47,8 +48,12 @@ public class AuthenticationController {
         try {
             LoginDTO loginDTO = authenticationService.login(authRequest);
             return Response.ok(loginDTO).build();
-        } catch (Exception e) {
+        } catch (UnauthorizedException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
+        } catch (EmailNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

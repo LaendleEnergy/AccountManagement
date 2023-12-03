@@ -28,7 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
                     roles[i],
                     userNames[i],
                     Optional.of(LocalDate.of(1990 + i, 1, 1)), // Example: Incrementing birth year
-                    Optional.of(i % 2 == 0 ? Gender.MALE : Gender.FEMALE) // Example: Alternating gender
+                    Optional.of(i % 2 == 0 ? Gender.MALE : Gender.FEMALE), // Example: Alternating gender
+                    "D1"
             );
             users.put(user.getId(), user);
         }

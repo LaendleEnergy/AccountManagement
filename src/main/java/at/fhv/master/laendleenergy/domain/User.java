@@ -7,18 +7,18 @@ public class User extends Member {
     private String emailAddress;
     private String password;
     private Role role;
-    private Household household;
+    private String deviceId;
 
     public User() {
         super();
     }
 
-    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
+    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
         super(name, dateOfBirth, gender);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
-        this.household = household;
+        this.deviceId = deviceId;
     }
 
     public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
@@ -59,12 +59,12 @@ public class User extends Member {
         this.role = role;
     }
 
-    public Household getHousehold() {
-        return household;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setHousehold(Household household) {
-        this.household = household;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     @Override
@@ -77,6 +77,7 @@ public class User extends Member {
                 ", name=" + getName() +
                 ", gender= " + getGender() +
                 ", dateOfBirth= " + getDateOfBirth() +
+                ", deviceId= " + getDeviceId() +
                 '}';
     }
 }

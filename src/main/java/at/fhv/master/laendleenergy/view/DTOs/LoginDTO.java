@@ -1,8 +1,8 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
 public class LoginDTO {
-    private String token;
-    private String deviceId;
+    public String token;
+    public String deviceId;
 
     public LoginDTO() {
 
