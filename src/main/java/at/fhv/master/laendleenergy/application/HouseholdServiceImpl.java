@@ -26,31 +26,31 @@ public class HouseholdServiceImpl implements HouseholdService {
     PBKDF2Encoder passwordEncoder;
 
     @Override
-    public void createHousehold(CreateHouseholdDTO createHouseholdDTO) {
-        User user = new User(createHouseholdDTO.getEmailAddress(), passwordEncoder.encode(createHouseholdDTO.getPassword()), Role.ADMIN, createHouseholdDTO.getName(), Optional.empty(), Optional.empty());
+    public void createHousehold(CreateHouseholdDTO householdDTO) {
+        User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty());
 
         Map<String, Member> members = new HashMap<>();
         members.put(user.getId(), user);
 
-        Household household = new Household(ElectricityPricingPlan.get(createHouseholdDTO.getPricingPlan()), createHouseholdDTO.getDeviceId(), "", "", members);
+        Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
 
         userRepository.addUser(user);
         householdRepository.addHousehold(household);
     }
 
     @Override
-    public void deleteHousehold(String householdId) {
-        householdRepository.deleteHousehold(householdId);
+    public void deleteHousehold(String deviceId) {
+        householdRepository.deleteHousehold(deviceId);
     }
 
     @Override
-    public void updateHousehold(String householdId, HouseholdDTO householdDTO) {
-        householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId)));
+    public void updateHousehold(HouseholdDTO householdDTO) {
+        Household oldHousehold = householdRepository.getHouseholdById(householdDTO.getDeviceId());
+        householdRepository.updateHousehold(HouseholdDTO.create(householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdDTO.getDeviceId())));
     }
 
     @Override
-    public HouseholdDTO getHouseholdById(String householdId) {
-        return HouseholdDTO.create(householdRepository.getHouseholdById(householdId));
+    public HouseholdDTO getHouseholdById(String deviceId) {
+        return HouseholdDTO.create(householdRepository.getHouseholdById(deviceId));
     }
-
 }

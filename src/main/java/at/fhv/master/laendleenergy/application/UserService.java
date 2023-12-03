@@ -10,7 +10,7 @@ public interface UserService {
     void deleteUser(String userId);
     void addEmailAddress(String email);
     void changePassword(String userId);
-    void editInformation(UpdateUserDTO userDTO, String email) throws EmailNotFoundException;
+    void updateUser(UpdateUserDTO userDTO, String email) throws EmailNotFoundException;
     UserDTO getUserById(String id);
     List<UserDTO> getAllUsers();
     boolean login(String email, String password);

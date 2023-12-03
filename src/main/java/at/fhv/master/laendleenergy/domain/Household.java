@@ -1,10 +1,8 @@
 package at.fhv.master.laendleenergy.domain;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class Household {
-    private String householdId;
     private ElectricityPricingPlan pricingPlan;
     private String deviceId;
     private String incentive;
@@ -12,33 +10,23 @@ public class Household {
     private Map<String, Member> members;
 
     public Household() {
-        this.householdId =  UUID.randomUUID().toString();
+
     }
 
-    public Household(ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, Map<String, Member> members) {
-        this.householdId = UUID.randomUUID().toString();
-        this.pricingPlan = pricingPlan;
+    public Household(String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
         this.deviceId = deviceId;
+        this.pricingPlan = pricingPlan;
         this.incentive = incentive;
         this.savingTarget = savingTarget;
         this.members = members;
     }
 
-    public Household(String householdId, ElectricityPricingPlan pricingPlan, String deviceId, String incentive, String savingTarget, Map<String, Member> members) {
-        this.householdId = householdId;
-        this.pricingPlan = pricingPlan;
+    public Household(String deviceId, String householdId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
         this.deviceId = deviceId;
+        this.pricingPlan = pricingPlan;
         this.incentive = incentive;
         this.savingTarget = savingTarget;
         this.members = members;
-    }
-
-    public String getHouseholdId() {
-        return householdId;
-    }
-
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
     }
 
     public ElectricityPricingPlan getPricingPlan() {
@@ -92,9 +80,8 @@ public class Household {
     @Override
     public String toString() {
         return "Household{" +
-                "householdId='" + householdId + '\'' +
-                ", pricingPlan=" + pricingPlan +
                 ", deviceId='" + deviceId + '\'' +
+                ", pricingPlan=" + pricingPlan +
                 ", incentive='" + incentive + '\'' +
                 ", savingTarget='" + savingTarget + '\'' +
                 ", members=" + members +

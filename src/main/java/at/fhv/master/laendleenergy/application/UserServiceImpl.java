@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editInformation(UpdateUserDTO userDTO, String emailAddress) throws EmailNotFoundException {
+    public void updateUser(UpdateUserDTO userDTO, String emailAddress) throws EmailNotFoundException {
         User userData = userRepository.getUserByEmail(emailAddress);
         User user = UpdateUserDTO.create(userData.getId(), userDTO, userData.getRole().getName());
         userRepository.updateUser(user);

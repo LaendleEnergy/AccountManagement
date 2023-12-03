@@ -43,8 +43,8 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
             currentMembers.put(members.get(id).getId(), members.get(id));
 
             Household household = new Household(
-                    i % 2 == 0 ? ElectricityPricingPlan.NORMAL : ElectricityPricingPlan.DAYNIGHT,
                     deviceIds[i],
+                    i % 2 == 0 ? ElectricityPricingPlan.NORMAL : ElectricityPricingPlan.DAYNIGHT,
                     incentives[i],
                     savingTargets[i],
                     currentMembers
@@ -55,22 +55,22 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
 
     @Override
     public void addHousehold(Household household) {
-        households.put(household.getHouseholdId(), household);
+        households.put(household.getDeviceId(), household);
     }
 
     @Override
-    public void deleteHousehold(String householdId) {
-        households.remove(householdId);
+    public void deleteHousehold(String deviceId) {
+        households.remove(deviceId);
     }
 
     @Override
     public void updateHousehold(Household household) {
-        households.replace(household.getHouseholdId(), household);
+        households.replace(household.getDeviceId(), household);
     }
 
     @Override
-    public Household getHouseholdById(String householdId) {
-        return households.get(householdId);
+    public Household getHouseholdById(String deviceId) {
+        return households.get(deviceId);
     }
 
 }

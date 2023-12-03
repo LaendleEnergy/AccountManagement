@@ -24,29 +24,34 @@ public class HouseholdController {
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createHousehold(CreateHouseholdDTO createHouseholdDTO)
+    public Response createHousehold(CreateHouseholdDTO createHouseholdDTO)
     {
-        householdService.createHousehold(createHouseholdDTO);
+        try {
+            householdService.createHousehold(createHouseholdDTO);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @POST
     @Path("/update")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void updateHousehold(
-            @FormParam("id") String id,
-            @FormParam("pricingPlan") String pricingPlan,
-            @FormParam("deviceId") String deviceId)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateHousehold(HouseholdDTO householdDTO)
     {
-        HouseholdDTO householdDTO = new HouseholdDTO(pricingPlan, deviceId);
-        householdService.updateHousehold(id, householdDTO);
+        try {
+            householdService.updateHousehold(householdDTO);
+            return Response.ok(true).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
-
     @DELETE
-    @Path("/delete/{householdId}")
-    public Response deleteHousehold(String householdId) {
+    @Path("/delete/{deviceId}")
+    public Response deleteHousehold(String deviceId) {
         try {
-            householdService.deleteHousehold(householdId);
+            householdService.deleteHousehold(deviceId);
             return Response.ok(true).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -54,10 +59,10 @@ public class HouseholdController {
     }
 
     @GET
-    @Path("/get/{householdId}")
-    public Response getHouseholdById(String householdId) {
+    @Path("/get/{deviceId}")
+    public Response getHouseholdById(String deviceId) {
         try {
-            return Response.ok(householdService.getHouseholdById(householdId)).build();
+            return Response.ok(householdService.getHouseholdById(deviceId)).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

@@ -15,7 +15,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import java.security.Principal;
 
 @Path("/user")
@@ -29,8 +28,6 @@ public class UserController {
     PBKDF2Encoder passwordEncoder;
     @Inject
     UserService userService;
-    @Inject
-    JsonWebToken jwt;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -84,23 +81,24 @@ public class UserController {
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateUser(@Context SecurityContext ctx, UpdateUserDTO userDTO) {
-        Principal caller =  ctx.getUserPrincipal();
+        Principal caller = ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();
 
         try {
-            userService.editInformation(userDTO, name);
+            userService.updateUser(userDTO, name);
             return Response.ok().build();
         } catch (Exception e) {
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @PermitAll
     @POST
-    @Path("/login")
+    @Path("/authenticate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(AuthRequest authRequest) {
+    public Response authenticate(AuthRequest authRequest) {
         try {
             UserDTO u = userService.getUserByEmail(authRequest.getEmailAddress());
             if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {

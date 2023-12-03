@@ -3,39 +3,43 @@ package at.fhv.master.laendleenergy.view.DTOs;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
-
 import java.util.Map;
 
 public class HouseholdDTO {
-    private String pricingPlan;
     private String deviceId;
+    private String pricingPlan;
+    private String supplier;
     private String incentive;
     private String savingTarget;
 
-    public HouseholdDTO() {
-    }
 
-    public HouseholdDTO(String pricingPlan, String deviceId, String incentive, String savingTarget) {
-        this.pricingPlan = pricingPlan;
+    public HouseholdDTO() {}
+
+    public HouseholdDTO(String deviceId, String pricingPlan, String supplier, String incentive, String savingTarget) {
         this.deviceId = deviceId;
+        this.pricingPlan = pricingPlan;
+        this.supplier = supplier;
         this.incentive = incentive;
         this.savingTarget = savingTarget;
     }
 
-    public HouseholdDTO(String pricingPlan, String deviceId) {
-        this.pricingPlan = pricingPlan;
-        this.deviceId = deviceId;
+    public static Household create(HouseholdDTO household, String incentive, String savingTarget, Map<String, Member> members) {
+        return new Household(
+                household.getDeviceId(),
+                ElectricityPricingPlan.get(household.getPricingPlan()),
+                incentive,
+                savingTarget,
+                members);
     }
 
     public static HouseholdDTO create(Household household) {
-        return new HouseholdDTO(household.getPricingPlan().getName(), household.getDeviceId(), household.getIncentive(), household.getSavingTarget());
+        return new HouseholdDTO(household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName(), household.getIncentive(), household.getSavingTarget());
     }
 
-    public static Household create(String householdId, HouseholdDTO householdDTO, Map<String, Member> members) {
+    public static Household create(HouseholdDTO householdDTO, Map<String, Member> members) {
         return new Household(
-                householdId,
-                ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
                 householdDTO.getDeviceId(),
+                ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
                 householdDTO.getIncentive(),
                 householdDTO.getSavingTarget(),
                 members
@@ -56,6 +60,14 @@ public class HouseholdDTO {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
     public String getIncentive() {
