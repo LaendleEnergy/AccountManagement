@@ -1,5 +1,6 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
@@ -13,6 +14,5 @@ public interface UserService {
     void updateUser(UpdateUserDTO userDTO, String email) throws EmailNotFoundException;
     UserDTO getUserById(String id);
     List<UserDTO> getAllUsers();
-    boolean login(String email, String password);
     UserDTO getUserByEmail(String email) throws EmailNotFoundException;
 }

@@ -1,12 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
-import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
-import at.fhv.master.laendleenergy.authentication.TokenUtils;
-import at.fhv.master.laendleenergy.domain.Role;
-import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
-import jakarta.annotation.security.PermitAll;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -14,18 +9,12 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.security.Principal;
 
 @Path("/user")
 @RequestScoped
 public class UserController {
 
-    @ConfigProperty(name = "com.ard333.quarkusjwt.jwt.duration") public Long duration;
-    @ConfigProperty(name = "mp.jwt.verify.issuer") public String issuer;
-
-    @Inject
-    PBKDF2Encoder passwordEncoder;
     @Inject
     UserService userService;
 
@@ -90,28 +79,6 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PermitAll
-    @POST
-    @Path("/authenticate")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response authenticate(AuthRequest authRequest) {
-        try {
-            UserDTO u = userService.getUserByEmail(authRequest.getEmailAddress());
-            if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
-                try {
-                    return Response.ok(new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole()), duration, issuer))).build();
-                } catch (Exception e) {
-                    return Response.status(Response.Status.UNAUTHORIZED).build();
-                }
-            } else {
-                return Response.status(Response.Status.UNAUTHORIZED).build();
-            }
-        } catch (EmailNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 }

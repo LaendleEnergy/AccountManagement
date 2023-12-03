@@ -33,6 +33,7 @@ public class HouseholdServiceImpl implements HouseholdService {
         members.put(user.getId(), user);
 
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
+        user.setHousehold(household);
 
         userRepository.addUser(user);
         householdRepository.addHousehold(household);

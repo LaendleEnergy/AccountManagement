@@ -60,11 +60,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String emailAddress, String password) {
-        return userRepository.login(emailAddress, password);
-    }
-
-    @Override
     public UserDTO getUserByEmail(String emailAddress) throws EmailNotFoundException {
         return UserDTO.create(userRepository.getUserByEmail(emailAddress));
     }
