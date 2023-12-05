@@ -28,8 +28,8 @@ public class HouseholdController {
     public Response createHousehold(CreateHouseholdDTO createHouseholdDTO)
     {
         try {
-            householdService.createHousehold(createHouseholdDTO);
-            return Response.ok().build();
+            String id = householdService.createHousehold(createHouseholdDTO);
+            return Response.ok(id).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -49,10 +49,10 @@ public class HouseholdController {
     }
 
     @DELETE
-    @Path("/delete/{deviceId}")
-    public Response deleteHousehold(String deviceId) {
+    @Path("/delete/{householdId}")
+    public Response deleteHousehold(String householdId) {
         try {
-            householdService.deleteHousehold(deviceId);
+            householdService.deleteHousehold(householdId);
             return Response.ok(true).build();
         } catch (HouseholdNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -60,10 +60,11 @@ public class HouseholdController {
     }
 
     @GET
-    @Path("/get/{deviceId}")
-    public Response getHouseholdById(String deviceId) {
+    @Path("/get/{householdId}")
+    public Response getHouseholdById(String householdId) {
+        System.out.println(householdId);
         try {
-            return Response.ok(householdService.getHouseholdById(deviceId)).build();
+            return Response.ok(householdService.getHouseholdById(householdId)).build();
         } catch (HouseholdNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

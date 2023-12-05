@@ -5,8 +5,8 @@ import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 
 public interface HouseholdService {
-    void createHousehold(CreateHouseholdDTO householdDTO);
-    void deleteHousehold(String deviceId) throws HouseholdNotFoundException;
+    String createHousehold(CreateHouseholdDTO householdDTO);
+    void deleteHousehold(String householdId) throws HouseholdNotFoundException;
     void updateHousehold(HouseholdDTO householdDTO) throws HouseholdNotFoundException;
-    HouseholdDTO getHouseholdById(String deviceId) throws HouseholdNotFoundException;
+    HouseholdDTO getHouseholdById(String householdId) throws HouseholdNotFoundException;
 }

@@ -2,16 +2,16 @@ package at.fhv.master.laendleenergy.view.DTOs;
 
 public class LoginDTO {
     public String token;
-    public String deviceId;
+    public String householdId;
     public String userId;
 
     public LoginDTO() {
 
     }
 
-    public LoginDTO(String token, String deviceId, String userId) {
+    public LoginDTO(String token, String householdId, String userId) {
         this.token = token;
-        this.deviceId = deviceId;
+        this.householdId = householdId;
         this.userId = userId;
     }
 
@@ -23,12 +23,12 @@ public class LoginDTO {
         this.token = token;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 
     public String getUserId() {

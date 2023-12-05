@@ -14,20 +14,20 @@ public class UserDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String deviceId;
+    private String householdId;
 
     public UserDTO() {
 
     }
 
-    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender, String deviceId) {
+    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender, String householdId) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.deviceId = deviceId;
+        this.householdId = householdId;
     }
 
     public static User create(UserDTO userDTO) {
@@ -38,7 +38,7 @@ public class UserDTO {
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                userDTO.getDeviceId()
+                userDTO.getHouseholdId()
         );
     }
 
@@ -50,7 +50,7 @@ public class UserDTO {
                 user.getName(),
                 !Objects.equals(user.getDateOfBirth(), null) ? user.getDateOfBirth().toString() : "",
                 !Objects.equals(user.getGender(), null) ? user.getGender().getName() : "",
-                user.getDeviceId()
+                user.getHouseholdId()
         );
     }
 
@@ -102,12 +102,12 @@ public class UserDTO {
         this.gender = gender;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 
     @Override

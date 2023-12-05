@@ -24,7 +24,7 @@ public class UserController {
     public Response createUser(CreateUserDTO createUserDTO)
     {
         try {
-            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null, createUserDTO.getDeviceId());
+            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null, createUserDTO.getHouseholdId());
             userService.createUser(userDTO);
             return Response.ok(true).build();
         } catch (Exception e) {
@@ -54,18 +54,6 @@ public class UserController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    /*@GET
-    @Path("/get/{emailAddress}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserByEmail(String emailAddress) {
-        try {
-            return Response.ok(userService.getUserByEmail(emailAddress)).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-    }*/
 
     @GET
     @Path("/get/{userId}")

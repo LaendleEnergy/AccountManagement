@@ -12,15 +12,15 @@ public class User extends Member {
         super();
     }
 
-    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
-        super(name, dateOfBirth, gender, deviceId);
+    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
+        super(name, dateOfBirth, gender, householdId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
     }
 
-    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
-        super(id, name, dateOfBirth, gender, deviceId);
+    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
+        super(id, name, dateOfBirth, gender, householdId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
@@ -60,7 +60,7 @@ public class User extends Member {
                 ", name=" + getName() +
                 ", gender= " + getGender() +
                 ", dateOfBirth= " + getDateOfBirth() +
-                ", deviceId= " + getDeviceId() +
+                ", deviceId= " + getHouseholdId() +
                 '}';
     }
 }

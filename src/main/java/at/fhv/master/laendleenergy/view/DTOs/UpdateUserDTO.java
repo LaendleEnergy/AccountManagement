@@ -14,19 +14,19 @@ public class UpdateUserDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String deviceId;
+    private String householdId;
 
     public UpdateUserDTO() {
 
     }
 
-    public UpdateUserDTO(String emailAddress, String password, String name, String dateOfBirth, String gender, String deviceId) {
+    public UpdateUserDTO(String emailAddress, String password, String name, String dateOfBirth, String gender, String householdId) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.deviceId = deviceId;
+        this.householdId = householdId;
     }
 
     public static User create(String userId, UpdateUserDTO userDTO, String role) {
@@ -38,7 +38,7 @@ public class UpdateUserDTO {
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), null) ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), null) ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                userDTO.getDeviceId()
+                userDTO.getHouseholdId()
         );
     }
 
@@ -82,11 +82,11 @@ public class UpdateUserDTO {
         this.gender = gender;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 }

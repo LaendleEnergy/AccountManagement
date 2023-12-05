@@ -1,12 +1,11 @@
 package at.fhv.master.laendleenergy.persistence;
 
-import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
 public class MemberRepositoryImpl implements MemberRepository {
@@ -16,7 +15,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public void addHouseholdMember(Member member) throws HouseholdNotFoundException {
-        Household household = householdRepository.getHouseholdById(member.getDeviceId());
+        Household household = householdRepository.getHouseholdById(member.getHouseholdId());
 
         if (household != null) {
             household.addMember(member);

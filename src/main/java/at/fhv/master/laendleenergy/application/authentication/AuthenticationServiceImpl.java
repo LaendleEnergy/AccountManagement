@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
                 try {
-                    return new LoginDTO(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getDeviceId(), u.getId());
+                    return new LoginDTO(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getHouseholdId(), u.getId());
                 } catch (Exception e) {
                     throw new UnauthorizedException();
                 }

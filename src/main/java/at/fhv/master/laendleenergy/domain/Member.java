@@ -1,6 +1,5 @@
 package at.fhv.master.laendleenergy.domain;
 
-import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,33 +9,26 @@ public class Member {
     private String name;
     private LocalDate dateOfBirth;
     private Gender gender;
-    private String deviceId;
+    private String householdId;
 
     public Member() {
         this.id =  UUID.randomUUID().toString();
     }
 
-    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
+    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
         this.id =  UUID.randomUUID().toString();
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.deviceId = deviceId;
+        this.householdId = householdId;
     }
 
-    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
+    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
         this.id =  id;
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.deviceId = deviceId;
-    }
-
-    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
-        this.id =  id;
-        this.name = name;
-        this.dateOfBirth = dateOfBirth.orElse(null);
-        this.gender = gender.orElse(null);
+        this.householdId = householdId;
     }
 
     public String getName() {
@@ -67,12 +59,12 @@ public class Member {
         return id;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 
     @Override

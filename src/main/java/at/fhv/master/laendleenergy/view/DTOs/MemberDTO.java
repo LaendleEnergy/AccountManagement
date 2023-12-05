@@ -10,21 +10,21 @@ public class MemberDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String deviceId;
+    private String householdId;
 
     public MemberDTO() {
 
     }
 
-    public MemberDTO(String name, String dateOfBirth, String gender, String deviceId) {
+    public MemberDTO(String name, String dateOfBirth, String gender, String householdId) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.deviceId = deviceId;
+        this.householdId = householdId;
     }
 
     public static MemberDTO create(Member member) {
-        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName(), member.getDeviceId());
+        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName(), member.getHouseholdId());
     }
 
 
@@ -33,7 +33,7 @@ public class MemberDTO {
                 memberDTO.getName(),
                 Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                memberDTO.getDeviceId()
+                memberDTO.getHouseholdId()
         );
     }
 
@@ -61,11 +61,11 @@ public class MemberDTO {
         this.gender = gender;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 }

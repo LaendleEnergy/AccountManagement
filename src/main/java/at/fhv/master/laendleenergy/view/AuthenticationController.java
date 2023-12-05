@@ -16,6 +16,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Arrays;
+
 @Path("/user")
 @RequestScoped
 public class AuthenticationController {
@@ -53,6 +55,7 @@ public class AuthenticationController {
         } catch (UserNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
+            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -27,7 +27,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     PBKDF2Encoder passwordEncoder;
 
     @Override
-    public void createHousehold(CreateHouseholdDTO householdDTO) {
+    public String createHousehold(CreateHouseholdDTO householdDTO) {
         User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), householdDTO.getDeviceId());
 
         Map<String, Member> members = new HashMap<>();
@@ -36,22 +36,22 @@ public class HouseholdServiceImpl implements HouseholdService {
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
 
         userRepository.addUser(user);
-        householdRepository.addHousehold(household);
+        return householdRepository.addHousehold(household);
     }
 
     @Override
-    public void deleteHousehold(String deviceId) throws HouseholdNotFoundException {
-        householdRepository.deleteHousehold(deviceId);
+    public void deleteHousehold(String householdId) throws HouseholdNotFoundException {
+        householdRepository.deleteHousehold(householdId);
     }
 
     @Override
     public void updateHousehold(HouseholdDTO householdDTO) throws HouseholdNotFoundException {
-        Household oldHousehold = householdRepository.getHouseholdById(householdDTO.getDeviceId());
-        householdRepository.updateHousehold(HouseholdDTO.create(householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdDTO.getDeviceId())));
+        Household oldHousehold = householdRepository.getHouseholdById(householdDTO.getHouseholdId());
+        householdRepository.updateHousehold(HouseholdDTO.create(householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdDTO.getHouseholdId())));
     }
 
     @Override
-    public HouseholdDTO getHouseholdById(String deviceId) throws HouseholdNotFoundException {
-        return HouseholdDTO.create(householdRepository.getHouseholdById(deviceId));
+    public HouseholdDTO getHouseholdById(String householdId) throws HouseholdNotFoundException {
+        return HouseholdDTO.create(householdRepository.getHouseholdById(householdId));
     }
 }

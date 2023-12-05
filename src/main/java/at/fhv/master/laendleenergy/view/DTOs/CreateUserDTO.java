@@ -4,17 +4,17 @@ public class CreateUserDTO {
     private String emailAddress;
     private String name;
     private String password;
-    private String deviceId;
+    private String householdId;
 
     public CreateUserDTO() {
 
     }
 
-    public CreateUserDTO(String emailAddress, String name, String password, String deviceId) {
+    public CreateUserDTO(String emailAddress, String name, String password, String householdId) {
         this.emailAddress = emailAddress;
         this.name = name;
         this.password = password;
-        this.deviceId = deviceId;
+        this.householdId = householdId;
     }
 
     public String getEmailAddress() {
@@ -41,11 +41,11 @@ public class CreateUserDTO {
         this.password = password;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 }

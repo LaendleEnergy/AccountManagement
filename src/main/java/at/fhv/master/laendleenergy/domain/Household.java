@@ -1,8 +1,10 @@
 package at.fhv.master.laendleenergy.domain;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class Household {
+    private String id;
     private ElectricityPricingPlan pricingPlan;
     private String deviceId;
     private String incentive;
@@ -14,6 +16,7 @@ public class Household {
     }
 
     public Household(String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
+        this.id =  UUID.randomUUID().toString();
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
         this.incentive = incentive;
@@ -21,7 +24,8 @@ public class Household {
         this.members = members;
     }
 
-    public Household(String deviceId, String householdId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
+    public Household(String householdId, String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
+        this.id =  householdId;
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
         this.incentive = incentive;
@@ -75,6 +79,10 @@ public class Household {
 
     public void removeMember(String memberId) {
         this.members.remove(memberId);
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

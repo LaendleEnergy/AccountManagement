@@ -4,8 +4,8 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 
 public interface HouseholdRepository {
-    void addHousehold(Household household);
-    void deleteHousehold(String deviceId) throws HouseholdNotFoundException;
+    String addHousehold(Household household);
+    void deleteHousehold(String householdId) throws HouseholdNotFoundException;
     void updateHousehold(Household household) throws HouseholdNotFoundException;
-    Household getHouseholdById(String deviceId) throws HouseholdNotFoundException;
+    Household getHouseholdById(String householdId) throws HouseholdNotFoundException;
 }
