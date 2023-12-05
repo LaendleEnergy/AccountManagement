@@ -2,6 +2,7 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,12 +16,12 @@ public class MemberServiceImpl implements MemberService {
     MemberRepository memberRepository;
 
     @Override
-    public void addHouseholdMember(String householdId, MemberDTO memberDTO) throws HouseholdNotFoundException {
-        memberRepository.addHouseholdMember(Member.create(memberDTO), householdId);
+    public void addHouseholdMember(MemberDTO memberDTO) throws HouseholdNotFoundException {
+        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO));
     }
 
     @Override
-    public void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException {
+    public void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException {
         memberRepository.removeHouseholdMember(memberId, householdId);
     }
 

@@ -14,18 +14,20 @@ public class UserDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
+    private String deviceId;
 
     public UserDTO() {
 
     }
 
-    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender) {
+    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender, String deviceId) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.deviceId = deviceId;
     }
 
     public static User create(UserDTO userDTO) {
@@ -35,7 +37,8 @@ public class UserDTO {
                 Role.get(userDTO.getRole()),
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty()
+                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
+                userDTO.getDeviceId()
         );
     }
 
@@ -46,7 +49,8 @@ public class UserDTO {
                 user.getRole().getName(),
                 user.getName(),
                 !Objects.equals(user.getDateOfBirth(), null) ? user.getDateOfBirth().toString() : "",
-                !Objects.equals(user.getGender(), null) ? user.getGender().getName() : ""
+                !Objects.equals(user.getGender(), null) ? user.getGender().getName() : "",
+                user.getDeviceId()
         );
     }
 
@@ -96,6 +100,14 @@ public class UserDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     @Override

@@ -7,29 +7,20 @@ public class User extends Member {
     private String emailAddress;
     private String password;
     private Role role;
-    private String deviceId;
 
     public User() {
         super();
     }
 
     public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
-        super(name, dateOfBirth, gender);
-        this.emailAddress = emailAddress;
-        this.password = password;
-        this.role = role;
-        this.deviceId = deviceId;
-    }
-
-    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
-        super(name, dateOfBirth, gender);
+        super(name, dateOfBirth, gender, deviceId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
     }
 
-    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
-        super(id, name, dateOfBirth, gender);
+    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
+        super(id, name, dateOfBirth, gender, deviceId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
@@ -57,14 +48,6 @@ public class User extends Member {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     @Override

@@ -1,13 +1,14 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.MemberService;
-import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import java.util.List;
+import jakarta.ws.rs.core.Response;
+
 
 @Path("/member")
 public class MemberController {
@@ -16,37 +17,34 @@ public class MemberController {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public void addHouseholdMember(
-            @FormParam("householdId") String householdId,
-            @FormParam("name") String name,
-            @FormParam("dateOfBirth") String dateOfBirth,
-            @FormParam("gender") String gender)
+    public Response addHouseholdMember(MemberDTO memberDTO)
     {
         try {
-            MemberDTO memberDTO = new MemberDTO(name, dateOfBirth, gender);
-            memberService.addHouseholdMember(householdId, memberDTO);
+            memberService.addHouseholdMember(memberDTO);
+            return Response.ok().build();
         } catch (HouseholdNotFoundException e) {
-
+        return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @DELETE
     @Path("/remove/{householdId}")
-    public void removeHouseholdMember(String memberId, String householdId) {
+    public Response removeHouseholdMember(String memberId, String householdId) {
         try {
             memberService.removeHouseholdMember(memberId, householdId);
-        } catch (HouseholdNotFoundException e) {
-
+            return Response.ok().build();
+        } catch (HouseholdNotFoundException | MemberNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @GET
     @Path("/get/{householdId}")
-    public List<MemberDTO> getAllMembersOfHousehold(String householdId) {
+    public Response getAllMembersOfHousehold(String householdId) {
         try {
-            return memberService.getAllMembersOfHousehold(householdId);
+            return Response.ok(memberService.getAllMembersOfHousehold(householdId)).build();
         } catch (HouseholdNotFoundException e) {
-            return null;
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 }

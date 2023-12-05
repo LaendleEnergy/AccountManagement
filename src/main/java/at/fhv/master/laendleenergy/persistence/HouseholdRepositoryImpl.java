@@ -36,9 +36,9 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
             Random random = new Random();
             HashMap<String, Member> currentMembers = new HashMap<>();
             int id = random.nextInt(0, 10);
-            currentMembers.put(members.get(id).getId(), members.get(id));
-            currentMembers.put(members.get(id).getId(), members.get(id));
-            currentMembers.put(members.get(id).getId(), members.get(id));
+            Member m = members.get(id);
+            m.setDeviceId(deviceIds[i]);
+            currentMembers.put(m.getId(), m);
 
             Household household = new Household(
                     deviceIds[i],

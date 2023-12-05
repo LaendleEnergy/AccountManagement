@@ -10,32 +10,33 @@ public class Member {
     private String name;
     private LocalDate dateOfBirth;
     private Gender gender;
+    private String deviceId;
 
     public Member() {
         this.id =  UUID.randomUUID().toString();
     }
 
-    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
+    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
         this.id =  UUID.randomUUID().toString();
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
+        this.deviceId = deviceId;
     }
 
-    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
+    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String deviceId) {
         this.id =  id;
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
+        this.deviceId = deviceId;
     }
 
-    public static Member create(MemberDTO memberDTO) {
-        return new Member(
-                memberDTO.getName(),
-                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
-                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty()
-        );
-
+    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender) {
+        this.id =  id;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth.orElse(null);
+        this.gender = gender.orElse(null);
     }
 
     public String getName() {
@@ -64,6 +65,14 @@ public class Member {
 
     public String getId() {
         return id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     @Override

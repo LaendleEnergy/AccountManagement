@@ -24,7 +24,7 @@ public class UserController {
     public Response createUser(CreateUserDTO createUserDTO)
     {
         try {
-            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
+            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null, createUserDTO.getDeviceId());
             userService.createUser(userDTO);
             return Response.ok(true).build();
         } catch (Exception e) {
