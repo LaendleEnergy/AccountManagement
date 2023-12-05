@@ -2,6 +2,7 @@ package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.MemberService;
 import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -21,19 +22,31 @@ public class MemberController {
             @FormParam("dateOfBirth") String dateOfBirth,
             @FormParam("gender") String gender)
     {
-        MemberDTO memberDTO = new MemberDTO(name, dateOfBirth, gender);
-        memberService.addHouseholdMember(householdId, memberDTO);
+        try {
+            MemberDTO memberDTO = new MemberDTO(name, dateOfBirth, gender);
+            memberService.addHouseholdMember(householdId, memberDTO);
+        } catch (HouseholdNotFoundException e) {
+
+        }
     }
 
     @DELETE
     @Path("/remove/{householdId}")
     public void removeHouseholdMember(String memberId, String householdId) {
-        memberService.removeHouseholdMember(memberId, householdId);
+        try {
+            memberService.removeHouseholdMember(memberId, householdId);
+        } catch (HouseholdNotFoundException e) {
+
+        }
     }
 
     @GET
     @Path("/get/{householdId}")
     public List<MemberDTO> getAllMembersOfHousehold(String householdId) {
-        return memberService.getAllMembersOfHousehold(householdId);
+        try {
+            return memberService.getAllMembersOfHousehold(householdId);
+        } catch (HouseholdNotFoundException e) {
+            return null;
+        }
     }
 }

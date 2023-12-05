@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy.authentication;
+package at.fhv.master.laendleenergy.application.authentication;
 
 import at.fhv.master.laendleenergy.domain.Role;
 import io.smallrye.jwt.build.Jwt;

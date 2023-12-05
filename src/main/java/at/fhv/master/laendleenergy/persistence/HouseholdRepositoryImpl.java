@@ -1,9 +1,7 @@
 package at.fhv.master.laendleenergy.persistence;
 
-import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.*;
@@ -59,18 +57,30 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
     }
 
     @Override
-    public void deleteHousehold(String deviceId) {
-        households.remove(deviceId);
+    public void deleteHousehold(String deviceId) throws HouseholdNotFoundException  {
+        if (households.get(deviceId) != null) {
+            households.remove(deviceId);
+        } else {
+            throw new HouseholdNotFoundException();
+        }
     }
 
     @Override
-    public void updateHousehold(Household household) {
-        households.replace(household.getDeviceId(), household);
+    public void updateHousehold(Household household) throws HouseholdNotFoundException {
+        if (households.get(household.getDeviceId()) != null) {
+            households.replace(household.getDeviceId(), household);
+        } else {
+            throw new HouseholdNotFoundException();
+        }
     }
 
     @Override
-    public Household getHouseholdById(String deviceId) {
-        return households.get(deviceId);
-    }
+    public Household getHouseholdById(String deviceId) throws HouseholdNotFoundException {
+        Household household = households.get(deviceId);
 
+        if (household != null) {
+            return household;
+        }
+        throw new HouseholdNotFoundException();
+    }
 }

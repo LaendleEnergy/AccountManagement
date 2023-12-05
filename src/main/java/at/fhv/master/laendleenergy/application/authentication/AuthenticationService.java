@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy.application;
+package at.fhv.master.laendleenergy.application.authentication;
 
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;

@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,17 +15,17 @@ public class MemberServiceImpl implements MemberService {
     MemberRepository memberRepository;
 
     @Override
-    public void addHouseholdMember(String householdId, MemberDTO memberDTO) {
+    public void addHouseholdMember(String householdId, MemberDTO memberDTO) throws HouseholdNotFoundException {
         memberRepository.addHouseholdMember(Member.create(memberDTO), householdId);
     }
 
     @Override
-    public void removeHouseholdMember(String memberId, String householdId) {
+    public void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException {
         memberRepository.removeHouseholdMember(memberId, householdId);
     }
 
     @Override
-    public List<MemberDTO> getAllMembersOfHousehold(String householdId) {
+    public List<MemberDTO> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
         List<Member> members = new LinkedList<>(memberRepository.getAllMembersOfHousehold(householdId).values());
         List<MemberDTO> memberDTOS = new LinkedList<>();
 

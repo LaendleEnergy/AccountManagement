@@ -1,15 +1,12 @@
-package at.fhv.master.laendleenergy.application;
+package at.fhv.master.laendleenergy.application.authentication;
 
-import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
-import at.fhv.master.laendleenergy.authentication.TokenUtils;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
-import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import at.fhv.master.laendleenergy.view.DTOs.LoginDTO;
-import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -18,12 +15,10 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
     @ConfigProperty(name = "com.ard333.quarkusjwt.jwt.duration")
-    public Long duration;
+    Long duration;
     @ConfigProperty(name = "mp.jwt.verify.issuer")
-    public String issuer;
+    String issuer;
 
-    @Inject
-    UserService userService;
     @Inject
     PBKDF2Encoder passwordEncoder;
     @Inject
@@ -31,12 +26,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthResponse authenticate(AuthRequest authRequest) throws Exception {
-        UserDTO u = userService.getUserByEmail(authRequest.getEmailAddress());
+        User u = userRepository.getUserByEmail(authRequest.getEmailAddress());
 
         if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
-            return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole()), duration, issuer));
+            return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getId());
         } else {
-            throw new EmailNotFoundException();
+            throw new UserNotFoundException();
         }
     }
 
@@ -47,13 +42,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
                 try {
-                    return new LoginDTO(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getDeviceId());
+                    return new LoginDTO(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getDeviceId(), u.getId());
                 } catch (Exception e) {
                     throw new UnauthorizedException();
                 }
             }
-        } catch (EmailNotFoundException e) {
-            throw new EmailNotFoundException();
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException();
         }
         throw new UnauthorizedException();
     }

@@ -1,7 +1,8 @@
 package at.fhv.master.laendleenergy.application;
 
-import at.fhv.master.laendleenergy.authentication.PBKDF2Encoder;
+import at.fhv.master.laendleenergy.application.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
@@ -39,18 +40,18 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public void deleteHousehold(String deviceId) {
+    public void deleteHousehold(String deviceId) throws HouseholdNotFoundException {
         householdRepository.deleteHousehold(deviceId);
     }
 
     @Override
-    public void updateHousehold(HouseholdDTO householdDTO) {
+    public void updateHousehold(HouseholdDTO householdDTO) throws HouseholdNotFoundException {
         Household oldHousehold = householdRepository.getHouseholdById(householdDTO.getDeviceId());
         householdRepository.updateHousehold(HouseholdDTO.create(householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdDTO.getDeviceId())));
     }
 
     @Override
-    public HouseholdDTO getHouseholdById(String deviceId) {
+    public HouseholdDTO getHouseholdById(String deviceId) throws HouseholdNotFoundException {
         return HouseholdDTO.create(householdRepository.getHouseholdById(deviceId));
     }
 }

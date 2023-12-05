@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -27,7 +28,7 @@ public class UserController {
             userService.createUser(userDTO);
             return Response.ok(true).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -38,7 +39,7 @@ public class UserController {
         try {
             userService.deleteUser(userId);
             return Response.ok(true).build();
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -50,11 +51,11 @@ public class UserController {
         try {
             return Response.ok(userService.getAllUsers()).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @GET
+    /*@GET
     @Path("/get/{emailAddress}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,6 +63,18 @@ public class UserController {
         try {
             return Response.ok(userService.getUserByEmail(emailAddress)).build();
         } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }*/
+
+    @GET
+    @Path("/get/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserById(String userId) {
+        try {
+            return Response.ok(userService.getUserById(userId)).build();
+        } catch (UserNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -76,8 +89,9 @@ public class UserController {
         try {
             userService.updateUser(userDTO, name);
             return Response.ok().build();
+        } catch (UserNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
-            e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }

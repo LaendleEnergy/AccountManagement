@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
@@ -42,7 +43,7 @@ public class HouseholdController {
         try {
             householdService.updateHousehold(householdDTO);
             return Response.ok(true).build();
-        } catch (Exception e) {
+        } catch (HouseholdNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -53,7 +54,7 @@ public class HouseholdController {
         try {
             householdService.deleteHousehold(deviceId);
             return Response.ok(true).build();
-        } catch (Exception e) {
+        } catch (HouseholdNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
@@ -63,7 +64,7 @@ public class HouseholdController {
     public Response getHouseholdById(String deviceId) {
         try {
             return Response.ok(householdService.getHouseholdById(deviceId)).build();
-        } catch (Exception e) {
+        } catch (HouseholdNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

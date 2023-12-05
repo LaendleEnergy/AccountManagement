@@ -1,7 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
-import at.fhv.master.laendleenergy.application.AuthenticationService;
-import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
+import at.fhv.master.laendleenergy.application.authentication.AuthenticationService;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import at.fhv.master.laendleenergy.view.DTOs.LoginDTO;
@@ -32,7 +32,7 @@ public class AuthenticationController {
         try {
             AuthResponse authResponse = authenticationService.authenticate(authRequest);
             return Response.ok(authResponse).build();
-        } catch (EmailNotFoundException e) {
+        } catch (UserNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -50,10 +50,10 @@ public class AuthenticationController {
             return Response.ok(loginDTO).build();
         } catch (UnauthorizedException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        } catch (EmailNotFoundException e) {
+        } catch (UserNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

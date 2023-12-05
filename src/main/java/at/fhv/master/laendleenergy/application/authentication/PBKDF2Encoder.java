@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy.authentication;
+package at.fhv.master.laendleenergy.application.authentication;
 
 import jakarta.enterprise.context.RequestScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;

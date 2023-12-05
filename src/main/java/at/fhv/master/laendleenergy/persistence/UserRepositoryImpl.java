@@ -3,7 +3,7 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
-import at.fhv.master.laendleenergy.domain.exceptions.EmailNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,28 +41,41 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void updateUser(User newUser) {
-        users.replace(newUser.getId(), newUser);
+    public void updateUser(User u) throws UserNotFoundException {
+        if (users.get(u.getId()) != null) {
+            users.replace(u.getId(), u);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     @Override
-    public void deleteUser(String userId) {
-        users.remove(userId);
+    public void deleteUser(String userId) throws UserNotFoundException {
+        if (users.get(userId) != null) {
+            users.remove(userId);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     @Override
-    public User getUserById(String userId) {
-        return users.get(userId);
+    public User getUserById(String userId) throws UserNotFoundException {
+        User user = users.get(userId);
+
+        if (user != null) {
+            return user;
+        }
+        throw new UserNotFoundException();
     }
 
     @Override
-    public User getUserByEmail(String emailAddress) throws EmailNotFoundException {
+    public User getUserByEmail(String emailAddress) throws UserNotFoundException {
         for (User u : getAllUsers()) {
             if (emailAddress.equals(u.getEmailAddress())) {
                 return u;
             }
         }
-        throw new EmailNotFoundException();
+        throw new UserNotFoundException();
     }
 
     @Override
