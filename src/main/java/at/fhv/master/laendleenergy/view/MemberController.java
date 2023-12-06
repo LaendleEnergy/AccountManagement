@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @DELETE
-    @Path("/remove/{householdId}")
+    @Path("/remove/{memberId}/{householdId}")
     public Response removeHouseholdMember(String memberId, String householdId) {
         try {
             memberService.removeHouseholdMember(memberId, householdId);
@@ -49,12 +49,23 @@ public class MemberController {
     }
 
     @GET
-    @Path("/get/{memberId}")
+    @Path("/get/{memberId}/{householdId}")
     public Response getMemberById(String memberId, String householdId) {
+        System.out.println(memberId);
+        System.out.println(householdId);
         try {
             return Response.ok(memberService.getMemberById(memberId, householdId)).build();
-        } catch (HouseholdNotFoundException e) {
+        } catch (HouseholdNotFoundException | MemberNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    @Path("/update")
+    public Response updateMember(MemberDTO memberDTO) {
+        try {
+            memberService.updateMember(memberDTO);
+            return Response.ok().build();
         } catch (MemberNotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }

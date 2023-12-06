@@ -3,6 +3,8 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+
+import java.util.List;
 import java.util.Map;
 
 public interface MemberRepository {
@@ -10,4 +12,6 @@ public interface MemberRepository {
     void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException;
     Map<String,Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException;
     Member getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException;
+    void updateMember(Member member) throws MemberNotFoundException;
+    List<Member> getAllMembers();
 }

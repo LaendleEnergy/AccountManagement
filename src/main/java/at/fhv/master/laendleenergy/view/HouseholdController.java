@@ -62,10 +62,10 @@ public class HouseholdController {
     @GET
     @Path("/get/{householdId}")
     public Response getHouseholdById(String householdId) {
-        System.out.println(householdId);
         try {
             return Response.ok(householdService.getHouseholdById(householdId)).build();
         } catch (HouseholdNotFoundException e) {
+            e.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

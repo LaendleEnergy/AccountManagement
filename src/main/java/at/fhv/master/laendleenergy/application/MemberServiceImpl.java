@@ -1,5 +1,6 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
@@ -40,5 +41,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDTO getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
         return MemberDTO.create(memberRepository.getMemberById(memberId, householdId));
+    }
+
+    @Override
+    public void updateMember(MemberDTO memberDTO) throws MemberNotFoundException {
+        memberRepository.updateMember(MemberDTO.create(memberDTO));
     }
 }
