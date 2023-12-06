@@ -6,7 +6,6 @@ import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
-import at.fhv.master.laendleenergy.view.DTOs.LoginDTO;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,23 +25,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthResponse authenticate(AuthRequest authRequest) throws Exception {
-        User u = userRepository.getUserByEmail(authRequest.getEmailAddress());
-
-        if (u != null && u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
-            return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getId());
-        } else {
-            throw new UserNotFoundException();
-        }
-    }
-
-    @Override
-    public LoginDTO login(AuthRequest authRequest) throws Exception {
         try {
             User u = userRepository.getUserByEmail(authRequest.getEmailAddress());
 
             if (u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
                 try {
-                    return new LoginDTO(TokenUtils.generateToken(u.getEmailAddress(), Role.get(u.getRole().getName()), duration, issuer), u.getHouseholdId(), u.getId());
+                    return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole().getName(), u.getId(), u.getHouseholdId(), duration, issuer));
                 } catch (Exception e) {
                     throw new UnauthorizedException();
                 }

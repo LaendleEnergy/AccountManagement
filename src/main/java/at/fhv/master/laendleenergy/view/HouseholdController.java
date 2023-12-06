@@ -1,12 +1,15 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
+import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -21,10 +24,10 @@ public class HouseholdController {
     @Inject
     HouseholdService householdService;
 
-    @PermitAll
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     public Response createHousehold(CreateHouseholdDTO createHouseholdDTO)
     {
         try {
@@ -38,6 +41,7 @@ public class HouseholdController {
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     public Response updateHousehold(HouseholdDTO householdDTO)
     {
         try {
@@ -50,6 +54,7 @@ public class HouseholdController {
 
     @DELETE
     @Path("/delete/{householdId}")
+    @RolesAllowed("Admin")
     public Response deleteHousehold(String householdId) {
         try {
             householdService.deleteHousehold(householdId);
@@ -61,6 +66,7 @@ public class HouseholdController {
 
     @GET
     @Path("/get/{householdId}")
+    @RolesAllowed("Admin")
     public Response getHouseholdById(String householdId) {
         try {
             return Response.ok(householdService.getHouseholdById(householdId)).build();
@@ -72,25 +78,23 @@ public class HouseholdController {
 
     @GET
     @Path("/get/suppliers")
-    public RestResponse<List<String>> getSuppliers() {
+    @Authenticated
+    public Response getSuppliers() {
         try {
-            return RestResponse.ResponseBuilder
-                    .ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON)
-                    .build();
+            return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            return RestResponse.status(RestResponse.Status.INTERNAL_SERVER_ERROR);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GET
     @Path("/get/pricingPlans")
-    public RestResponse<List<String>> getPricingPlans() {
+    @Authenticated
+    public Response getPricingPlans() {
         try {
-            return RestResponse.ResponseBuilder
-                    .ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON)
-                    .build();
+            return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            return RestResponse.status(RestResponse.Status.INTERNAL_SERVER_ERROR);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

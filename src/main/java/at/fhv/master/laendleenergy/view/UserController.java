@@ -3,6 +3,8 @@ package at.fhv.master.laendleenergy.view;
 import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -21,6 +23,7 @@ public class UserController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed("Admin")
     public Response createUser(CreateUserDTO createUserDTO)
     {
         try {
@@ -35,6 +38,7 @@ public class UserController {
     @DELETE
     @Path("/delete/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response deleteUser(String userId) {
         try {
             userService.deleteUser(userId);
@@ -47,6 +51,7 @@ public class UserController {
     @GET
     @Path("/get/all")
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response getAllUsers() {
         try {
             return Response.ok(userService.getAllUsers()).build();
@@ -59,6 +64,7 @@ public class UserController {
     @Path("/get/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response getUserById(String userId) {
         try {
             return Response.ok(userService.getUserById(userId)).build();
@@ -70,6 +76,7 @@ public class UserController {
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Authenticated
     public Response updateUser(@Context SecurityContext ctx, UpdateUserDTO userDTO) {
         Principal caller = ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();

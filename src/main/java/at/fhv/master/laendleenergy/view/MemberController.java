@@ -4,6 +4,8 @@ import at.fhv.master.laendleenergy.application.MemberService;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,6 +19,7 @@ public class MemberController {
 
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @RolesAllowed("Admin")
     public Response addHouseholdMember(MemberDTO memberDTO)
     {
         try {
@@ -29,6 +32,7 @@ public class MemberController {
 
     @DELETE
     @Path("/remove/{memberId}/{householdId}")
+    @RolesAllowed("Admin")
     public Response removeHouseholdMember(String memberId, String householdId) {
         try {
             memberService.removeHouseholdMember(memberId, householdId);
@@ -40,6 +44,7 @@ public class MemberController {
 
     @GET
     @Path("/get/{householdId}")
+    @Authenticated
     public Response getAllMembersOfHousehold(String householdId) {
         try {
             return Response.ok(memberService.getAllMembersOfHousehold(householdId)).build();
@@ -50,9 +55,8 @@ public class MemberController {
 
     @GET
     @Path("/get/{memberId}/{householdId}")
+    @Authenticated
     public Response getMemberById(String memberId, String householdId) {
-        System.out.println(memberId);
-        System.out.println(householdId);
         try {
             return Response.ok(memberService.getMemberById(memberId, householdId)).build();
         } catch (HouseholdNotFoundException | MemberNotFoundException e) {
@@ -62,6 +66,7 @@ public class MemberController {
 
     @POST
     @Path("/update")
+    @RolesAllowed("Admin")
     public Response updateMember(MemberDTO memberDTO) {
         try {
             memberService.updateMember(memberDTO);
