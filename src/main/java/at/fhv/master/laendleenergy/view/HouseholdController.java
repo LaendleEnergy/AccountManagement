@@ -14,6 +14,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.resteasy.reactive.RestResponse;
 import java.util.*;
 
@@ -23,6 +24,8 @@ public class HouseholdController {
 
     @Inject
     HouseholdService householdService;
+    @Inject
+    JsonWebToken jwt;
 
     @POST
     @Path("/create")
@@ -30,12 +33,17 @@ public class HouseholdController {
     @RolesAllowed("Admin")
     public Response createHousehold(CreateHouseholdDTO createHouseholdDTO)
     {
-        try {
-            String id = householdService.createHousehold(createHouseholdDTO);
-            return Response.ok(id).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT) {
+            try {
+                String id = householdService.createHousehold(createHouseholdDTO);
+                return Response.ok(id).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @POST
@@ -44,57 +52,84 @@ public class HouseholdController {
     @RolesAllowed("Admin")
     public Response updateHousehold(HouseholdDTO householdDTO)
     {
-        try {
-            householdService.updateHousehold(householdDTO);
-            return Response.ok(true).build();
-        } catch (HouseholdNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT) {
+            try {
+                householdService.updateHousehold(householdDTO);
+                return Response.ok(true).build();
+            } catch (HouseholdNotFoundException e) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @DELETE
-    @Path("/delete/{householdId}")
+    @Path("/delete")
     @RolesAllowed("Admin")
-    public Response deleteHousehold(String householdId) {
-        try {
-            householdService.deleteHousehold(householdId);
-            return Response.ok(true).build();
-        } catch (HouseholdNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response deleteHousehold() {
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT && jwt.containsClaim("householdId")) {
+            String householdId = jwt.getClaim("householdId");
+            try {
+                householdService.deleteHousehold(householdId);
+                return Response.ok(true).build();
+            } catch (HouseholdNotFoundException e) {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
-    @Path("/get/{householdId}")
+    @Path("/get")
     @RolesAllowed("Admin")
-    public Response getHouseholdById(String householdId) {
-        try {
-            return Response.ok(householdService.getHouseholdById(householdId)).build();
-        } catch (HouseholdNotFoundException e) {
-            e.printStackTrace();
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response getHouseholdById() {
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT && jwt.containsClaim("householdId")) {
+            String householdId = jwt.getClaim("householdId");
+            try {
+                return Response.ok(householdService.getHouseholdById(householdId)).build();
+            } catch (HouseholdNotFoundException e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
-    @Path("/get/suppliers")
+    @Path("/getSuppliers")
     @Authenticated
     public Response getSuppliers() {
-        try {
-            return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT) {
+            try {
+                return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
-    @Path("/get/pricingPlans")
+    @Path("/getPricingPlans")
     @Authenticated
     public Response getPricingPlans() {
-        try {
-            return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT) {
+            try {
+                return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 }

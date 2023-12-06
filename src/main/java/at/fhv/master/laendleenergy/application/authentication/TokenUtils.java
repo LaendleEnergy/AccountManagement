@@ -11,7 +11,7 @@ import java.util.Base64;
 
 public class TokenUtils {
 
-    public static String generateToken(String emailAddress, String role, String userId, String householdId, Long duration, String issuer) throws Exception {
+    public static String generateToken(String emailAddress, String role, String memberId, String householdId, Long duration, String issuer) throws Exception {
         String privateKeyLocation = "/privatekey.pem";
         PrivateKey privateKey = readPrivateKey(privateKeyLocation);
 
@@ -23,7 +23,7 @@ public class TokenUtils {
         claimsBuilder.issuedAt(currentTimeInSecs);
         claimsBuilder.expiresAt(currentTimeInSecs + duration);
         claimsBuilder.groups(role);
-        claimsBuilder.claim("userId", userId);
+        claimsBuilder.claim("memberId", memberId);
         claimsBuilder.claim("householdId", householdId);
 
         return claimsBuilder.jws().keyId(privateKeyLocation).sign(privateKey);
