@@ -47,4 +47,16 @@ public class MemberController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
+
+    @GET
+    @Path("/get/{memberId}")
+    public Response getMemberById(String memberId, String householdId) {
+        try {
+            return Response.ok(memberService.getMemberById(memberId, householdId)).build();
+        } catch (HouseholdNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (MemberNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
 }

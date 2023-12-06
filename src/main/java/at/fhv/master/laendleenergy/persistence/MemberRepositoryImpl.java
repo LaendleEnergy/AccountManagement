@@ -47,4 +47,14 @@ public class MemberRepositoryImpl implements MemberRepository {
             throw new HouseholdNotFoundException();
         }
     }
+
+    @Override
+    public Member getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
+        Member member = getAllMembersOfHousehold(householdId).get(memberId);
+
+        if (member != null) {
+            return member;
+        }
+        throw new MemberNotFoundException();
+    }
 }

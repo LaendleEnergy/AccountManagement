@@ -36,4 +36,9 @@ public class MemberServiceImpl implements MemberService {
 
         return memberDTOS;
     }
+
+    @Override
+    public MemberDTO getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
+        return MemberDTO.create(memberRepository.getMemberById(memberId, householdId));
+    }
 }

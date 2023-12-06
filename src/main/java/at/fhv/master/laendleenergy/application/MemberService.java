@@ -9,4 +9,5 @@ public interface MemberService {
     void addHouseholdMember(MemberDTO memberDTO) throws HouseholdNotFoundException;
     void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException;
     List<MemberDTO> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException;
+    MemberDTO getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException;
 }

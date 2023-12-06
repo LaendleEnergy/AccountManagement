@@ -9,4 +9,5 @@ public interface MemberRepository {
     void addHouseholdMember(Member member) throws HouseholdNotFoundException;
     void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException;
     Map<String,Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException;
+    Member getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException;
 }

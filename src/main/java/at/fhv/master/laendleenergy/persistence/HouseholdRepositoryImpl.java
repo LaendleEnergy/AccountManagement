@@ -78,8 +78,6 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
     public Household getHouseholdById(String householdId) throws HouseholdNotFoundException {
         Household household = households.get(householdId);
 
-        System.out.println(householdId);
-
         if (household != null) {
             return household;
         }
