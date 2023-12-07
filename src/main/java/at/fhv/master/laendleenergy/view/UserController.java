@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
+import at.fhv.master.laendleenergy.application.authentication.AuthenticationService;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.security.Authenticated;
@@ -24,15 +25,19 @@ public class UserController {
     UserService userService;
     @Inject
     JsonWebToken jwt;
+    @Inject
+    AuthenticationService authenticationService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
-    public Response createUser(CreateUserDTO createUserDTO)
+    public Response createUser(@Context SecurityContext ctx, CreateUserDTO createUserDTO)
     {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("householdId")) {
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
@@ -49,10 +54,12 @@ public class UserController {
     @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Response deleteUser() {
+    public Response deleteUser(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("memberId")) {
+        if (hasJWT && jwt.containsClaim("memberId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String userId = jwt.getClaim("memberId");
             try {
                 userService.deleteUser(userId);
@@ -68,10 +75,12 @@ public class UserController {
     @Path("/getAll")
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Response getAllUsers() {
+    public Response getAllUsers(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT) {
+        if (hasJWT && authenticationService.verifiedCaller(name, jwt.getName())) {
             try {
                 return Response.ok(userService.getAllUsers()).build();
             } catch (Exception e) {
@@ -86,10 +95,12 @@ public class UserController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Authenticated
-    public Response getUserById() {
+    public Response getUserById(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("memberId")) {
+        if (hasJWT && jwt.containsClaim("memberId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String userId = jwt.getClaim("memberId");
             try {
                 return Response.ok(userService.getUserById(userId)).build();
@@ -100,7 +111,6 @@ public class UserController {
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -110,7 +120,7 @@ public class UserController {
         String name = caller == null ? "anonymous" : caller.getName();
         boolean hasJWT = jwt.getClaimNames() != null;
 
-        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId")) {
+        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String memberId = jwt.getClaim("memberId");
             String householdId = jwt.getClaim("householdId");
             try {

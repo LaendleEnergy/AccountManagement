@@ -44,9 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new UnauthorizedException();
     }
 
-    public boolean verifiedCaller(SecurityContext ctx, String jwtName) {
-        Principal caller = ctx.getUserPrincipal();
-        String name = caller == null ? "anonymous" : caller.getName();
+    public boolean verifiedCaller(String caller, String jwtName) {
+        String name = caller == null ? "anonymous" : caller;
 
         return name.equals(jwtName);
     }

@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
+import at.fhv.master.laendleenergy.application.authentication.AuthenticationService;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
@@ -11,9 +12,13 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import java.security.Principal;
 
 
 @Path("/household")
@@ -23,6 +28,8 @@ public class HouseholdController {
     HouseholdService householdService;
     @Inject
     JsonWebToken jwt;
+    @Inject
+    AuthenticationService authenticationService;
 
     @POST
     @Path("/create")
@@ -42,11 +49,13 @@ public class HouseholdController {
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
-    public Response updateHousehold(HouseholdDTO householdDTO)
+    public Response updateHousehold(@Context SecurityContext ctx, HouseholdDTO householdDTO)
     {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("householdId")) {
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 householdService.updateHousehold(householdId, householdDTO);
@@ -61,10 +70,12 @@ public class HouseholdController {
     @DELETE
     @Path("/delete")
     @RolesAllowed("Admin")
-    public Response deleteHousehold() {
+    public Response deleteHousehold(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("householdId")) {
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 householdService.deleteHousehold(householdId);
@@ -79,10 +90,12 @@ public class HouseholdController {
     @GET
     @Path("/get")
     @RolesAllowed("Admin")
-    public Response getHouseholdById() {
+    public Response getHouseholdById(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("householdId")) {
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 return Response.ok(householdService.getHouseholdById(householdId)).build();
@@ -97,10 +110,12 @@ public class HouseholdController {
     @GET
     @Path("/getSuppliers")
     @Authenticated
-    public Response getSuppliers() {
+    public Response getSuppliers(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT) {
+        if (hasJWT && authenticationService.verifiedCaller(name, jwt.getName())) {
             try {
                 return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
             } catch (Exception e) {
@@ -113,10 +128,12 @@ public class HouseholdController {
     @GET
     @Path("/getPricingPlans")
     @Authenticated
-    public Response getPricingPlans() {
+    public Response getPricingPlans(@Context SecurityContext ctx) {
         boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT) {
+        if (hasJWT && authenticationService.verifiedCaller(name, jwt.getName())) {
             try {
                 return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
             } catch (Exception e) {
