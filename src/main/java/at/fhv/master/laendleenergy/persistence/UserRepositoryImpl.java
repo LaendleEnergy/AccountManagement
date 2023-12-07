@@ -69,8 +69,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean validateEmail(String email) {
         for (User u : getAllUsers()) {
-            System.out.println(u.getEmailAddress());
-            System.out.println(email);
             if (u.getEmailAddress().equals(email)) {
                 return false;
             }
