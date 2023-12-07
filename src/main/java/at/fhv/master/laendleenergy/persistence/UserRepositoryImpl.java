@@ -65,4 +65,16 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getAllUsers() {
         return new LinkedList<>(users.values());
     }
+
+    @Override
+    public boolean validateEmail(String email) {
+        for (User u : getAllUsers()) {
+            System.out.println(u.getEmailAddress());
+            System.out.println(email);
+            if (u.getEmailAddress().equals(email)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

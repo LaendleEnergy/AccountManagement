@@ -1,7 +1,6 @@
 package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
-import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
@@ -15,8 +14,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-import org.jboss.resteasy.reactive.RestResponse;
-import java.util.*;
 
 
 @Path("/household")
@@ -30,20 +27,15 @@ public class HouseholdController {
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
+    @PermitAll
     public Response createHousehold(CreateHouseholdDTO createHouseholdDTO)
     {
-        boolean hasJWT = jwt.getClaimNames() != null;
-
-        if (hasJWT) {
-            try {
-                String id = householdService.createHousehold(createHouseholdDTO);
-                return Response.ok(id).build();
-            } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-            }
+        try {
+            String id = householdService.createHousehold(createHouseholdDTO);
+            return Response.ok(id).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @POST

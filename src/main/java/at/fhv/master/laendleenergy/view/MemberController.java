@@ -21,11 +21,13 @@ public class MemberController {
     JsonWebToken jwt;
 
     @POST
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/add")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
     public Response addHouseholdMember(MemberDTO memberDTO)
     {
         boolean hasJWT = jwt.getClaimNames() != null;
+        System.out.println(jwt.containsClaim("householdId"));
 
         if (hasJWT && jwt.containsClaim("householdId")) {
             String householdId = jwt.getClaim("householdId");
@@ -95,6 +97,7 @@ public class MemberController {
 
     @POST
     @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
     public Response updateMember(MemberDTO memberDTO) {
         boolean hasJWT = jwt.getClaimNames() != null;

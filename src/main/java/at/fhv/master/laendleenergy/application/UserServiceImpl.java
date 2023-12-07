@@ -58,4 +58,9 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByEmail(String emailAddress) throws UserNotFoundException {
         return UserDTO.create(userRepository.getUserByEmail(emailAddress));
     }
+
+    @Override
+    public boolean validateEmail(String email) {
+        return userRepository.validateEmail(email);
+    }
 }

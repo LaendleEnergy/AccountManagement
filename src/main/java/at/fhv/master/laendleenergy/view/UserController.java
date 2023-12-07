@@ -4,6 +4,7 @@ import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -13,8 +14,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-
-
 import java.security.Principal;
 
 @Path("/user")
@@ -124,5 +123,14 @@ public class UserController {
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+
+    @PermitAll
+    @POST
+    @Path("/validateEmail")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response validateEmail(EmailDTO email) {
+        return Response.ok(userService.validateEmail(email.getEmail())).build();
     }
 }

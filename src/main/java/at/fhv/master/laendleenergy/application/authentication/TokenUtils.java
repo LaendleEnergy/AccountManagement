@@ -1,6 +1,5 @@
 package at.fhv.master.laendleenergy.application.authentication;
 
-import at.fhv.master.laendleenergy.domain.Role;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import java.io.InputStream;

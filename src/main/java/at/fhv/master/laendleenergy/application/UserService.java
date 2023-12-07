@@ -13,4 +13,5 @@ public interface UserService {
     UserDTO getUserById(String id) throws UserNotFoundException;
     List<UserDTO> getAllUsers();
     UserDTO getUserByEmail(String email) throws UserNotFoundException;
+    boolean validateEmail(String email);
 }

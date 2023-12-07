@@ -11,4 +11,5 @@ public interface UserRepository {
     User getUserById(String userId) throws UserNotFoundException;
     User getUserByEmail(String email) throws UserNotFoundException;
     List<User> getAllUsers();
+    boolean validateEmail(String email);
 }
