@@ -31,13 +31,19 @@ public class UserController {
     @RolesAllowed("Admin")
     public Response createUser(CreateUserDTO createUserDTO)
     {
-        try {
-            UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null, createUserDTO.getHouseholdId());
-            userService.createUser(userDTO);
-            return Response.ok(true).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        boolean hasJWT = jwt.getClaimNames() != null;
+
+        if (hasJWT && jwt.containsClaim("householdId")) {
+            String householdId = jwt.getClaim("householdId");
+            try {
+                UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
+                userService.createUser(userDTO, householdId);
+                return Response.ok(true).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @DELETE
@@ -86,7 +92,6 @@ public class UserController {
 
         if (hasJWT && jwt.containsClaim("memberId")) {
             String userId = jwt.getClaim("memberId");
-            System.out.println(userId);
             try {
                 return Response.ok(userService.getUserById(userId)).build();
             } catch (UserNotFoundException e) {
@@ -106,9 +111,11 @@ public class UserController {
         String name = caller == null ? "anonymous" : caller.getName();
         boolean hasJWT = jwt.getClaimNames() != null;
 
-        if (hasJWT) {
+        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId")) {
+            String memberId = jwt.getClaim("memberId");
+            String householdId = jwt.getClaim("householdId");
             try {
-                userService.updateUser(userDTO, name);
+                userService.updateUser(userDTO, name, memberId, householdId);
                 return Response.ok().build();
             } catch (UserNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();

@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public void createUser(UserDTO userDTO) {
-        userRepository.addUser(UserDTO.create(userDTO));
+    public void createUser(UserDTO userDTO, String householdId) {
+        userRepository.addUser(UserDTO.create(userDTO, householdId));
     }
 
     @Override
@@ -32,14 +32,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(String userId) {
-
-    }
-
-    @Override
-    public void updateUser(UpdateUserDTO userDTO, String emailAddress) throws UserNotFoundException {
+    public void updateUser(UpdateUserDTO userDTO, String emailAddress, String memberId, String householdId) throws UserNotFoundException {
         User userData = userRepository.getUserByEmail(emailAddress);
-        User user = UpdateUserDTO.create(userData.getId(), userDTO, userData.getRole().getName());
+        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole().getName(), householdId);
         userRepository.updateUser(user);
     }
 

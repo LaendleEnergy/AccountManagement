@@ -6,7 +6,6 @@ import at.fhv.master.laendleenergy.domain.Member;
 import java.util.Map;
 
 public class HouseholdDTO {
-    private String householdId;
     private String deviceId;
     private String pricingPlan;
     private String supplier;
@@ -16,8 +15,7 @@ public class HouseholdDTO {
 
     public HouseholdDTO() {}
 
-    public HouseholdDTO(String householdId, String deviceId, String pricingPlan, String supplier, String incentive, String savingTarget) {
-        this.householdId = householdId;
+    public HouseholdDTO(String deviceId, String pricingPlan, String supplier, String incentive, String savingTarget) {
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
         this.supplier = supplier;
@@ -25,9 +23,9 @@ public class HouseholdDTO {
         this.savingTarget = savingTarget;
     }
 
-    public static Household create(HouseholdDTO household, String incentive, String savingTarget, Map<String, Member> members) {
+    public static Household create(String id, HouseholdDTO household, String incentive, String savingTarget, Map<String, Member> members) {
         return new Household(
-                household.getHouseholdId(),
+                id,
                 household.getDeviceId(),
                 ElectricityPricingPlan.get(household.getPricingPlan()),
                 incentive,
@@ -36,7 +34,7 @@ public class HouseholdDTO {
     }
 
     public static HouseholdDTO create(Household household) {
-        return new HouseholdDTO(household.getId(), household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName(), household.getIncentive(), household.getSavingTarget());
+        return new HouseholdDTO(household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName(), household.getIncentive(), household.getSavingTarget());
     }
 
     public static Household create(HouseholdDTO householdDTO, Map<String, Member> members) {
@@ -87,11 +85,5 @@ public class HouseholdDTO {
 
     public void setSavingTarget(String savingTarget) {
         this.savingTarget = savingTarget;
-    }
-
-    public void setHouseholdId(String householdId) { this.householdId = householdId; }
-
-    public String getHouseholdId() {
-        return householdId;
     }
 }

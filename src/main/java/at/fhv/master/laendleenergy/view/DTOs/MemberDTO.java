@@ -7,37 +7,42 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class MemberDTO {
-    private String memberId;
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String householdId;
 
 
     public MemberDTO() {
 
     }
 
-    public MemberDTO(String memberId, String name, String dateOfBirth, String gender, String householdId) {
-        this.memberId = memberId;
+    public MemberDTO(String name, String dateOfBirth, String gender) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.householdId = householdId;
     }
 
     public static MemberDTO create(Member member) {
-        return new MemberDTO(member.getId(), member.getName(), member.getDateOfBirth().toString(), member.getGender().getName(), member.getHouseholdId());
+        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName());
     }
 
 
-    public static Member create(MemberDTO memberDTO) {
+    public static Member create(MemberDTO memberDTO, String householdId) {
         return new Member(
-                memberDTO.getMemberId(),
                 memberDTO.getName(),
                 Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                memberDTO.getHouseholdId()
+                householdId
+        );
+    }
+
+    public static Member create(MemberDTO memberDTO, String memberId, String householdId) {
+        return new Member(
+                memberId,
+                memberDTO.getName(),
+                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
+                householdId
         );
     }
 
@@ -65,19 +70,4 @@ public class MemberDTO {
         this.gender = gender;
     }
 
-    public String getHouseholdId() {
-        return householdId;
-    }
-
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
-    }
-
-    public String getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
 }

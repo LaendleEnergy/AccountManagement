@@ -27,9 +27,10 @@ public class MemberController {
     {
         boolean hasJWT = jwt.getClaimNames() != null;
 
-        if (hasJWT) {
+        if (hasJWT && jwt.containsClaim("householdId")) {
+            String householdId = jwt.getClaim("householdId");
             try {
-                memberService.addHouseholdMember(memberDTO);
+                memberService.addHouseholdMember(memberDTO, householdId);
                 return Response.ok().build();
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
@@ -98,9 +99,11 @@ public class MemberController {
     public Response updateMember(MemberDTO memberDTO) {
         boolean hasJWT = jwt.getClaimNames() != null;
 
-        if (hasJWT) {
+        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId")) {
+            String memberId = jwt.getClaim("memberId");
+            String householdId = jwt.getClaim("householdId");
             try {
-                memberService.updateMember(memberDTO);
+                memberService.updateMember(memberDTO, memberId, householdId);
                 return Response.ok().build();
             } catch (MemberNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();

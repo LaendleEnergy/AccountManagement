@@ -45,9 +45,9 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public void updateHousehold(HouseholdDTO householdDTO) throws HouseholdNotFoundException {
-        Household oldHousehold = householdRepository.getHouseholdById(householdDTO.getHouseholdId());
-        householdRepository.updateHousehold(HouseholdDTO.create(householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdDTO.getHouseholdId())));
+    public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException {
+        Household oldHousehold = householdRepository.getHouseholdById(householdId);
+        householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdId)));
     }
 
     @Override

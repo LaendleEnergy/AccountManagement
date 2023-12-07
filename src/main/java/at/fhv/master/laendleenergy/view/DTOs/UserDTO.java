@@ -14,23 +14,21 @@ public class UserDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String householdId;
 
     public UserDTO() {
 
     }
 
-    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender, String householdId) {
+    public UserDTO(String emailAddress, String password, String role, String name, String dateOfBirth, String gender) {
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.householdId = householdId;
     }
 
-    public static User create(UserDTO userDTO) {
+    public static User create(UserDTO userDTO, String householdId) {
         return new User(
                 userDTO.getEmailAddress(),
                 userDTO.getPassword(),
@@ -38,7 +36,7 @@ public class UserDTO {
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                userDTO.getHouseholdId()
+                householdId
         );
     }
 
@@ -49,8 +47,7 @@ public class UserDTO {
                 user.getRole().getName(),
                 user.getName(),
                 !Objects.equals(user.getDateOfBirth(), null) ? user.getDateOfBirth().toString() : "",
-                !Objects.equals(user.getGender(), null) ? user.getGender().getName() : "",
-                user.getHouseholdId()
+                !Objects.equals(user.getGender(), null) ? user.getGender().getName() : ""
         );
     }
 
@@ -100,14 +97,6 @@ public class UserDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public String getHouseholdId() {
-        return householdId;
-    }
-
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
     }
 
     @Override

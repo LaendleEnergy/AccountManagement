@@ -17,8 +17,8 @@ public class MemberServiceImpl implements MemberService {
     MemberRepository memberRepository;
 
     @Override
-    public void addHouseholdMember(MemberDTO memberDTO) throws HouseholdNotFoundException {
-        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO));
+    public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException {
+        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, householdId));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void updateMember(MemberDTO memberDTO) throws MemberNotFoundException {
-        memberRepository.updateMember(MemberDTO.create(memberDTO));
+    public void updateMember(MemberDTO memberDTO, String memberId, String householdId) throws MemberNotFoundException {
+        memberRepository.updateMember(MemberDTO.create(memberDTO, memberId, householdId));
     }
 }

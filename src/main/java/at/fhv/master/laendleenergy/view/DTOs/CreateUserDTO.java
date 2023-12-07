@@ -4,17 +4,15 @@ public class CreateUserDTO {
     private String emailAddress;
     private String name;
     private String password;
-    private String householdId;
 
     public CreateUserDTO() {
 
     }
 
-    public CreateUserDTO(String emailAddress, String name, String password, String householdId) {
+    public CreateUserDTO(String emailAddress, String name, String password) {
         this.emailAddress = emailAddress;
         this.name = name;
         this.password = password;
-        this.householdId = householdId;
     }
 
     public String getEmailAddress() {
@@ -39,13 +37,5 @@ public class CreateUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getHouseholdId() {
-        return householdId;
-    }
-
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
     }
 }

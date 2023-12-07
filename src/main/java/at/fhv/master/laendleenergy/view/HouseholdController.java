@@ -54,9 +54,10 @@ public class HouseholdController {
     {
         boolean hasJWT = jwt.getClaimNames() != null;
 
-        if (hasJWT) {
+        if (hasJWT && jwt.containsClaim("householdId")) {
+            String householdId = jwt.getClaim("householdId");
             try {
-                householdService.updateHousehold(householdDTO);
+                householdService.updateHousehold(householdId, householdDTO);
                 return Response.ok(true).build();
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
