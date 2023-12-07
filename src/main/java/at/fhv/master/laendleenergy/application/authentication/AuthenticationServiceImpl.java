@@ -9,7 +9,10 @@ import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.security.Principal;
 
 @ApplicationScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -39,6 +42,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserNotFoundException();
         }
         throw new UnauthorizedException();
+    }
+
+    public boolean verifiedCaller(SecurityContext ctx, String jwtName) {
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
+
+        return name.equals(jwtName);
     }
 }
 
