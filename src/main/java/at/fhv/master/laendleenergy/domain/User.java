@@ -1,26 +1,34 @@
 package at.fhv.master.laendleenergy.domain;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
+@Entity
+@Table(name = "household_user")
 public class User extends Member {
+    @Column(name = "email_address")
     private String emailAddress;
+    @Column(name = "user_password")
     private String password;
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User() {
         super();
     }
 
-    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
-        super(name, dateOfBirth, gender, householdId);
+    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
+        super(name, dateOfBirth, gender, household);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
     }
 
-    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
-        super(id, name, dateOfBirth, gender, householdId);
+    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
+        super(id, name, dateOfBirth, gender, household);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
@@ -60,7 +68,7 @@ public class User extends Member {
                 ", name=" + getName() +
                 ", gender= " + getGender() +
                 ", dateOfBirth= " + getDateOfBirth() +
-                ", deviceId= " + getHouseholdId() +
+                ", deviceId= " + getHousehold().getDeviceId() +
                 '}';
     }
 }

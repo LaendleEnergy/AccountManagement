@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
 import at.fhv.master.laendleenergy.domain.Gender;
+import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -27,21 +28,22 @@ public class MemberDTO {
     }
 
 
-    public static Member create(MemberDTO memberDTO, String householdId) {
+    public static Member create(MemberDTO memberDTO, Household household) {
         return new Member(
                 memberDTO.getName(),
-                !Objects.equals(memberDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(memberDTO.getGender(), "") ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                householdId
+                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
+                household
         );
     }
 
-    public static Member create(MemberDTO memberDTO, String memberId, String householdId) {
+    public static Member create(MemberDTO memberDTO, String memberId, Household household) {
         return new Member(
                 memberId,
                 memberDTO.getName(),
-                !Objects.equals(memberDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(memberDTO.getGender(), "") ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),               householdId
+                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
+                household
         );
     }
 

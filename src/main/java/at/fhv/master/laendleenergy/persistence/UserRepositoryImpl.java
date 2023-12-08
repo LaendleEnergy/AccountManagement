@@ -14,8 +14,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl() {
         users = new HashMap<>();
-        User u = new User("alice@example.com", "79XRn7pTF6sf33S8GGhkwL7gbs5bIAhuUULKmpdEA7U=", Role.ADMIN, "Alice", Optional.of(LocalDate.of(1990, 5, 15)), Optional.of(Gender.FEMALE), "h1");
-        users.put(u.getId(), u);
+//        User u = new User("alice@example.com", "79XRn7pTF6sf33S8GGhkwL7gbs5bIAhuUULKmpdEA7U=", Role.ADMIN, "Alice", Optional.of(LocalDate.of(1990, 5, 15)), Optional.of(Gender.FEMALE), "h1");
+//        users.put(u.getId(), u);
     }
 
     @Override

@@ -1,8 +1,10 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,19 +17,23 @@ public class MemberServiceImpl implements MemberService {
     @Inject
     MemberRepository memberRepository;
 
+    @Inject
+    HouseholdRepository householdRepository;
+
     @Override
     public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException {
-        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, householdId));
+        Household household = householdRepository.getHouseholdById(householdId);
+        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
     }
 
     @Override
-    public void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException {
-        memberRepository.removeHouseholdMember(memberId, householdId);
+    public void removeHouseholdMember(String memberId, String householdId) throws MemberNotFoundException {
+        memberRepository.removeHouseholdMember(memberId);
     }
 
     @Override
     public List<MemberDTO> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
-        List<Member> members = new LinkedList<>(memberRepository.getAllMembersOfHousehold(householdId).values());
+        List<Member> members = memberRepository.getAllMembersOfHousehold(householdId);
         List<MemberDTO> memberDTOS = new LinkedList<>();
 
         for (Member m : members) {
@@ -38,12 +44,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDTO getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
-        return MemberDTO.create(memberRepository.getMemberById(memberId, householdId));
+    public MemberDTO getMemberById(String memberId, String householdId) throws MemberNotFoundException {
+        return MemberDTO.create(memberRepository.getMemberById(memberId));
     }
 
     @Override
-    public void updateMember(MemberDTO memberDTO, String memberId, String householdId) throws MemberNotFoundException {
-        memberRepository.updateMember(MemberDTO.create(memberDTO, memberId, householdId));
+    public void updateMember(MemberDTO memberDTO, String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
+        Household household = householdRepository.getHouseholdById(householdId);
+        memberRepository.updateMember(MemberDTO.create(memberDTO, memberId, household));
     }
 }

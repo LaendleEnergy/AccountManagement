@@ -1,21 +1,35 @@
 package at.fhv.master.laendleenergy.domain;
 
+import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Entity
+@Table(name = "household")
 public class Household {
+    @Id
+    @Column(name = "household_id")
     private String id;
+    @Column(name = "pricing_plan")
+    @Enumerated(EnumType.STRING)
     private ElectricityPricingPlan pricingPlan;
+    @Column(name = "device_id")
     private String deviceId;
+    @Column(name = "incentive")
     private String incentive;
+    @Column(name = "saving_target")
     private String savingTarget;
-    private Map<String, Member> members;
+
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Member> members;
 
     public Household() {
 
     }
 
-    public Household(String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
+    public Household(String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, List<Member> members) {
         this.id =  UUID.randomUUID().toString();
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
@@ -24,7 +38,7 @@ public class Household {
         this.members = members;
     }
 
-    public Household(String householdId, String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, Map<String, Member> members) {
+    public Household(String householdId, String deviceId, ElectricityPricingPlan pricingPlan, String incentive, String savingTarget, List<Member> members) {
         this.id =  householdId;
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
@@ -65,20 +79,20 @@ public class Household {
         this.savingTarget = savingTarget;
     }
 
-    public Map<String, Member> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(Map<String, Member> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 
     public void addMember(Member member) {
-        this.members.put(member.getId(), member);
+        this.members.add(member);
     }
 
     public void removeMember(String memberId) {
-        this.members.remove(memberId);
+        members.removeIf(member -> member.getId().equals(memberId));
     }
 
     public String getId() {

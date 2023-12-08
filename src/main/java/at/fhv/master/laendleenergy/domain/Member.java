@@ -3,32 +3,45 @@ package at.fhv.master.laendleenergy.domain;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "household_member")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Member {
+    @Id
+    @Column(name = "household_member_id")
     private String id;
+    @Column(name = "member_name")
     private String name;
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String householdId;
+
+    @ManyToOne
+    @JoinColumn(name = "household_id")
+    private Household household;
 
     public Member() {
         this.id =  UUID.randomUUID().toString();
     }
 
-    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
+    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
         this.id =  UUID.randomUUID().toString();
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.householdId = householdId;
+        this.household = household;
     }
 
-    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId) {
+    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
         this.id =  id;
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.householdId = householdId;
+        this.household = household;
     }
 
     public String getName() {
@@ -59,12 +72,12 @@ public class Member {
         return id;
     }
 
-    public String getHouseholdId() {
-        return householdId;
+    public Household getHousehold() {
+        return household;
     }
 
-    public void setHouseholdId(String householdId) {
-        this.householdId = householdId;
+    public void setHousehold(Household household) {
+        this.household = household;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.view.DTOs;
 
 import at.fhv.master.laendleenergy.domain.Gender;
+import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class UpdateUserDTO {
         this.gender = gender;
     }
 
-    public static User create(String userId, UpdateUserDTO userDTO, String role, String householdId) {
+    public static User create(String userId, UpdateUserDTO userDTO, String role, Household household) {
         return new User(
                 userId,
                 userDTO.getEmailAddress(),
@@ -36,7 +37,7 @@ public class UpdateUserDTO {
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), null) ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), null) ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                householdId
+                household
         );
     }
 

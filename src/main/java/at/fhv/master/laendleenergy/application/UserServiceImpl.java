@@ -1,7 +1,10 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.User;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
+import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
@@ -16,9 +19,13 @@ public class UserServiceImpl implements UserService {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    HouseholdRepository householdRepository;
+
     @Override
-    public void createUser(UserDTO userDTO, String householdId) {
-        userRepository.addUser(UserDTO.create(userDTO, householdId));
+    public void createUser(UserDTO userDTO, String householdId) throws HouseholdNotFoundException {
+        Household household = householdRepository.getHouseholdById(householdId);
+        userRepository.addUser(UserDTO.create(userDTO, household));
     }
 
     @Override
@@ -32,9 +39,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UpdateUserDTO userDTO, String emailAddress, String memberId, String householdId) throws UserNotFoundException {
+    public void updateUser(UpdateUserDTO userDTO, String emailAddress, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
         User userData = userRepository.getUserByEmail(emailAddress);
-        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole().getName(), householdId);
+        Household household = householdRepository.getHouseholdById(householdId);
+        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole().getName(), household);
         userRepository.updateUser(user);
     }
 

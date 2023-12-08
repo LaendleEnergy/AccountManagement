@@ -11,6 +11,10 @@ You can run your application in dev mode that enables live coding using:
 ./gradlew quarkusDev
 ```
 
+This will spin up all necessary dependencies, using [Quarkus Dev Services](https://quarkus.io/guides/dev-services), like
+a Postgres database. The database will be seeded using `seed.dev.sql`. In order for Quarkus to start the database,
+Docker must already be started 
+
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
 ## Packaging and running the application

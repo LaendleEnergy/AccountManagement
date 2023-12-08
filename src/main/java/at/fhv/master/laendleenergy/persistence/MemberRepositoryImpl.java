@@ -5,6 +5,8 @@ import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -12,81 +14,51 @@ import java.util.*;
 public class MemberRepositoryImpl implements MemberRepository {
 
     @Inject
-    HouseholdRepository householdRepository;
-    Map<String, Member> members;
+    EntityManager entityManager;
 
-    public MemberRepositoryImpl() {
-        members = new HashMap<>();
-        members.put("m1", new User("alice@example.com", "79XRn7pTF6sf33S8GGhkwL7gbs5bIAhuUULKmpdEA7U=", Role.ADMIN, "Alice", Optional.of(LocalDate.of(1990, 5, 15)), Optional.of(Gender.FEMALE), "h1"));
-        members.put("m2", new Member("Bob",  Optional.of(LocalDate.of(1985, 8, 22)),  Optional.of(Gender.MALE), "h2"));
-        members.put("m3", new Member("Charlie", Optional.of(LocalDate.of(1992, 2, 10)),  Optional.of(Gender.MALE), "h3"));
-        members.put("m4", new Member("David", Optional.of(LocalDate.of(1988, 11, 30)),  Optional.of(Gender.MALE), "h4"));
-        members.put("m5", new Member("Emma", Optional.of(LocalDate.of(1995, 4, 5)),  Optional.of(Gender.FEMALE), "h5"));
-        members.put("m6", new Member("Frank", Optional.of(LocalDate.of(1983, 7, 18)),  Optional.of(Gender.MALE), "h6"));
-        members.put("m7", new Member("Grace", Optional.of(LocalDate.of(1998, 9, 12)),  Optional.of(Gender.FEMALE), "h7"));
-        members.put("m8", new Member("Henry", Optional.of(LocalDate.of(1982, 12, 8)),  Optional.of(Gender.MALE), "h8"));
-        members.put("m9", new Member("Ivy", Optional.of(LocalDate.of(1993, 6, 25)),  Optional.of(Gender.FEMALE), "h9"));
-        members.put("m10", new Member("Jack", Optional.of(LocalDate.of(1987, 3, 14)),  Optional.of(Gender.MALE), "h10"));
+    @Override
+    public void addHouseholdMember(Member member) {
+        entityManager.persist(member);
     }
 
     @Override
-    public void addHouseholdMember(Member member) throws HouseholdNotFoundException {
-        Household household = householdRepository.getHouseholdById(member.getHouseholdId());
+    public void removeHouseholdMember(String memberId) throws MemberNotFoundException {
+        Member toRemove = entityManager.find(Member.class, memberId);
+        if (toRemove == null) throw new MemberNotFoundException();
 
-        if (household != null) {
-            household.addMember(member);
-        } else {
-            throw new HouseholdNotFoundException();
-        }
+        entityManager.remove(toRemove);
     }
 
     @Override
-    public void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException {
-        Household household = householdRepository.getHouseholdById(householdId);
+    public List<Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
+        String jpqlQuery = "SELECT m FROM Member m WHERE m.household.id =: householdId";
 
-        if (household == null) {
-            throw new HouseholdNotFoundException();
-        } else if (!household.getMembers().containsKey(memberId)) {
-            throw new MemberNotFoundException();
-        } else {
-            household.removeMember(memberId);
-        }
+        return entityManager.createQuery(jpqlQuery, Member.class)
+                .setParameter("householdId", householdId)
+                .getResultList();
     }
 
     @Override
-    public Map<String,Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
-        Household household = householdRepository.getHouseholdById(householdId);
+    public Member getMemberById(String memberId) throws MemberNotFoundException {
+        Member member = entityManager.find(Member.class, memberId);
+        if(member == null) throw new MemberNotFoundException();
 
-        if (household != null) {
-            return householdRepository.getHouseholdById(householdId).getMembers();
-        } else {
-            throw new HouseholdNotFoundException();
-        }
-    }
-
-    @Override
-    public Member getMemberById(String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
-        Member member = getAllMembersOfHousehold(householdId).get(memberId);
-
-        if (member != null) {
-            return member;
-        }
-        throw new MemberNotFoundException();
+        return  member;
     }
 
     @Override
     public void updateMember(Member member) throws MemberNotFoundException {
-        Member m = members.get(member.getId());
+        Member toUpdate = entityManager.find(Member.class, member.getId());
+        if (toUpdate == null) throw new MemberNotFoundException();
 
-        if (m != null) {
-            members.replace(member.getId(), member);
-        } else {
-            throw new MemberNotFoundException();
-        }
+        entityManager.merge(member);
     }
 
     @Override
     public List<Member> getAllMembers() {
-        return new LinkedList<>(members.values());
+        String jpqlQuery = "SELECT m FROM Member m";
+
+        return entityManager.createQuery(jpqlQuery, Member.class)
+                .getResultList();
     }
 }

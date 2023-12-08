@@ -124,7 +124,7 @@ public class MemberController {
             try {
                 memberService.updateMember(memberDTO, memberId, householdId);
                 return Response.ok().build();
-            } catch (MemberNotFoundException e) {
+            } catch (MemberNotFoundException | HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
