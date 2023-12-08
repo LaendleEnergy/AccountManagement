@@ -22,10 +22,8 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
 
         // Create and add households to the map
         for (int i = 0; i < 10; i++) {
-            Random random = new Random();
             HashMap<String, Member> currentMembers = new HashMap<>();
-            int id = random.nextInt(0, 10);
-            Member m = memberRepository.getAllMembers().get(id);
+            Member m = memberRepository.getAllMembers().get(i);
             currentMembers.put(m.getId(), m);
 
             Household household = new Household(
