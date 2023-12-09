@@ -1,11 +1,13 @@
 package at.fhv.master.laendleenergy.application;
 
+import at.fhv.master.laendleenergy.application.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
+import at.fhv.master.laendleenergy.view.DTOs.CreateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,12 +20,14 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     UserRepository userRepository;
-
+    @Inject
+    PBKDF2Encoder passwordEncoder;
     @Inject
     HouseholdRepository householdRepository;
 
     @Override
-    public void createUser(UserDTO userDTO, String householdId) throws HouseholdNotFoundException {
+    public void createUser(CreateUserDTO createUserDTO, String householdId) throws HouseholdNotFoundException {
+        UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), passwordEncoder.encode(createUserDTO.getPassword()), "User", createUserDTO.getName(), null, null);
         Household household = householdRepository.getHouseholdById(householdId);
         userRepository.addUser(UserDTO.create(userDTO, household));
     }
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(String id) throws UserNotFoundException {
         return UserDTO.create(userRepository.getUserById(id));
-   }
+    }
 
     @Override
     public List<UserDTO> getAllUsers() {

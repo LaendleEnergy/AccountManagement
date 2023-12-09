@@ -19,7 +19,6 @@ public class Member {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
     @ManyToOne
     @JoinColumn(name = "household_id")
     private Household household;

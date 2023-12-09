@@ -34,6 +34,7 @@ public class HouseholdServiceImpl implements HouseholdService {
 
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
         user.setHousehold(household);
+
         userRepository.addUser(user);
         return householdRepository.addHousehold(household);
     }

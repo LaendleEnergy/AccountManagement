@@ -2,6 +2,7 @@ package at.fhv.master.laendleenergy.view;
 
 import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.application.authentication.AuthenticationService;
+import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.security.Authenticated;
@@ -28,6 +29,7 @@ public class UserController {
     @Inject
     AuthenticationService authenticationService;
 
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("Admin")
@@ -40,9 +42,10 @@ public class UserController {
         if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
-                UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), createUserDTO.getPassword(), "User", createUserDTO.getName(), null, null);
-                userService.createUser(userDTO, householdId);
+                userService.createUser(createUserDTO, householdId);
                 return Response.ok(true).build();
+            } catch (HouseholdNotFoundException e) {
+                return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
@@ -126,7 +129,7 @@ public class UserController {
             try {
                 userService.updateUser(userDTO, name, memberId, householdId);
                 return Response.ok().build();
-            } catch (UserNotFoundException e) {
+            } catch (UserNotFoundException | HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
