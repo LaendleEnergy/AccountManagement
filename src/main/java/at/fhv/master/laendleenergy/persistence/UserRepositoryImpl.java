@@ -1,78 +1,73 @@
 package at.fhv.master.laendleenergy.persistence;
 
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Role;
-import at.fhv.master.laendleenergy.domain.User;
+import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.time.LocalDate;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import java.util.*;
 
 @ApplicationScoped
 public class UserRepositoryImpl implements UserRepository {
-    private final Map<String, User> users;
 
-    public UserRepositoryImpl() {
-        users = new HashMap<>();
-//        User u = new User("alice@example.com", "79XRn7pTF6sf33S8GGhkwL7gbs5bIAhuUULKmpdEA7U=", Role.ADMIN, "Alice", Optional.of(LocalDate.of(1990, 5, 15)), Optional.of(Gender.FEMALE), "h1");
-//        users.put(u.getId(), u);
-    }
+    @Inject
+    EntityManager entityManager;
 
     @Override
     public void addUser(User user) {
-        users.put(user.getId(), user);
+        entityManager.persist(user);
     }
 
     @Override
     public void updateUser(User u) throws UserNotFoundException {
-        if (users.get(u.getId()) != null) {
-            users.replace(u.getId(), u);
-        } else {
-            throw new UserNotFoundException();
-        }
+        User toUpdate = entityManager.find(User.class, u.getId());
+        if (toUpdate == null) throw new UserNotFoundException();
+
+        entityManager.merge(u);
     }
 
     @Override
     public void deleteUser(String userId) throws UserNotFoundException {
-        if (users.get(userId) != null) {
-            users.remove(userId);
-        } else {
-            throw new UserNotFoundException();
-        }
+        User toDelete = entityManager.find(User.class, userId);
+        if (toDelete == null) throw new UserNotFoundException();
+
+        entityManager.remove(toDelete);
     }
 
     @Override
     public User getUserById(String userId) throws UserNotFoundException {
-        User user = users.get(userId);
+        User user = entityManager.find(User.class, userId);
+        if (user == null) throw new UserNotFoundException();
 
-        if (user != null) {
-            return user;
-        }
-        throw new UserNotFoundException();
+        return user;
     }
 
     @Override
     public User getUserByEmail(String emailAddress) throws UserNotFoundException {
-        for (User u : getAllUsers()) {
-            if (emailAddress.equals(u.getEmailAddress())) {
-                return u;
-            }
-        }
-        throw new UserNotFoundException();
+        String jpqlQuery = "SELECT u FROM User u WHERE u.emailAddress =: emailAddress";
+
+        return entityManager.createQuery(jpqlQuery, User.class)
+                .setParameter("emailAddress", emailAddress)
+                .getSingleResult();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return new LinkedList<>(users.values());
+        String jpqlQuery = "SELECT u FROM User u";
+
+        return entityManager.createQuery(jpqlQuery, User.class)
+                .getResultList();
     }
 
     @Override
     public boolean validateEmail(String email) {
-        for (User u : getAllUsers()) {
-            if (u.getEmailAddress().equals(email)) {
-                return false;
-            }
-        }
+        String hql = "SELECT u FROM User u WHERE u.emailAddress  = :email";
+
+        int found = entityManager.createQuery(hql, User.class)
+                .setParameter("email", email)
+                .getMaxResults();
+
+        if (found > 0) return false;
         return true;
     }
 }
