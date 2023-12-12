@@ -6,6 +6,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -16,11 +17,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Inject
     EntityManager entityManager;
 
+    @Transactional
     @Override
     public void addHouseholdMember(Member member) {
         entityManager.persist(member);
     }
-
+    @Transactional
     @Override
     public void removeHouseholdMember(String memberId) throws MemberNotFoundException {
         Member toRemove = entityManager.find(Member.class, memberId);
@@ -28,7 +30,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
         entityManager.remove(toRemove);
     }
-
+    @Transactional
     @Override
     public List<Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
         String jpqlQuery = "SELECT m FROM Member m WHERE m.household.id =: householdId";
@@ -37,7 +39,7 @@ public class MemberRepositoryImpl implements MemberRepository {
                 .setParameter("householdId", householdId)
                 .getResultList();
     }
-
+    @Transactional
     @Override
     public Member getMemberById(String memberId) throws MemberNotFoundException {
         Member member = entityManager.find(Member.class, memberId);
@@ -45,7 +47,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
         return  member;
     }
-
+    @Transactional
     @Override
     public void updateMember(Member member) throws MemberNotFoundException {
         Member toUpdate = entityManager.find(Member.class, member.getId());
@@ -53,7 +55,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
         entityManager.merge(member);
     }
-
+    @Transactional
     @Override
     public List<Member> getAllMembers() {
         String jpqlQuery = "SELECT m FROM Member m";
