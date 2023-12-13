@@ -50,15 +50,14 @@ public class MemberController {
     }
 
     @DELETE
-    @Path("/remove")
+    @Path("/remove/{memberId}")
     @RolesAllowed("Admin")
-    public Response removeHouseholdMember(@Context SecurityContext ctx) {
+    public Response removeHouseholdMember(@Context SecurityContext ctx, String memberId) {
         boolean hasJWT = jwt.getClaimNames() != null;
         Principal caller = ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
-            String memberId = jwt.getClaim("memberId");
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 memberService.removeHouseholdMember(memberId, householdId);

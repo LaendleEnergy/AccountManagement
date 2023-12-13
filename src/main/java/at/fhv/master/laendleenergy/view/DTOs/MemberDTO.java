@@ -11,20 +11,22 @@ public class MemberDTO {
     private String name;
     private String dateOfBirth;
     private String gender;
+    private String id;
 
 
     public MemberDTO() {
 
     }
 
-    public MemberDTO(String name, String dateOfBirth, String gender) {
+    public MemberDTO(String name, String dateOfBirth, String gender, String id) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
+        this.id  = id;
     }
 
     public static MemberDTO create(Member member) {
-        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName());
+        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName(), member.getId());
     }
 
 
@@ -71,4 +73,11 @@ public class MemberDTO {
         this.gender = gender;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
