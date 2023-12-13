@@ -65,11 +65,7 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean validateEmail(String email) {
         String hql = "SELECT u FROM User u WHERE u.emailAddress  = :email";
 
-        int found = entityManager.createQuery(hql, User.class)
-                .setParameter("email", email)
-                .getMaxResults();
-
-        if (found > 0) return false;
-        return true;
+        List<User> found = entityManager.createQuery(hql, User.class).setParameter("email", email).getResultList();
+        return found.isEmpty();
     }
 }

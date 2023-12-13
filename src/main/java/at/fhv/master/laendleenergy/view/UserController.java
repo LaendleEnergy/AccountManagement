@@ -31,8 +31,8 @@ public class UserController {
 
 
     @POST
+    @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed("Admin")
     public Response createUser(@Context SecurityContext ctx, CreateUserDTO createUserDTO)
     {
         boolean hasJWT = jwt.getClaimNames() != null;
@@ -47,6 +47,7 @@ public class UserController {
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
+                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
