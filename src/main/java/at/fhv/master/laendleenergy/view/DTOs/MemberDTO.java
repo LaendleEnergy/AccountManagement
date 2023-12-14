@@ -26,11 +26,7 @@ public class MemberDTO {
     }
 
     public static MemberDTO create(Member member) {
-        return new MemberDTO(
-                member.getName(),
-                member.getDateOfBirth() != null ? member.getDateOfBirth().toString() : "",
-                member.getGender() != null ? member.getGender().getName() : "",
-                member.getId());
+        return new MemberDTO(member.getName(), member.getDateOfBirth().toString(), member.getGender().getName(), member.getId());
     }
 
 
