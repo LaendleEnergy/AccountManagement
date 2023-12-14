@@ -86,6 +86,7 @@ public class Member {
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender=" + gender +
+                ", householdId=" + household.getId() +
                 '}';
     }
 }

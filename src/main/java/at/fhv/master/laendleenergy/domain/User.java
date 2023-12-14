@@ -69,6 +69,7 @@ public class User extends Member {
                 ", gender= " + getGender() +
                 ", dateOfBirth= " + getDateOfBirth() +
                 ", deviceId= " + getHousehold().getDeviceId() +
+                ", householdId= " + getHousehold().getId() +
                 '}';
     }
 }
