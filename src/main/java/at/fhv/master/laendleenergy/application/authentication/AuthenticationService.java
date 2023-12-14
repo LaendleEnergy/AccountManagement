@@ -7,4 +7,5 @@ import jakarta.ws.rs.core.SecurityContext;
 public interface AuthenticationService {
     AuthResponse authenticate(AuthRequest authRequest) throws Exception;
     boolean verifiedCaller(String caller, String jwtName);
+    void invalidateToken(AuthResponse authResponse);
 }
