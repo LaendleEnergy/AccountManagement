@@ -33,17 +33,4 @@ public class AuthenticationController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
-
-    @PermitAll
-    @POST
-    @Path("/invalidateToken")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response invalidateToken(AuthResponse authResponse) {
-        try {
-            authenticationService.invalidateToken(authResponse);
-            return Response.ok().build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 }

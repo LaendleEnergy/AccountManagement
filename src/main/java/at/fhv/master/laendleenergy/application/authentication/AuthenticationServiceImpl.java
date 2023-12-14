@@ -1,10 +1,8 @@
 package at.fhv.master.laendleenergy.application.authentication;
 
 import at.fhv.master.laendleenergy.domain.Role;
-import at.fhv.master.laendleenergy.domain.Token;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
-import at.fhv.master.laendleenergy.persistence.AuthenticationRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.AuthRequest;
 import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
@@ -27,8 +25,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     PBKDF2Encoder passwordEncoder;
     @Inject
     UserRepository userRepository;
-    @Inject
-    AuthenticationRepository authenticationRepository;
 
     @Override
     public AuthResponse authenticate(AuthRequest authRequest) throws Exception {
@@ -52,11 +48,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String name = caller == null ? "anonymous" : caller;
 
         return name.equals(jwtName);
-    }
-
-    @Override
-    public void invalidateToken(AuthResponse authResponse) {
-        authenticationRepository.addToBlacklist(new Token(authResponse.getToken()));
     }
 }
 
