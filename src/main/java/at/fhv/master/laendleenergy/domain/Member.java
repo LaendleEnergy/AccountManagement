@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import jakarta.persistence.*;
@@ -88,5 +89,18 @@ public class Member {
                 ", gender=" + gender +
                 ", householdId=" + household.getId() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id) && Objects.equals(name, member.name) && Objects.equals(dateOfBirth, member.dateOfBirth) && gender == member.gender && Objects.equals(household, member.household);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, dateOfBirth, gender, household);
     }
 }

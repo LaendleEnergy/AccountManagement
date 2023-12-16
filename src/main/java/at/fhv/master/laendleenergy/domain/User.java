@@ -3,6 +3,7 @@ package at.fhv.master.laendleenergy.domain;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 @Entity
@@ -71,5 +72,19 @@ public class User extends Member {
                 ", deviceId= " + getHousehold().getDeviceId() +
                 ", householdId= " + getHousehold().getId() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        User user = (User) o;
+        return Objects.equals(emailAddress, user.emailAddress) && Objects.equals(password, user.password) && role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), emailAddress, password, role);
     }
 }

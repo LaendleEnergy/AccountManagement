@@ -3,7 +3,7 @@ package at.fhv.master.laendleenergy.domain;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -108,5 +108,18 @@ public class Household {
                 ", savingTarget='" + savingTarget + '\'' +
                 ", members=" + members +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Household household = (Household) o;
+        return Objects.equals(id, household.id) && pricingPlan == household.pricingPlan && Objects.equals(deviceId, household.deviceId) && Objects.equals(incentive, household.incentive) && Objects.equals(savingTarget, household.savingTarget) && Objects.equals(members, household.members);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, pricingPlan, deviceId, incentive, savingTarget, members);
     }
 }
