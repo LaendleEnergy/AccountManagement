@@ -100,7 +100,6 @@ public class HouseholdController {
             try {
                 return Response.ok(householdService.getHouseholdById(householdId)).build();
             } catch (HouseholdNotFoundException e) {
-                e.printStackTrace();
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
@@ -109,37 +108,23 @@ public class HouseholdController {
 
     @GET
     @Path("/getSuppliers")
-    @Authenticated
-    public Response getSuppliers(@Context SecurityContext ctx) {
-        boolean hasJWT = jwt.getClaimNames() != null;
-        Principal caller = ctx.getUserPrincipal();
-        String name = caller == null ? "anonymous" : caller.getName();
-
-        if (hasJWT && authenticationService.verifiedCaller(name, jwt.getName())) {
-            try {
-                return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
-            } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-            }
+    @PermitAll
+    public Response getSuppliers() {
+        try {
+            return Response.ok(SupplierSerializer.parse(), MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @GET
     @Path("/getPricingPlans")
-    @Authenticated
-    public Response getPricingPlans(@Context SecurityContext ctx) {
-        boolean hasJWT = jwt.getClaimNames() != null;
-        Principal caller = ctx.getUserPrincipal();
-        String name = caller == null ? "anonymous" : caller.getName();
-
-        if (hasJWT && authenticationService.verifiedCaller(name, jwt.getName())) {
-            try {
-                return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
-            } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-            }
+    @PermitAll
+    public Response getPricingPlans() {
+        try {
+            return Response.ok(PricingPlanSerializer.parse(), MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
-        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 }
