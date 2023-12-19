@@ -54,4 +54,17 @@ public class HouseholdServiceImpl implements HouseholdService {
     public HouseholdDTO getHouseholdById(String householdId) throws HouseholdNotFoundException {
         return HouseholdDTO.create(householdRepository.getHouseholdById(householdId));
     }
+
+    @Override
+    public List<User> getUsersOfHousehold(String householdId) throws HouseholdNotFoundException {
+        List<User> users = new LinkedList<>();
+
+        for (Member m : memberRepository.getAllMembersOfHousehold(householdId)) {
+            if (m instanceof User) {
+                users.add((User) m);
+            }
+        }
+
+        return users;
+    }
 }

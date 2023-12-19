@@ -127,4 +127,23 @@ public class HouseholdController {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GET
+    @Path("/getUsersOfHousehold")
+    @RolesAllowed("Admin")
+    public Response getUsersOfHousehold(@Context SecurityContext ctx) {
+        boolean hasJWT = jwt.getClaimNames() != null;
+        Principal caller = ctx.getUserPrincipal();
+        String name = caller == null ? "anonymous" : caller.getName();
+
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
+            String householdId = jwt.getClaim("householdId");
+            try {
+                return Response.ok(householdService.getUsersOfHousehold(householdId), MediaType.APPLICATION_JSON).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
 }
