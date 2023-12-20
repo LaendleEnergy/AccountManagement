@@ -15,7 +15,6 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
     @Inject
     EntityManager entityManager;
 
-    @Transactional
     @Override
     public String addHousehold(Household household) {
         entityManager.persist(household);
