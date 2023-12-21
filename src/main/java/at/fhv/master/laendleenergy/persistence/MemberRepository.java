@@ -13,5 +13,4 @@ public interface MemberRepository {
     List<Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException;
     Member getMemberById(String memberId) throws MemberNotFoundException;
     void updateMember(Member member) throws MemberNotFoundException;
-    List<Member> getAllMembers();
 }

@@ -11,7 +11,6 @@ import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import java.util.*;
 
 @ApplicationScoped
@@ -42,11 +41,13 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
+    @Transactional
     public void deleteHousehold(String householdId) throws HouseholdNotFoundException {
         householdRepository.deleteHousehold(householdId);
     }
 
     @Override
+    @Transactional
     public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException {
         Household oldHousehold = householdRepository.getHouseholdById(householdId);
         householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdId)));

@@ -12,6 +12,7 @@ import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     HouseholdRepository householdRepository;
 
     @Override
+    @Transactional
     public void createUser(CreateUserDTO createUserDTO, String householdId) throws HouseholdNotFoundException {
         UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), passwordEncoder.encode(createUserDTO.getPassword()), "User", createUserDTO.getName(), "", "");
         Household household = householdRepository.getHouseholdById(householdId);
@@ -33,16 +35,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String userId) throws UserNotFoundException {
         userRepository.deleteUser(userId);
     }
 
     @Override
-    public void addEmailAddress(String email) {
-
-    }
-
-    @Override
+    @Transactional
     public void updateUser(UpdateUserDTO userDTO, String emailAddress, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
         User userData = userRepository.getUserByEmail(emailAddress);
         Household household = householdRepository.getHouseholdById(householdId);
@@ -64,11 +63,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return users;
-    }
-
-    @Override
-    public UserDTO getUserByEmail(String emailAddress) throws UserNotFoundException {
-        return UserDTO.create(userRepository.getUserByEmail(emailAddress));
     }
 
     @Override

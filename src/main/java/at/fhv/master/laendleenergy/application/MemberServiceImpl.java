@@ -9,6 +9,7 @@ import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,12 +22,14 @@ public class MemberServiceImpl implements MemberService {
     HouseholdRepository householdRepository;
 
     @Override
+    @Transactional
     public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException {
         Household household = householdRepository.getHouseholdById(householdId);
         memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
     }
 
     @Override
+    @Transactional
     public void removeHouseholdMember(String memberId, String householdId) throws MemberNotFoundException {
         memberRepository.removeHouseholdMember(memberId);
     }
@@ -49,6 +52,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void updateMember(MemberDTO memberDTO, String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
         Household household = householdRepository.getHouseholdById(householdId);
         memberRepository.updateMember(MemberDTO.create(memberDTO, memberId, household));

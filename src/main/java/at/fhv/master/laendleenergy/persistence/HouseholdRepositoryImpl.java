@@ -5,9 +5,6 @@ import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-
-import java.util.*;
 
 @ApplicationScoped
 public class HouseholdRepositoryImpl implements HouseholdRepository {
@@ -21,7 +18,6 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
         return household.getId();
     }
 
-    @Transactional
     @Override
     public void deleteHousehold(String householdId) throws HouseholdNotFoundException  {
         Household toRemove = entityManager.find(Household.class, householdId);
@@ -29,7 +25,7 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
 
         entityManager.remove(toRemove);
     }
-    @Transactional
+
     @Override
     public void updateHousehold(Household household) throws HouseholdNotFoundException {
         Household toUpdate = entityManager.find(Household.class, household.getId());
@@ -37,7 +33,7 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
 
         entityManager.merge(household);
     }
-    @Transactional
+
     @Override
     public Household getHouseholdById(String householdId) throws HouseholdNotFoundException {
         Household household = entityManager.find(Household.class, householdId);

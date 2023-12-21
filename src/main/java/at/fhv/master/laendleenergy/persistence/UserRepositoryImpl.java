@@ -5,8 +5,6 @@ import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-
 import java.util.*;
 
 @ApplicationScoped
@@ -19,7 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void addUser(User user) {
         entityManager.persist(user);
     }
-    @Transactional
+
     @Override
     public void updateUser(User u) throws UserNotFoundException {
         User toUpdate = entityManager.find(User.class, u.getId());
@@ -27,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         entityManager.merge(u);
     }
-    @Transactional
+
     @Override
     public void deleteUser(String userId) throws UserNotFoundException {
         User toDelete = entityManager.find(User.class, userId);
@@ -35,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         entityManager.remove(toDelete);
     }
-    @Transactional
+
     @Override
     public User getUserById(String userId) throws UserNotFoundException {
         User user = entityManager.find(User.class, userId);
@@ -43,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         return user;
     }
-    @Transactional
+
     @Override
     public User getUserByEmail(String emailAddress) throws UserNotFoundException {
         String jpqlQuery = "SELECT u FROM User u WHERE u.emailAddress =: emailAddress";
@@ -52,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .setParameter("emailAddress", emailAddress)
                 .getSingleResult();
     }
-    @Transactional
+
     @Override
     public List<User> getAllUsers() {
         String jpqlQuery = "SELECT u FROM User u";
@@ -60,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
         return entityManager.createQuery(jpqlQuery, User.class)
                 .getResultList();
     }
-    @Transactional
+
     @Override
     public boolean validateEmail(String email) {
         String hql = "SELECT u FROM User u WHERE u.emailAddress  = :email";

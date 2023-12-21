@@ -10,10 +10,8 @@ import java.util.List;
 public interface UserService {
     void createUser(CreateUserDTO createUserDTO, String householdId) throws HouseholdNotFoundException;
     void deleteUser(String userId) throws UserNotFoundException;
-    void addEmailAddress(String email);
     void updateUser(UpdateUserDTO userDTO, String email, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException;
     UserDTO getUserById(String id) throws UserNotFoundException;
     List<UserDTO> getAllUsers();
-    UserDTO getUserByEmail(String email) throws UserNotFoundException;
     boolean validateEmail(String email);
 }
