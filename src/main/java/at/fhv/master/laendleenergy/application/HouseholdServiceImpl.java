@@ -10,6 +10,7 @@ import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.*;
 
@@ -26,6 +27,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     PBKDF2Encoder passwordEncoder;
 
     @Override
+    @Transactional
     public String createHousehold(CreateHouseholdDTO householdDTO) {
         User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), null);
 

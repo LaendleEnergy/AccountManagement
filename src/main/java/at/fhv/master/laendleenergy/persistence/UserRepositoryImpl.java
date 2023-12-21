@@ -14,7 +14,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Inject
     EntityManager entityManager;
-    @Transactional
+
     @Override
     public void addUser(User user) {
         entityManager.persist(user);
