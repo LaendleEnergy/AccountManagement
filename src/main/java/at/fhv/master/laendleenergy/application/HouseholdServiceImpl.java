@@ -33,7 +33,7 @@ public class HouseholdServiceImpl implements HouseholdService {
         List<Member> members = new ArrayList<>();
         members.add(user);
 
-        Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), "", "", members);
+        Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), members);
         user.setHousehold(household);
 
         userRepository.addUser(user);
@@ -49,8 +49,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     @Transactional
     public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException {
-        Household oldHousehold = householdRepository.getHouseholdById(householdId);
-        householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, oldHousehold.getIncentive(), oldHousehold.getSavingTarget(), memberRepository.getAllMembersOfHousehold(householdId)));
+        householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId)));
     }
 
     @Override

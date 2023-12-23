@@ -7,7 +7,6 @@ import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -128,11 +127,12 @@ public class UserController {
             String memberId = jwt.getClaim("memberId");
             String householdId = jwt.getClaim("householdId");
             try {
-                userService.updateUser(userDTO, name, memberId, householdId);
+                userService.updateUser(userDTO, memberId, householdId);
                 return Response.ok().build();
             } catch (UserNotFoundException | HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
+                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }

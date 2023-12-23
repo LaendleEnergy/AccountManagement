@@ -1,5 +1,5 @@
-insert into household (device_id, household_id, incentive, pricing_plan, saving_target) values ('D1', 'h1', 'Free energy audit', 'NORMAL', '$200 per year');
-insert into household (device_id, household_id, incentive, pricing_plan, saving_target) values ('D2', 'h2', 'Free smart thermostat', 'DAYNIGHT', '$150 per year');
+insert into household (device_id, household_id, pricing_plan) values ('D1', 'h1', 'NORMAL');
+insert into household (device_id, household_id, pricing_plan) values ('D2', 'h2', 'DAYNIGHT');
 
 insert into household_member (date_of_birth, gender, household_id, household_member_id, member_name) values ('1985-08-22', 'MALE', 'h2', 'm2', 'Bob');
 insert into household_member (date_of_birth, gender, household_id, household_member_id, member_name) values ('1992-02-10', 'MALE', 'h1', 'm3', 'Charlie');

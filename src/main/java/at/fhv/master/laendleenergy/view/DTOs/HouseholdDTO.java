@@ -3,48 +3,38 @@ package at.fhv.master.laendleenergy.view.DTOs;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
-
 import java.util.List;
-import java.util.Map;
 
 public class HouseholdDTO {
     private String deviceId;
     private String pricingPlan;
     private String supplier;
-    private String incentive;
-    private String savingTarget;
 
 
     public HouseholdDTO() {}
 
-    public HouseholdDTO(String deviceId, String pricingPlan, String supplier, String incentive, String savingTarget) {
+    public HouseholdDTO(String deviceId, String pricingPlan, String supplier) {
         this.deviceId = deviceId;
         this.pricingPlan = pricingPlan;
         this.supplier = supplier;
-        this.incentive = incentive;
-        this.savingTarget = savingTarget;
     }
 
-    public static Household create(String id, HouseholdDTO household, String incentive, String savingTarget, List<Member> members) {
+    public static Household create(String id, HouseholdDTO household, List<Member> members) {
         return new Household(
                 id,
                 household.getDeviceId(),
                 ElectricityPricingPlan.get(household.getPricingPlan()),
-                incentive,
-                savingTarget,
                 members);
     }
 
     public static HouseholdDTO create(Household household) {
-        return new HouseholdDTO(household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName(), household.getIncentive(), household.getSavingTarget());
+        return new HouseholdDTO(household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName());
     }
 
     public static Household create(HouseholdDTO householdDTO, List<Member> members) {
         return new Household(
                 householdDTO.getDeviceId(),
                 ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
-                householdDTO.getIncentive(),
-                householdDTO.getSavingTarget(),
                 members
         );
     }
@@ -71,21 +61,5 @@ public class HouseholdDTO {
 
     public void setSupplier(String supplier) {
         this.supplier = supplier;
-    }
-
-    public String getIncentive() {
-        return incentive;
-    }
-
-    public void setIncentive(String incentive) {
-        this.incentive = incentive;
-    }
-
-    public String getSavingTarget() {
-        return savingTarget;
-    }
-
-    public void setSavingTarget(String savingTarget) {
-        this.savingTarget = savingTarget;
     }
 }

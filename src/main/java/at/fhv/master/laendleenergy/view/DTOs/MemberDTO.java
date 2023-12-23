@@ -4,7 +4,6 @@ import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 
 public class MemberDTO {
@@ -36,6 +35,7 @@ public class MemberDTO {
 
     public static Member create(MemberDTO memberDTO, Household household) {
         return new Member(
+                memberDTO.getId(),
                 memberDTO.getName(),
                 Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),

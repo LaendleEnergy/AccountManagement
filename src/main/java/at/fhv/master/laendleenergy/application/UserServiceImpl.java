@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UpdateUserDTO userDTO, String emailAddress, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
-        User userData = userRepository.getUserByEmail(emailAddress);
+    public void updateUser(UpdateUserDTO userDTO, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
+        User userData = userRepository.getUserById(memberId);
         Household household = householdRepository.getHouseholdById(householdId);
         User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole().getName(), household);
         userRepository.updateUser(user);
