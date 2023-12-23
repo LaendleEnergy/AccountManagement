@@ -7,29 +7,28 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class MemberDTO {
+    private String id;
     private String name;
     private String dateOfBirth;
     private String gender;
-    private String id;
-
 
     public MemberDTO() {
 
     }
 
-    public MemberDTO(String name, String dateOfBirth, String gender, String id) {
+    public MemberDTO(String id, String name, String dateOfBirth, String gender) {
+        this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
-        this.id  = id;
     }
 
     public static MemberDTO create(Member member) {
         return new MemberDTO(
+                member.getId(),
                 member.getName(),
                 member.getDateOfBirth() != null ? member.getDateOfBirth().toString() : "",
-                member.getGender() != null ? member.getGender().getName() : "",
-                member.getId());
+                member.getGender() != null ? member.getGender().getName() : "");
     }
 
 
@@ -43,7 +42,7 @@ public class MemberDTO {
         );
     }
 
-    public static Member create(MemberDTO memberDTO, String memberId, Household household) {
+    public static Member create(String memberId, MemberDTO memberDTO, Household household) {
         return new Member(
                 memberId,
                 memberDTO.getName(),

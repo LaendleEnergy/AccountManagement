@@ -53,8 +53,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateMember(MemberDTO memberDTO, String memberId, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
+    public void updateMember(MemberDTO memberDTO, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
         Household household = householdRepository.getHouseholdById(householdId);
-        memberRepository.updateMember(MemberDTO.create(memberDTO, memberId, household));
+        memberRepository.updateMember(MemberDTO.create(memberDTO, household));
     }
 }

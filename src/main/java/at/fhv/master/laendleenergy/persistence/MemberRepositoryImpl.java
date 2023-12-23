@@ -31,9 +31,13 @@ public class MemberRepositoryImpl implements MemberRepository {
     public List<Member> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException {
         String jpqlQuery = "SELECT m FROM Member m WHERE m.household.id =: householdId";
 
-        return entityManager.createQuery(jpqlQuery, Member.class)
+        List<Member> members = entityManager.createQuery(jpqlQuery, Member.class)
                 .setParameter("householdId", householdId)
                 .getResultList();
+
+        if (members.size() == 0) throw new HouseholdNotFoundException();
+
+        return members;
     }
 
     @Override

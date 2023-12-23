@@ -14,7 +14,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-
 import java.security.Principal;
 
 
@@ -41,9 +40,12 @@ public class MemberController {
             String householdId = jwt.getClaim("householdId");
             try {
                 memberService.addHouseholdMember(memberDTO, householdId);
-                return Response.ok().build();
+                return Response.ok(true).build();
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -64,6 +66,9 @@ public class MemberController {
                 return Response.ok().build();
             } catch (HouseholdNotFoundException | MemberNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -83,6 +88,9 @@ public class MemberController {
                 return Response.ok(memberService.getAllMembersOfHousehold(householdId)).build();
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -103,6 +111,9 @@ public class MemberController {
                 return Response.ok(memberService.getMemberById(memberId, householdId)).build();
             } catch (HouseholdNotFoundException | MemberNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -118,13 +129,15 @@ public class MemberController {
         String name = caller == null ? "anonymous" : caller.getName();
 
         if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
-            String memberId = jwt.getClaim("memberId");
             String householdId = jwt.getClaim("householdId");
             try {
-                memberService.updateMember(memberDTO, memberId, householdId);
+                memberService.updateMember(memberDTO, householdId);
                 return Response.ok().build();
             } catch (MemberNotFoundException | HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();

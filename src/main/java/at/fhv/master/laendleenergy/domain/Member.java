@@ -25,7 +25,7 @@ public class Member {
     private Household household;
 
     public Member() {
-        this.id =  UUID.randomUUID().toString();
+
     }
 
     public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
