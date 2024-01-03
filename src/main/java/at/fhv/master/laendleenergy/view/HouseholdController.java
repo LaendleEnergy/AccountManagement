@@ -7,6 +7,7 @@ import at.fhv.master.laendleenergy.domain.serializer.PricingPlanSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.SupplierSerializer;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -60,6 +61,8 @@ public class HouseholdController {
                 return Response.ok(true).build();
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (JsonProcessingException e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();

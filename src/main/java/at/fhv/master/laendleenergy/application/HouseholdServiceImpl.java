@@ -2,15 +2,20 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.application.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
+import at.fhv.master.laendleenergy.domain.serializer.HouseholdSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
+import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @ApplicationScoped
@@ -24,6 +29,8 @@ public class HouseholdServiceImpl implements HouseholdService {
     UserRepository userRepository;
     @Inject
     PBKDF2Encoder passwordEncoder;
+    @Inject
+    HouseholdUpdatedEventPublisher publisher;
 
     @Override
     @Transactional
@@ -48,8 +55,12 @@ public class HouseholdServiceImpl implements HouseholdService {
 
     @Override
     @Transactional
-    public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException {
-        householdRepository.updateHousehold(HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId)));
+    public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException, JsonProcessingException {
+        Household household = HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId));
+        householdRepository.updateHousehold(household);
+
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household, LocalDateTime.now());
+        publisher.publishMessage(HouseholdSerializer.parse(event));
     }
 
     @Override
