@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy.integration.household;
+package at.fhv.master.laendleenergy.persistence;
 
 import at.fhv.master.laendleenergy.application.HouseholdService;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
