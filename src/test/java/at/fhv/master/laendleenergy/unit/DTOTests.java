@@ -245,7 +245,7 @@ public class DTOTests {
 
     @Test
     public void userDTOCreateTest() {
-        UserDTO userDTO = new UserDTO("email", "password", "Admin", "name", "2000-1-1", "männlich");
+        UserDTO userDTO = new UserDTO("email", "password", "Admin", "name", LocalDate.of(1990, 4, 4).toString(), "männlich");
         User user = UserDTO.create(userDTO, new Household());
 
         assertEquals(user.getDateOfBirth().toString(), userDTO.getDateOfBirth());

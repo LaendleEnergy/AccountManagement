@@ -85,8 +85,8 @@ public class HouseholdRepositoryTests {
     public void getHouseholdById() throws HouseholdNotFoundException {
         Mockito.when(entityManager.find(Household.class, householdId)).thenReturn(household);
 
-        Household returnedHousehold = householdRepository.getHouseholdById(householdId);
-        assertEquals(returnedHousehold, household);
+        Household actualHousehold = householdRepository.getHouseholdById(householdId);
+        assertEquals(actualHousehold, household);
     }
 
     @Test

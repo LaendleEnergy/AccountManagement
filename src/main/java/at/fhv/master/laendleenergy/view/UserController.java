@@ -46,7 +46,6 @@ public class UserController {
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
-                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
@@ -132,7 +131,6 @@ public class UserController {
             } catch (UserNotFoundException | HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
-                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }

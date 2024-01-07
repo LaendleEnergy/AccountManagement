@@ -93,8 +93,8 @@ public class UserRepositoryTests {
     public void getUserById() throws UserNotFoundException {
         Mockito.when(entityManager.find(User.class, userId)).thenReturn(user);
 
-        User retrievedUser = userRepository.getUserById(userId);
-        assertEquals(retrievedUser, user);
+        User actualUser = userRepository.getUserById(userId);
+        assertEquals(actualUser, user);
     }
 
     @Test
@@ -110,8 +110,8 @@ public class UserRepositoryTests {
         Mockito.when(queryMock.setParameter(Mockito.anyString(), Mockito.any())).thenReturn(queryMock);
         Mockito.when(queryMock.getSingleResult()).thenReturn(user);
 
-        User retrievedUser = userRepository.getUserByEmail(user.getEmailAddress());
-        assertEquals(retrievedUser, user);
+        User actualUser = userRepository.getUserByEmail(user.getEmailAddress());
+        assertEquals(actualUser, user);
     }
 
     @Test

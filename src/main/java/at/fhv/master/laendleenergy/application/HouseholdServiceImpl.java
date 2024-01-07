@@ -37,8 +37,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     public String createHousehold(CreateHouseholdDTO householdDTO) {
         User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), null);
 
-        List<Member> members = new ArrayList<>();
-        members.add(user);
+        List<Member> members = List.of(user);
 
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), members);
         user.setHousehold(household);
