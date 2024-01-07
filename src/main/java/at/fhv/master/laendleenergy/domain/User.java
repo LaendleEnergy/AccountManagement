@@ -57,33 +57,4 @@ public class User extends Member {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + getId() + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", name=" + getName() +
-                ", gender= " + getGender() +
-                ", dateOfBirth= " + getDateOfBirth() +
-                ", deviceId= " + getHousehold().getDeviceId() +
-                ", householdId= " + getHousehold().getId() +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        User user = (User) o;
-        return Objects.equals(emailAddress, user.emailAddress) && Objects.equals(password, user.password) && role == user.role;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), emailAddress, password, role);
-    }
 }

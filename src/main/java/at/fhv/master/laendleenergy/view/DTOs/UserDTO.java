@@ -99,16 +99,4 @@ public class UserDTO {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "emailAddress='" + emailAddress + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", name='" + name + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", gender='" + gender + '\'' +
-                '}';
-    }
 }

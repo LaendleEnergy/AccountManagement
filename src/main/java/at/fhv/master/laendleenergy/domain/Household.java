@@ -72,26 +72,4 @@ public class Household {
     public String getId() {
         return id;
     }
-
-    @Override
-    public String toString() {
-        return "Household{" +
-                ", deviceId='" + deviceId + '\'' +
-                ", pricingPlan=" + pricingPlan +
-                ", members=" + members +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Household household = (Household) o;
-        return Objects.equals(id, household.id) && pricingPlan == household.pricingPlan && Objects.equals(deviceId, household.deviceId) && Objects.equals(members, household.members);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, pricingPlan, deviceId, members);
-    }
 }

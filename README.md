@@ -7,6 +7,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ## Running the application in dev mode
 
 Make sure, Docker is running. 
+For the RedisTest, an instance of Redis has to be running.
 
 You can run your application in dev mode that enables live coding using:
 ```shell script

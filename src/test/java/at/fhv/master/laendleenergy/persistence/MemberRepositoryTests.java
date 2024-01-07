@@ -10,8 +10,7 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
+import org.hibernate.query.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -78,12 +77,12 @@ public class MemberRepositoryTests {
         Mockito.verify(entityManager, times(0)).remove(member);
     }
 
-    /*@Test
-    public void getAllMembersOfHousehold() throws HouseholdNotFoundException {
-        Query queryMock = Mockito.mock(Query.class);
+    @Test
+    public void getAllMembersOfHouseholdTest() throws HouseholdNotFoundException {
+        Query<Member> queryMock = Mockito.mock(Query.class);
 
-        Mockito.when(entityManager.createQuery(anyString())).thenReturn(queryMock);
-        Mockito.when(queryMock.setParameter(anyString(), any())).thenReturn(queryMock);
+        Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(Member.class))).thenReturn(queryMock);
+        Mockito.when(queryMock.setParameter(Mockito.anyString(), Mockito.any())).thenReturn(queryMock);
         Mockito.when(queryMock.getResultList()).thenReturn(household.getMembers());
 
         List<Member> actualMembers = memberRepository.getAllMembersOfHousehold(householdId);
@@ -92,13 +91,13 @@ public class MemberRepositoryTests {
     }
 
     @Test
-    public void getAllMembersOfHouseholdEmptyResult() {
-        Query queryMock = Mockito.mock(Query.class);
+    public void getAllMembersOfHouseholdTestException() {
+        Query<Member> queryMock = Mockito.mock(Query.class);
 
-        Mockito.when(entityManager.createQuery(anyString())).thenReturn(queryMock);
-        Mockito.when(queryMock.setParameter(anyString(), any())).thenReturn(queryMock);
+        Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(Member.class))).thenReturn(queryMock);
+        Mockito.when(queryMock.setParameter(Mockito.anyString(), Mockito.any())).thenReturn(queryMock);
         Mockito.when(queryMock.getResultList()).thenReturn(new LinkedList<>());
 
         assertThrows(HouseholdNotFoundException.class, () -> memberRepository.getAllMembersOfHousehold(householdId));
-    }*/
+    }
 }

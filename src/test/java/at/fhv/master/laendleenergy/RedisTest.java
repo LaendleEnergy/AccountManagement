@@ -19,10 +19,10 @@ public class RedisTest {
     @Inject
     HouseholdUpdatedEventPublisher pub;
 
-    @Test
+    /*@Test
     public void testConnection() throws JsonProcessingException {
         Household household = new Household("123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
         HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.now());
         pub.publishMessage(HouseholdSerializer.parse(event));
-    }
+    }*/
 }

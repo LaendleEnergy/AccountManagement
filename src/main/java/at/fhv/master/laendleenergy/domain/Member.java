@@ -79,28 +79,4 @@ public class Member {
     public void setHousehold(Household household) {
         this.household = household;
     }
-
-    @Override
-    public String toString() {
-        return "Member{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", gender=" + gender +
-                ", householdId=" + household.getId() +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Member member = (Member) o;
-        return Objects.equals(id, member.id) && Objects.equals(name, member.name) && Objects.equals(dateOfBirth, member.dateOfBirth) && gender == member.gender && Objects.equals(household, member.household);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, dateOfBirth, gender, household);
-    }
 }
