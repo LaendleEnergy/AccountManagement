@@ -51,4 +51,16 @@ public class AuthenticationControllerTests {
 
         Mockito.verify(authenticationService, times(1)).authenticate(any());
     }
+
+    @Test
+    public void testAuthenticate_Unauthorized() throws Exception {
+        Mockito.when(authenticationService.authenticate(any())).thenThrow(NullPointerException.class);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(authRequestJSONString)
+                .when().post("/authenticate")
+                .then()
+                .statusCode(401);
+    }
 }
