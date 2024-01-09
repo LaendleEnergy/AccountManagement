@@ -46,15 +46,18 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUserByEmail(String emailAddress) throws UserNotFoundException {
         String jpqlQuery = "SELECT u FROM User u WHERE u.emailAddress =: emailAddress";
 
-        System.out.println("in repo");
+        try {
 
-        User user = entityManager.createQuery(jpqlQuery, User.class)
-                .setParameter("emailAddress", emailAddress)
-                .getResultList().stream().findFirst().orElse(null);
+            User user = entityManager.createQuery(jpqlQuery, User.class)
+                    .setParameter("emailAddress", emailAddress)
+                    .getSingleResult();
 
-        if (user == null) throw new UserNotFoundException();
+            if (user == null) throw new UserNotFoundException();
 
-        return user;
+            return user;
+        } catch (Error e) {
+            throw new UserNotFoundException();
+        }
     }
 
     @Override

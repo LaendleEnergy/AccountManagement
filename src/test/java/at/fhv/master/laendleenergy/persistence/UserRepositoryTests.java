@@ -126,6 +126,13 @@ public class UserRepositoryTests {
     }
 
     @Test
+    public void getUserByEmail_ExceptionOccurs() {
+        Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(User.class))).thenThrow(NullPointerException.class);
+
+        assertThrows(NullPointerException.class, () -> userRepository.getUserByEmail(user.getEmailAddress()));
+    }
+
+    @Test
     public void getAllUsers() {
         Query<User> queryMock = Mockito.mock(Query.class);
 
