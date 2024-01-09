@@ -103,7 +103,6 @@ public class MemberController {
 
         if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String memberId = jwt.getClaim("memberId");
-            String householdId = jwt.getClaim("householdId");
             try {
                 return Response.ok(memberService.getMemberById(memberId)).build();
             } catch (HouseholdNotFoundException | MemberNotFoundException e) {
