@@ -22,11 +22,10 @@ public class AuthenticationControllerTests {
     AuthenticationService authenticationService;
     final String authRequestJSONString = "{\"emailAddress\":\"test@example.com\",\"password\":\"password\"}";
     final AuthResponse authResponse = new AuthResponse("token");
-    final AuthRequest authRequest = new AuthRequest("test@email.com", "password");
 
     @Test
     public void testAuthenticate() throws Exception {
-        Mockito.when(authenticationService.authenticate(authRequest)).thenReturn(authResponse);
+        Mockito.when(authenticationService.authenticate(any())).thenReturn(authResponse);
 
         given()
                 .contentType(ContentType.JSON)

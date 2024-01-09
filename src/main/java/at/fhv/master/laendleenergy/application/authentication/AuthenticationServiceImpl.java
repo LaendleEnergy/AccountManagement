@@ -27,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     UserRepository userRepository;
 
     @Override
-    public AuthResponse authenticate(AuthRequest authRequest) throws Exception {
+    public AuthResponse authenticate(AuthRequest authRequest) throws UserNotFoundException, UnauthorizedException {
         try {
             User u = userRepository.getUserByEmail(authRequest.getEmailAddress());
 
