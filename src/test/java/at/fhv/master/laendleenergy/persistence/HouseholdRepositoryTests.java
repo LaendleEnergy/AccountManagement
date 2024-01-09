@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -19,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
 @QuarkusTest
+@TestTransaction
 public class HouseholdRepositoryTests {
 
     @Inject

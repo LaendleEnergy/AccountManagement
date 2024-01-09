@@ -10,6 +10,7 @@ import at.fhv.master.laendleenergy.view.DTOs.CreateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,7 @@ import static org.mockito.Mockito.times;
 import static org.wildfly.common.Assert.*;
 
 @QuarkusTest
-@Transactional
+@TestTransaction
 public class UserServiceTests {
     @Inject
     UserService service;

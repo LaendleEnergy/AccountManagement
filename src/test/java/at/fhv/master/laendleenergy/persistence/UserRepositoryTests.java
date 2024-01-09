@@ -3,6 +3,7 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.wildfly.common.Assert.*;
 
 @QuarkusTest
+@TestTransaction
 public class UserRepositoryTests {
 
     @Inject

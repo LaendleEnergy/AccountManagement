@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+// Start Redis:
+//`docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest`
 
 @QuarkusTest
 public class RedisTest {
     @Inject
     HouseholdUpdatedEventPublisher pub;
 
-    /*@Test
+    @Test
     public void testConnection() throws JsonProcessingException {
         Household household = new Household("123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
         HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.now());
         pub.publishMessage(HouseholdSerializer.parse(event));
-    }*/
+    }
 }

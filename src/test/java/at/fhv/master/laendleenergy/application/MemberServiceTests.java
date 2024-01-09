@@ -11,6 +11,7 @@ import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +28,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
 @QuarkusTest
-@Transactional
+@TestTransaction
 public class MemberServiceTests {
     @InjectMock
     MemberRepository memberRepository;

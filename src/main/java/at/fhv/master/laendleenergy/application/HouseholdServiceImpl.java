@@ -11,6 +11,7 @@ import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -68,12 +69,12 @@ public class HouseholdServiceImpl implements HouseholdService {
     }
 
     @Override
-    public List<User> getUsersOfHousehold(String householdId) throws HouseholdNotFoundException {
-        List<User> users = new LinkedList<>();
+    public List<UserDTO> getUsersOfHousehold(String householdId) throws HouseholdNotFoundException {
+        List<UserDTO> users = new LinkedList<>();
 
         for (Member m : memberRepository.getAllMembersOfHousehold(householdId)) {
-            if (m instanceof User) {
-                users.add((User) m);
+            if (m instanceof User u) {
+                users.add(UserDTO.create(u));
             }
         }
 

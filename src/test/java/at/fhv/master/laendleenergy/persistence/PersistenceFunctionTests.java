@@ -3,6 +3,7 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.application.HouseholdService;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,8 @@ import org.junit.jupiter.api.Test;
 import static org.wildfly.common.Assert.assertFalse;
 
 @QuarkusTest
-public class PersistanceFunctionTests {
+@TestTransaction
+public class PersistenceFunctionTests {
 
     @Inject
     HouseholdService householdService;

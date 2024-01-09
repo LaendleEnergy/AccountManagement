@@ -24,8 +24,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException {
+        System.out.println("service method entered");
+        System.out.println(memberDTO.getName());
+        System.out.println(householdId);
         Household household = householdRepository.getHouseholdById(householdId);
+        System.out.println(household.getId());
         memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
+        System.out.println(memberDTO.getName());
     }
 
     @Override

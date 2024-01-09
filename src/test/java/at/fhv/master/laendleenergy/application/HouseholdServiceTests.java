@@ -9,23 +9,29 @@ import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
+import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 
 @QuarkusTest
-@Transactional
+@TestTransaction
 public class HouseholdServiceTests {
     @Inject
     HouseholdService service;
@@ -94,13 +100,13 @@ public class HouseholdServiceTests {
 
     @Test
     public void getUsersOfHousehold() throws HouseholdNotFoundException {
-        User expectedUser = new User();
+        User expectedUser = new User("id", "email", "pw", Role.USER, "name", Optional.of(LocalDate.of(2000, 1,1)), Optional.of(Gender.FEMALE), household);
         List<Member> members = List.of(expectedUser, new Member(), new Member());
         Mockito.when(memberRepository.getAllMembersOfHousehold(householdId)).thenReturn(members);
-        List<User> actualUsers = service.getUsersOfHousehold(householdId);
+        List<UserDTO> actualUsers = service.getUsersOfHousehold(householdId);
 
         assertEquals(1, actualUsers.size());
-        assertEquals(expectedUser.getId(), actualUsers.get(0).getId());
+        assertEquals(expectedUser.getName(), actualUsers.get(0).getName());
         Mockito.verify(memberRepository, times(1)).getAllMembersOfHousehold(householdId);
     }
 }
