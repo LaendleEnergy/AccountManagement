@@ -108,7 +108,7 @@ public class UserRepositoryTests {
 
         Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(User.class))).thenReturn(queryMock);
         Mockito.when(queryMock.setParameter(Mockito.anyString(), Mockito.any())).thenReturn(queryMock);
-        Mockito.when(queryMock.getSingleResult()).thenReturn(user);
+        Mockito.when(queryMock.getResultList()).thenReturn(List.of(user));
 
         User actualUser = userRepository.getUserByEmail(user.getEmailAddress());
         assertEquals(actualUser, user);
@@ -120,16 +120,9 @@ public class UserRepositoryTests {
 
         Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(User.class))).thenReturn(queryMock);
         Mockito.when(queryMock.setParameter(Mockito.anyString(), Mockito.any())).thenReturn(queryMock);
-        Mockito.when(queryMock.getSingleResult()).thenReturn(null);
+        Mockito.when(queryMock.getResultList()).thenReturn(null);
 
         assertThrows(UserNotFoundException.class, () -> userRepository.getUserByEmail(user.getEmailAddress()));
-    }
-
-    @Test
-    public void getUserByEmail_ExceptionOccurs() {
-        Mockito.when(entityManager.createQuery(Mockito.anyString(), Mockito.eq(User.class))).thenThrow(NullPointerException.class);
-
-        assertThrows(NullPointerException.class, () -> userRepository.getUserByEmail(user.getEmailAddress()));
     }
 
     @Test

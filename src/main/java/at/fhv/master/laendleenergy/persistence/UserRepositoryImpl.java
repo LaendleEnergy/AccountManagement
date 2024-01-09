@@ -47,15 +47,14 @@ public class UserRepositoryImpl implements UserRepository {
         String jpqlQuery = "SELECT u FROM User u WHERE u.emailAddress =: emailAddress";
 
         try {
-
             User user = entityManager.createQuery(jpqlQuery, User.class)
                     .setParameter("emailAddress", emailAddress)
-                    .getSingleResult();
+                    .getResultList().stream().findFirst().orElse(null);
 
             if (user == null) throw new UserNotFoundException();
 
             return user;
-        } catch (Error e) {
+        } catch (NullPointerException e) {
             throw new UserNotFoundException();
         }
     }
