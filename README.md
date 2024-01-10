@@ -7,7 +7,10 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 ## Running the application in dev mode
 
 Make sure, Docker is running.
-Also, an instance of Redis has to be running.
+
+Start Redis:
+`docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest`
+
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
@@ -39,12 +42,11 @@ If you want to build an _über-jar_, execute the following command:
 The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
 
 ## Testing
-Build application: `quarkus build`
 Start Redis:
 `docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest`
 
-Right-click on `src/test` and click on `Run 'Tests in account-management'`
-Or run the tests via the `quarkus test` command.
+You can run the tests via the `quarkus test` command
+
 ## Docker
 
 Before building the container image run:
@@ -56,10 +58,6 @@ Then, build the image with:
 Then run the container using:
 `docker run -i --rm -p 8080:8080 quarkus/account-management-jvm`
 
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+## OpenAPI
+The Swagger OpenAPI definition for this application is available at:
+http://localhost:8080/swagger/
