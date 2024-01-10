@@ -47,6 +47,9 @@ Start Redis:
 
 You can run the tests via the `quarkus test` command
 
+The Jacoco report is available at: `build/jacoco-report/index.html`
+The test report can be found at: `build/reports/tests/test/index.html`
+
 ## Docker
 
 Before building the container image run:
