@@ -214,7 +214,7 @@ public class DTOTests {
     @Test
     public void updateUserDTOCreateTest() {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO("email", "password", "name", LocalDate.of(2000, 4, 4).toString(), "männlich");
-        User user = UpdateUserDTO.create("id", updateUserDTO, "User", new Household());
+        User user = UpdateUserDTO.create("id", updateUserDTO, Role.USER, new Household());
 
         assertEquals(user.getDateOfBirth().toString(), updateUserDTO.getDateOfBirth());
         assertEquals(user.getGender().getName(), updateUserDTO.getGender());

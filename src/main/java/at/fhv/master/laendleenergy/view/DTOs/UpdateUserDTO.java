@@ -28,15 +28,15 @@ public class UpdateUserDTO {
         this.gender = gender;
     }
 
-    public static User create(String userId, UpdateUserDTO userDTO, String role, Household household) {
+    public static User create(String userId, UpdateUserDTO userDTO, Role role, Household household) {
         return new User(
                 userId,
                 userDTO.getEmailAddress(),
                 userDTO.getPassword(),
-                Role.get(role),
+                role,
                 userDTO.getName(),
-                !Objects.equals(userDTO.getDateOfBirth(), null) ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(userDTO.getGender(), null) ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
+                !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
                 household
         );
     }

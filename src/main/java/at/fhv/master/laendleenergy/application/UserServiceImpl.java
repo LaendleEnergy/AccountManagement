@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UpdateUserDTO userDTO, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
         User userData = userRepository.getUserById(memberId);
         Household household = householdRepository.getHouseholdById(householdId);
-        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole().getName(), household);
+        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole(), household);
         userRepository.updateUser(user);
     }
 
