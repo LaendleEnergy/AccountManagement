@@ -60,7 +60,7 @@ public class MemberServiceTests {
     }
 
     @Test
-    public void removeHouseholdMember() throws MemberNotFoundException, HouseholdNotFoundException {
+    public void removeHouseholdMember() throws MemberNotFoundException, HouseholdNotFoundException, JsonProcessingException {
         Mockito.when(memberRepository.getMemberById(memberId)).thenReturn(member);
 
         service.removeHouseholdMember(memberId, householdId);

@@ -102,7 +102,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         given()
                 .pathParam("memberId", memberDTO.getId())
                 .header("Authorization", "Bearer " + validJwtToken)
@@ -124,7 +124,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(memberService).removeHouseholdMember(anyString(), anyString());
 
         given()
@@ -136,7 +136,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         Mockito.doThrow(NullPointerException.class).when(memberService).removeHouseholdMember(anyString(), anyString());
 
         given()

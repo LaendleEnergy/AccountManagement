@@ -3,12 +3,15 @@ package at.fhv.master.laendleenergy.application;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
+import at.fhv.master.laendleenergy.domain.events.MemberRemovedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.MemberAddedSerializer;
+import at.fhv.master.laendleenergy.domain.serializer.MemberRemovedSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.streams.publisher.MemberAddedEventPublisher;
+import at.fhv.master.laendleenergy.streams.publisher.MemberRemovedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,7 +30,9 @@ public class MemberServiceImpl implements MemberService {
     @Inject
     HouseholdRepository householdRepository;
     @Inject
-    MemberAddedEventPublisher publisher;
+    MemberAddedEventPublisher memberAddedEventPublisher;
+    @Inject
+    MemberRemovedEventPublisher memberRemovedEventPublisher;
 
     @Override
     @Transactional
@@ -36,13 +41,16 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
 
         MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), memberDTO.getId(), memberDTO.getName(), householdId, LocalDateTime.now());
-        publisher.publishMessage(MemberAddedSerializer.parse(event));
+        memberAddedEventPublisher.publishMessage(MemberAddedSerializer.parse(event));
     }
 
     @Override
     @Transactional
-    public void removeHouseholdMember(String memberId, String householdId) throws MemberNotFoundException {
+    public void removeHouseholdMember(String memberId, String householdId) throws MemberNotFoundException, JsonProcessingException {
         memberRepository.removeHouseholdMember(memberId);
+
+        MemberRemovedEvent event = new MemberRemovedEvent(UUID.randomUUID().toString(), memberId, householdId, LocalDateTime.now());
+        memberRemovedEventPublisher.publishMessage(MemberRemovedSerializer.parse(event));
     }
 
     @Override

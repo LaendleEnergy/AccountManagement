@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.events.HouseholdCreatedEvent;
 import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
 import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
+import at.fhv.master.laendleenergy.domain.events.MemberRemovedEvent;
 import at.fhv.master.laendleenergy.domain.serializer.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.junit.QuarkusTest;
@@ -60,6 +61,16 @@ public class SerializerTests {
 
         String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
         String actual = MemberAddedSerializer.parse(event);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testMemberRemovedSerializer() throws JsonProcessingException {
+        MemberRemovedEvent event = new MemberRemovedEvent("event1", "m1", "h1", LocalDateTime.of(2020, 1,1,1,1));
+
+        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String actual = MemberRemovedSerializer.parse(event);
 
         assertEquals(expected, actual);
     }
