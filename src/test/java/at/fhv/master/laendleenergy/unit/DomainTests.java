@@ -1,9 +1,12 @@
 package at.fhv.master.laendleenergy.unit;
 
 import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
+import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -73,5 +76,32 @@ public class DomainTests {
         assertEquals("newemail@test.com", user.getEmailAddress());
         assertEquals(Role.ADMIN, user.getRole());
         assertEquals("newpassword", user.getPassword());
+    }
+
+    @Test
+    public void memberAddedEventTest() {
+        MemberAddedEvent event = new MemberAddedEvent("event1", "m1", "name", "h1", LocalDateTime.now());
+        event.setEventId("new");
+        event.setMemberId("memberid");
+        event.setHouseholdId("householdid");
+        event.setTimestamp(LocalDateTime.of(2000, 2,2,2,2));
+
+        assertEquals("new", event.getEventId());
+        assertEquals("memberid", event.getMemberId());
+        assertEquals("householdid", event.getHouseholdId());
+        assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
+    }
+
+    @Test
+    public void householdUpdatedEventTest() {
+        Household household = new Household("123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.now());
+        event.setEventId("new");
+        event.setHousehold(null);
+        event.setTimestamp(LocalDateTime.of(2000, 2,2,2,2));
+
+        assertEquals("new", event.getEventId());
+        assertNull(event.getHousehold());
+        assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
     }
 }

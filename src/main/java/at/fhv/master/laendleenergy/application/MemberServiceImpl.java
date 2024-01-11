@@ -2,16 +2,22 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.serializer.MemberSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
+import at.fhv.master.laendleenergy.streams.publisher.MemberAddedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class MemberServiceImpl implements MemberService {
@@ -20,17 +26,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Inject
     HouseholdRepository householdRepository;
+    @Inject
+    MemberAddedEventPublisher publisher;
 
     @Override
     @Transactional
-    public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException {
-        System.out.println("service method entered");
-        System.out.println(memberDTO.getName());
-        System.out.println(householdId);
+    public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException, JsonProcessingException {
         Household household = householdRepository.getHouseholdById(householdId);
-        System.out.println(household.getId());
         memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
-        System.out.println(memberDTO.getName());
+
+        MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), memberDTO.getId(), memberDTO.getName(), householdId, LocalDateTime.now());
+        publisher.publishMessage(MemberSerializer.parse(event));
     }
 
     @Override

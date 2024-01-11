@@ -8,12 +8,12 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 @Startup
-public class HouseholdUpdatedEventPublisher {
+public class MemberAddedEventPublisher {
     @Inject
     RedisClient redisClient;
-    @ConfigProperty(name = "redis-household-updated-key")  private String KEY;
+    @ConfigProperty(name = "redis-member-added-key")  private String KEY;
 
-    public HouseholdUpdatedEventPublisher(){}
+    public MemberAddedEventPublisher(){}
 
     public void publishMessage(String message) {
         redisClient.publish(KEY, message);

@@ -6,6 +6,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.MemberController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -51,7 +52,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testAddHouseholdMember() throws HouseholdNotFoundException {
+    public void testAddHouseholdMember() throws HouseholdNotFoundException, JsonProcessingException {
         given()
                 .contentType(ContentType.JSON)
                 .body(memberDTOJSONString)
@@ -75,7 +76,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testAddHouseholdMember_HouseholdNotFoundException() throws HouseholdNotFoundException {
+    public void testAddHouseholdMember_HouseholdNotFoundException() throws HouseholdNotFoundException, JsonProcessingException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(memberService).addHouseholdMember(any(), anyString());
 
         given()
@@ -88,7 +89,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testAddHouseholdMember_InternalServerError() throws HouseholdNotFoundException {
+    public void testAddHouseholdMember_InternalServerError() throws HouseholdNotFoundException, JsonProcessingException {
         Mockito.doThrow(NullPointerException.class).when(memberService).addHouseholdMember(any(), anyString());
 
         given()

@@ -10,6 +10,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -50,7 +51,7 @@ public class MemberServiceTests {
 
 
     @Test
-    public void addHouseholdMember() throws HouseholdNotFoundException {
+    public void addHouseholdMember() throws HouseholdNotFoundException, JsonProcessingException {
         Mockito.when(householdRepository.getHouseholdById(householdId)).thenReturn(household);
 
         service.addHouseholdMember(new MemberDTO(), householdId);

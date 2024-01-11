@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy;
+package at.fhv.master.laendleenergy.streams;
 
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
@@ -9,15 +9,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-// Start Redis:
-//`docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest`
-
 @QuarkusTest
-public class RedisTest {
+public class HouseholdUpdatedEventPublisherTests {
     @Inject
     HouseholdUpdatedEventPublisher pub;
 
