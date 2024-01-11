@@ -5,7 +5,7 @@ import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
-import at.fhv.master.laendleenergy.domain.serializer.MemberSerializer;
+import at.fhv.master.laendleenergy.domain.serializer.MemberAddedSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.streams.publisher.MemberAddedEventPublisher;
@@ -36,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
 
         MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), memberDTO.getId(), memberDTO.getName(), householdId, LocalDateTime.now());
-        publisher.publishMessage(MemberSerializer.parse(event));
+        publisher.publishMessage(MemberAddedSerializer.parse(event));
     }
 
     @Override

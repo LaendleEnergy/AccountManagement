@@ -55,7 +55,7 @@ public class HouseholdServiceTests {
     }
 
     @Test
-    public void createHouseholdTest() {
+    public void createHouseholdTest() throws JsonProcessingException {
         Mockito.when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
         CreateHouseholdDTO householdDTO = new CreateHouseholdDTO();

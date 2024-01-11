@@ -52,7 +52,7 @@ public class HouseholdControllerTests {
     }
 
     @Test
-    public void testCreateHousehold() {
+    public void testCreateHousehold() throws JsonProcessingException {
         given()
                 .contentType(ContentType.JSON)
                 .body(createHouseholdDTOJSONString)
@@ -65,7 +65,7 @@ public class HouseholdControllerTests {
     }
 
     @Test
-    public void testCreateHouseholdInternalServerError() {
+    public void testCreateHouseholdInternalServerError() throws JsonProcessingException {
         Mockito.when(householdService.createHousehold(any())).thenThrow(NullPointerException.class);
 
         given()

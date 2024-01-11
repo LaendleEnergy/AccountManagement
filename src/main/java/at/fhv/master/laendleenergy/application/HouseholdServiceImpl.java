@@ -2,12 +2,15 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.application.authentication.PBKDF2Encoder;
 import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.events.HouseholdCreatedEvent;
 import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
-import at.fhv.master.laendleenergy.domain.serializer.HouseholdSerializer;
+import at.fhv.master.laendleenergy.domain.serializer.HouseholdCreatedSerializer;
+import at.fhv.master.laendleenergy.domain.serializer.HouseholdUpdatedSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
+import at.fhv.master.laendleenergy.streams.publisher.HouseholdCreatedEventPublisher;
 import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
@@ -31,11 +34,13 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Inject
     PBKDF2Encoder passwordEncoder;
     @Inject
-    HouseholdUpdatedEventPublisher publisher;
+    HouseholdUpdatedEventPublisher householdUpdatedEventPublisher;
+    @Inject
+    HouseholdCreatedEventPublisher householdCreatedEventPublisher;
 
     @Override
     @Transactional
-    public String createHousehold(CreateHouseholdDTO householdDTO) {
+    public String createHousehold(CreateHouseholdDTO householdDTO) throws JsonProcessingException {
         User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), null);
 
         List<Member> members = List.of(user);
@@ -44,6 +49,10 @@ public class HouseholdServiceImpl implements HouseholdService {
         user.setHousehold(household);
 
         userRepository.addUser(user);
+
+        HouseholdCreatedEvent event = new HouseholdCreatedEvent(UUID.randomUUID().toString(), user.getId(), user.getName(), household.getId(), LocalDateTime.now());
+        householdCreatedEventPublisher.publishMessage(HouseholdCreatedSerializer.parse(event));
+
         return householdRepository.addHousehold(household);
     }
 
@@ -60,7 +69,7 @@ public class HouseholdServiceImpl implements HouseholdService {
         householdRepository.updateHousehold(household);
 
         HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household, LocalDateTime.now());
-        publisher.publishMessage(HouseholdSerializer.parse(event));
+        householdUpdatedEventPublisher.publishMessage(HouseholdUpdatedSerializer.parse(event));
     }
 
     @Override

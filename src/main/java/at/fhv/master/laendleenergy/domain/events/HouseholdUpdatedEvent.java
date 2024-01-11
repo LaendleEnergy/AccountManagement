@@ -8,6 +8,8 @@ public class HouseholdUpdatedEvent {
     private Household household;
     private LocalDateTime timestamp;
 
+    public HouseholdUpdatedEvent() {}
+
     public HouseholdUpdatedEvent(String eventId, Household household, LocalDateTime timestamp) {
         this.eventId = eventId;
         this.household = household;

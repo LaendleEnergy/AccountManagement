@@ -1,6 +1,7 @@
 package at.fhv.master.laendleenergy.unit;
 
 import at.fhv.master.laendleenergy.domain.*;
+import at.fhv.master.laendleenergy.domain.events.HouseholdCreatedEvent;
 import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
 import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import io.quarkus.test.junit.QuarkusTest;
@@ -102,6 +103,20 @@ public class DomainTests {
 
         assertEquals("new", event.getEventId());
         assertNull(event.getHousehold());
+        assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
+    }
+
+    @Test
+    public void householdCreatedEventTest() {
+        HouseholdCreatedEvent event = new HouseholdCreatedEvent("event1", "m1", "name", "h1", LocalDateTime.now());
+        event.setEventId("new");
+        event.setMemberId("memberid");
+        event.setHouseholdId("householdid");
+        event.setTimestamp(LocalDateTime.of(2000, 2,2,2,2));
+
+        assertEquals("new", event.getEventId());
+        assertEquals("memberid", event.getMemberId());
+        assertEquals("householdid", event.getHouseholdId());
         assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
     }
 }
