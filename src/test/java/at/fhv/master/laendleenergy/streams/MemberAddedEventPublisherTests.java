@@ -4,12 +4,14 @@ import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import at.fhv.master.laendleenergy.domain.serializer.MemberAddedSerializer;
 import at.fhv.master.laendleenergy.streams.publisher.MemberAddedEventPublisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 @QuarkusTest
+@TestTransaction
 public class MemberAddedEventPublisherTests {
     @Inject
     MemberAddedEventPublisher pub;

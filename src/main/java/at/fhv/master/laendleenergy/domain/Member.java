@@ -20,7 +20,7 @@ public class Member {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "household_id")
     private Household household;
 

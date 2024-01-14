@@ -16,7 +16,7 @@ public class Household {
     private ElectricityPricingPlan pricingPlan;
     @Column(name = "device_id")
     private String deviceId;
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Member> members;
 
     public Household() {

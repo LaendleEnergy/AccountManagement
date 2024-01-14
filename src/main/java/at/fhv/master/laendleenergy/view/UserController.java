@@ -68,6 +68,8 @@ public class UserController {
                 return Response.ok(true).build();
             } catch (UserNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -108,6 +110,8 @@ public class UserController {
                 return Response.ok(userService.getUserById(userId)).build();
             } catch (UserNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();

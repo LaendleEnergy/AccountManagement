@@ -6,6 +6,7 @@ import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
 import at.fhv.master.laendleenergy.domain.serializer.HouseholdUpdatedSerializer;
 import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 @QuarkusTest
+@TestTransaction
 public class HouseholdUpdatedEventPublisherTests {
     @Inject
     HouseholdUpdatedEventPublisher pub;
