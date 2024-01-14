@@ -1,11 +1,11 @@
 package at.fhv.master.laendleenergy.persistence;
 
 import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MemberRepository {
     void addHouseholdMember(Member member);

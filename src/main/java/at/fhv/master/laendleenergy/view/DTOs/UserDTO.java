@@ -37,7 +37,8 @@ public class UserDTO {
                 userDTO.getName(),
                 !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
                 !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                household
+                household.getId(),
+                household.getDeviceId()
         );
     }
 

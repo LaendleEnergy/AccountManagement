@@ -37,7 +37,7 @@ public class AuthenticationServiceTests {
     @BeforeEach
     void setUp() {
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        user = new User(userId, email, "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household);
+        user = new User(userId, email, "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
         household.addMember(user);
     }
 

@@ -3,16 +3,15 @@ package at.fhv.master.laendleenergy.unit;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.ws.rs.core.Link;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 public class DTOTests {
@@ -142,7 +141,7 @@ public class DTOTests {
 
     @Test
     public void memberDTOCreateTest2() {
-        Member member = new Member("id", "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), new Household());
+        Member member = new Member("id", "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), "1", "1");
         MemberDTO memberDTO = MemberDTO.create(member);
 
         assertEquals(member.getId(), memberDTO.getId());
@@ -164,9 +163,10 @@ public class DTOTests {
 
     @Test
     public void memberDTOCreateTest4() {
-        Member member = new Member("id", "name", Optional.empty(), Optional.empty(), new Household());
+        Member member = new Member("id", "name", Optional.empty(), Optional.empty(), "1", "1");
         MemberDTO memberDTO = MemberDTO.create(member);
 
+        assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
         assertEquals("", memberDTO.getDateOfBirth());
@@ -180,8 +180,8 @@ public class DTOTests {
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
-        assertEquals(null, member.getDateOfBirth());
-        assertEquals(null, member.getGender());
+        assertNull(member.getDateOfBirth());
+        assertNull(member.getGender());
     }
 
     @Test
@@ -191,8 +191,8 @@ public class DTOTests {
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
-        assertEquals(null, member.getDateOfBirth());
-        assertEquals(null, member.getGender());
+        assertNull(member.getDateOfBirth());
+        assertNull(member.getGender());
     }
 
     @Test
@@ -258,7 +258,7 @@ public class DTOTests {
 
     @Test
     public void userDTOCreateTest2() {
-        User user = new User("id", "password", Role.ADMIN, "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), new Household());
+        User user = new User("id", "password", Role.ADMIN, "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), "1", "1");
         UserDTO userDTO = UserDTO.create(user);
 
         assertEquals(user.getDateOfBirth().toString(), userDTO.getDateOfBirth());

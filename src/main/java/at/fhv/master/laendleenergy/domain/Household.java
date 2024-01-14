@@ -2,7 +2,6 @@ package at.fhv.master.laendleenergy.domain;
 
 import jakarta.persistence.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -16,7 +15,7 @@ public class Household {
     private ElectricityPricingPlan pricingPlan;
     @Column(name = "device_id")
     private String deviceId;
-    @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Member> members;
 
     public Household() {

@@ -21,9 +21,9 @@ public class SerializerTests {
     @Test
     public void testHouseholdUpdatedSerializer() throws JsonProcessingException {
         Household household = new Household("id", "123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
-        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.of(2020, 1,1,1,1));
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household.getId(), LocalDateTime.of(2020, 1,1,1,1));
 
-        String expected = "{\"eventId\":\"event1\",\"household\":{\"id\":\"id\",\"pricingPlan\":{\"supplier\":\"VKW\",\"averagePricePerKwh\":14.76,\"name\":\"Normal\"},\"deviceId\":\"123\",\"members\":[]},\"timestamp\":[2020,1,1,1,1]}";
+        String expected = "{\"eventId\":\"event1\",\"householdId\":\"id\",\"timestamp\":[2020,1,1,1,1]}";
         String actual = HouseholdUpdatedSerializer.parse(event);
 
         assertEquals(expected, actual);

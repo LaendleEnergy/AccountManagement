@@ -38,7 +38,8 @@ public class MemberDTO {
                 memberDTO.getName(),
                 Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                household
+                household.getId(),
+                household.getDeviceId()
         );
     }
 
@@ -48,7 +49,8 @@ public class MemberDTO {
                 memberDTO.getName(),
                 Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                household
+                household.getId(),
+                household.getDeviceId()
         );
     }
 

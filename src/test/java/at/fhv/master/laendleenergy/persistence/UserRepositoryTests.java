@@ -38,8 +38,7 @@ public class UserRepositoryTests {
     @BeforeEach
     void setUp() {
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        user = new User(userId, "test@email.com", "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household);
-        household.addMember(user);
+        user = new User(userId, "test@email.com", "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
     }
 
     @Test
@@ -75,7 +74,7 @@ public class UserRepositoryTests {
         updatedUser.setGender(Gender.DIVERSE);
         updatedUser.setDateOfBirth(LocalDate.of(1990, 2, 2));
         updatedUser.setName("newname");
-        updatedUser.setHousehold(new Household());
+        updatedUser.setHouseholdId("id");
 
         userRepository.updateUser(updatedUser);
 

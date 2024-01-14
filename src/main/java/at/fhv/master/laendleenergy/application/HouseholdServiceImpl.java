@@ -41,12 +41,13 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     @Transactional
     public String createHousehold(CreateHouseholdDTO householdDTO) throws JsonProcessingException {
-        User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), null);
+        User user = new User(householdDTO.getEmailAddress(), passwordEncoder.encode(householdDTO.getPassword()), Role.ADMIN, householdDTO.getName(), Optional.empty(), Optional.empty(), null, null);
 
         List<Member> members = List.of(user);
 
         Household household = new Household(householdDTO.getDeviceId(), ElectricityPricingPlan.get(householdDTO.getPricingPlan()), members);
-        user.setHousehold(household);
+        user.setHouseholdId(household.getId());
+        user.setDeviceId(household.getDeviceId());
 
         userRepository.addUser(user);
 
@@ -70,7 +71,7 @@ public class HouseholdServiceImpl implements HouseholdService {
 
         System.out.println("updated");
 
-        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household, LocalDateTime.now());
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household.getId(), LocalDateTime.now());
         System.out.println(HouseholdUpdatedSerializer.parse(event));
         householdUpdatedEventPublisher.publishMessage(HouseholdUpdatedSerializer.parse(event));
 

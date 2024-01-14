@@ -22,7 +22,7 @@ public class HouseholdUpdatedEventPublisherTests {
     @Test
     public void testConnection() throws JsonProcessingException {
         Household household = new Household("123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
-        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.now());
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household.getId(), LocalDateTime.now());
         pub.publishMessage(HouseholdUpdatedSerializer.parse(event));
     }
 }

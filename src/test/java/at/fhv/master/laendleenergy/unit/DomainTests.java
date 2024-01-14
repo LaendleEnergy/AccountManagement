@@ -56,21 +56,23 @@ public class DomainTests {
 
     @Test
     public void memberTest() {
-        Member member = new Member("memberName", Optional.of(LocalDate.of(2000, 2, 2)), Optional.of(Gender.FEMALE), new Household());
+        Member member = new Member("memberName", Optional.of(LocalDate.of(2000, 2, 2)), Optional.of(Gender.FEMALE), "1", "1");
         member.setGender(Gender.DIVERSE);
-        member.setHousehold(null);
+        member.setHouseholdId("2");
+        member.setDeviceId("2");
         member.setName("newTestName");
         member.setDateOfBirth(LocalDate.of(2000, 4, 4));
 
         assertEquals("newTestName", member.getName());
-        assertNull(member.getHousehold());
+        assertEquals("2", member.getHouseholdId());
+        assertEquals("2", member.getDeviceId());
         assertEquals(Gender.DIVERSE, member.getGender());
         assertEquals(LocalDate.of(2000, 4,4), member.getDateOfBirth());
     }
 
     @Test
     public void userTest() {
-        User user = new User("email@test.com", "password", Role.USER, "memberName", Optional.of(LocalDate.of(2000, 2, 2)), Optional.of(Gender.FEMALE), new Household());
+        User user = new User("email@test.com", "password", Role.USER, "memberName", Optional.of(LocalDate.of(2000, 2, 2)), Optional.of(Gender.FEMALE), "1", "1");
         user.setEmailAddress("newemail@test.com");
         user.setPassword("newpassword");
         user.setRole(Role.ADMIN);
@@ -113,13 +115,13 @@ public class DomainTests {
     @Test
     public void householdUpdatedEventTest() {
         Household household = new Household("123", ElectricityPricingPlan.NORMAL, new LinkedList<>());
-        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household, LocalDateTime.now());
+        HouseholdUpdatedEvent event = new HouseholdUpdatedEvent("event1", household.getId(), LocalDateTime.now());
         event.setEventId("new");
-        event.setHousehold(null);
+        event.setHouseholdId(null);
         event.setTimestamp(LocalDateTime.of(2000, 2,2,2,2));
 
         assertEquals("new", event.getEventId());
-        assertNull(event.getHousehold());
+        assertNull(event.getHouseholdId());
         assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
     }
 

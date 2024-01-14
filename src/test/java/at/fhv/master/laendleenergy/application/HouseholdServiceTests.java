@@ -15,7 +15,6 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -100,7 +99,7 @@ public class HouseholdServiceTests {
 
     @Test
     public void getUsersOfHousehold() throws HouseholdNotFoundException {
-        User expectedUser = new User("id", "email", "pw", Role.USER, "name", Optional.of(LocalDate.of(2000, 1,1)), Optional.of(Gender.FEMALE), household);
+        User expectedUser = new User("id", "email", "pw", Role.USER, "name", Optional.of(LocalDate.of(2000, 1,1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
         List<Member> members = List.of(expectedUser, new Member(), new Member());
         Mockito.when(memberRepository.getAllMembersOfHousehold(householdId)).thenReturn(members);
         List<UserDTO> actualUsers = service.getUsersOfHousehold(householdId);

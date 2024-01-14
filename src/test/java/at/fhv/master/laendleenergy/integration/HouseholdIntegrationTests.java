@@ -15,6 +15,7 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import static io.restassured.RestAssured.given;
 
@@ -51,7 +52,8 @@ public class HouseholdIntegrationTests {
 
     @BeforeEach
     public void setup() {
-        household = new Household(householdId, "D1", ElectricityPricingPlan.DAYNIGHT, List.of(UserDTO.create(new UserDTO("email", "password", Role.USER.getName(), "name", LocalDate.of(2000, 2,2).toString(), Gender.FEMALE.getName()), household)));
+        household = new Household(householdId, "D1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
+        household.setMembers(List.of(UserDTO.create(new UserDTO("email", "password", Role.USER.getName(), "name", LocalDate.of(2000, 2,2).toString(), Gender.FEMALE.getName()), household)));
         householdDTO = HouseholdDTO.create(household);
         Mockito.when(entityManager.find(Household.class, householdId)).thenReturn(household);
     }

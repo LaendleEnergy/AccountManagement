@@ -1,10 +1,6 @@
 package at.fhv.master.laendleenergy.application;
 
-import at.fhv.master.laendleenergy.application.authentication.PBKDF2Encoder;
-import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
@@ -14,7 +10,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -46,7 +41,7 @@ public class MemberServiceTests {
     @BeforeEach
     void setUp() {
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        member = new Member(memberId, "name", Optional.empty(), Optional.empty(), household);
+        member = new Member(memberId, "name", Optional.empty(), Optional.empty(), household.getId(), household.getDeviceId());
     }
 
 

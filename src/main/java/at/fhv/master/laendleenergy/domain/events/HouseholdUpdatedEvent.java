@@ -1,18 +1,17 @@
 package at.fhv.master.laendleenergy.domain.events;
 
-import at.fhv.master.laendleenergy.domain.Household;
 import java.time.LocalDateTime;
 
 public class HouseholdUpdatedEvent {
     private String eventId;
-    private Household household;
+    private String householdId;
     private LocalDateTime timestamp;
 
     public HouseholdUpdatedEvent() {}
 
-    public HouseholdUpdatedEvent(String eventId, Household household, LocalDateTime timestamp) {
+    public HouseholdUpdatedEvent(String eventId, String householdId, LocalDateTime timestamp) {
         this.eventId = eventId;
-        this.household = household;
+        this.householdId = householdId;
         this.timestamp = timestamp;
     }
 
@@ -32,11 +31,11 @@ public class HouseholdUpdatedEvent {
         this.timestamp = timestamp;
     }
 
-    public Household getHousehold() {
-        return household;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setHousehold(Household household) {
-        this.household = household;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
     }
 }
