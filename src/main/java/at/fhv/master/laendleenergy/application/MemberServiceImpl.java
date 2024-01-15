@@ -40,9 +40,10 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException, JsonProcessingException {
         Household household = householdRepository.getHouseholdById(householdId);
-        memberRepository.addHouseholdMember(MemberDTO.create(memberDTO, household));
+        String id = UUID.randomUUID().toString();
+        memberRepository.addHouseholdMember(MemberDTO.create(id, memberDTO, household));
 
-        MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), memberDTO.getId(), memberDTO.getName(), householdId, LocalDateTime.now());
+        MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), id, memberDTO.getName(), householdId, LocalDateTime.now());
         memberAddedEventPublisher.publishMessage(MemberAddedSerializer.parse(event));
     }
 
