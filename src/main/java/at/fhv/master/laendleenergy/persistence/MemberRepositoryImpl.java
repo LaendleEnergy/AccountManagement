@@ -3,6 +3,7 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -13,6 +14,8 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Inject
     EntityManager entityManager;
+    @Inject
+    UserRepository userRepository;
 
     @Override
     public void addHouseholdMember(Member member) {
@@ -45,7 +48,7 @@ public class MemberRepositoryImpl implements MemberRepository {
         Member member = entityManager.find(Member.class, memberId);
         if(member == null) throw new MemberNotFoundException();
 
-        return  member;
+        return member;
     }
 
     @Override

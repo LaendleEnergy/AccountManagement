@@ -7,6 +7,7 @@ import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import at.fhv.master.laendleenergy.domain.events.MemberRemovedEvent;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.domain.serializer.MemberAddedSerializer;
 import at.fhv.master.laendleenergy.domain.serializer.MemberRemovedSerializer;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
@@ -60,7 +61,9 @@ public class MemberServiceImpl implements MemberService {
         List<MemberDTO> memberDTOS = new LinkedList<>();
 
         for (Member m : members) {
-            memberDTOS.add(MemberDTO.create(m));
+            if (! (m instanceof User)) {
+                memberDTOS.add(MemberDTO.create(m));
+            }
         }
 
         return memberDTOS;

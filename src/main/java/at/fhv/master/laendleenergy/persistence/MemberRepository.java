@@ -4,6 +4,7 @@ import at.fhv.master.laendleenergy.domain.Member;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 
 import java.util.List;
 

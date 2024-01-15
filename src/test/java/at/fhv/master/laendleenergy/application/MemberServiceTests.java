@@ -3,8 +3,10 @@ package at.fhv.master.laendleenergy.application;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
+import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
@@ -71,6 +73,26 @@ public class MemberServiceTests {
 
         assertEquals(3, actualMembers.size());
         assertEquals(member.getId(), actualMembers.get(0).getId());
+        Mockito.verify(memberRepository, times(1)).getAllMembersOfHousehold(householdId);
+    }
+
+    @Test
+    public void getMembersOfHousehold_WithUser() throws HouseholdNotFoundException {
+        User user = new User();
+        user.setId("1");
+        user.setDateOfBirth(LocalDate.of(1980, 2, 2));
+        user.setName("testname");
+        user.setGender(Gender.DIVERSE);
+        user.setRole(Role.USER);
+        user.setEmailAddress("email");
+
+        List<Member> members = List.of(member, user, new Member());
+        Mockito.when(memberRepository.getAllMembersOfHousehold(householdId)).thenReturn(members);
+        List<MemberDTO> actualMembers = service.getAllMembersOfHousehold(householdId);
+
+        assertEquals(2, actualMembers.size());
+        assertEquals(member.getId(), actualMembers.get(0).getId());
+
         Mockito.verify(memberRepository, times(1)).getAllMembersOfHousehold(householdId);
     }
 

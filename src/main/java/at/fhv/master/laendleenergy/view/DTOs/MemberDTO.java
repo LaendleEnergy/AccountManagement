@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MemberDTO {
     private String id;
@@ -13,7 +14,7 @@ public class MemberDTO {
     private String gender;
 
     public MemberDTO() {
-
+        id = UUID.randomUUID().toString();
     }
 
     public MemberDTO(String id, String name, String dateOfBirth, String gender) {

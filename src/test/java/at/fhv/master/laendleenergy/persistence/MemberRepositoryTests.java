@@ -3,6 +3,8 @@ package at.fhv.master.laendleenergy.persistence;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
+import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;

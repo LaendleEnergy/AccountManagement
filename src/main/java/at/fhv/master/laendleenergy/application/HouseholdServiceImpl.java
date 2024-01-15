@@ -69,13 +69,8 @@ public class HouseholdServiceImpl implements HouseholdService {
         Household household = HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId));
         householdRepository.updateHousehold(household);
 
-        System.out.println("updated");
-
         HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household.getId(), LocalDateTime.now());
-        System.out.println(HouseholdUpdatedSerializer.parse(event));
         householdUpdatedEventPublisher.publishMessage(HouseholdUpdatedSerializer.parse(event));
-
-        System.out.println("published");
     }
 
     @Override

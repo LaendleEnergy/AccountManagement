@@ -2,6 +2,7 @@ package at.fhv.master.laendleenergy.application;
 
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
