@@ -1,6 +1,5 @@
 package at.fhv.master.laendleenergy.application.authentication;
 
-import at.fhv.master.laendleenergy.domain.Role;
 import at.fhv.master.laendleenergy.domain.User;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
@@ -9,10 +8,7 @@ import at.fhv.master.laendleenergy.view.DTOs.AuthResponse;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import java.security.Principal;
 
 @ApplicationScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -33,8 +29,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             if (u.getPassword().equals(passwordEncoder.encode(authRequest.getPassword()))) {
                 try {
-                    return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole().getName(), u.getId(), u.getHousehold().getId(), u.getHousehold().getDeviceId(), duration, issuer));
+                    return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole().getName(), u.getId(), u.getHouseholdId(), u.getDeviceId(), duration, issuer));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     throw new UnauthorizedException();
                 }
             }

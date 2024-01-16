@@ -13,7 +13,6 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -47,7 +46,7 @@ public class UserServiceTests {
     @BeforeEach
     void setUp() {
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        user = new User(userId, "test@email.com", "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household);
+        user = new User(userId, "test@email.com", "password", Role.ADMIN, "Testname", Optional.of(LocalDate.of(1990, 1, 1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
         household.addMember(user);
     }
 

@@ -3,16 +3,15 @@ package at.fhv.master.laendleenergy.unit;
 import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.view.DTOs.*;
 import io.quarkus.test.junit.QuarkusTest;
-import jakarta.ws.rs.core.Link;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.metal.MetalMenuBarUI;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 public class DTOTests {
@@ -86,7 +85,7 @@ public class DTOTests {
     @Test
     public void householdDTOCreateTest() {
         HouseholdDTO householdDTO = new HouseholdDTO("d1", "Normal", "VKW");
-        Household household = HouseholdDTO.create(householdDTO, new LinkedList<>());
+        Household household = householdDTO.toHousehold(new LinkedList<>());
 
         assertEquals(household.getDeviceId(), householdDTO.getDeviceId());
         assertEquals(household.getPricingPlan(), ElectricityPricingPlan.NORMAL);
@@ -96,7 +95,7 @@ public class DTOTests {
     @Test
     public void householdDTOCreateTest2() {
         HouseholdDTO householdDTO = new HouseholdDTO("d1", "Normal", "VKW");
-        Household household = HouseholdDTO.create("id", householdDTO, new LinkedList<>());
+        Household household = householdDTO.toHousehold("id", new LinkedList<>());
 
         assertEquals(household.getDeviceId(), householdDTO.getDeviceId());
         assertEquals(household.getPricingPlan(), ElectricityPricingPlan.NORMAL);
@@ -132,7 +131,7 @@ public class DTOTests {
     @Test
     public void memberDTOCreateTest() {
         MemberDTO memberDTO = new MemberDTO("id", "name", "2000-10-10", "weiblich");
-        Member member = MemberDTO.create(memberDTO, new Household());
+        Member member = memberDTO.toMember(new Household());
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
@@ -142,7 +141,7 @@ public class DTOTests {
 
     @Test
     public void memberDTOCreateTest2() {
-        Member member = new Member("id", "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), new Household());
+        Member member = new Member("id", "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), "1", "1");
         MemberDTO memberDTO = MemberDTO.create(member);
 
         assertEquals(member.getId(), memberDTO.getId());
@@ -154,7 +153,7 @@ public class DTOTests {
     @Test
     public void memberDTOCreateTest3() {
         MemberDTO memberDTO = new MemberDTO("id", "name", "2000-10-10", "weiblich");
-        Member member = MemberDTO.create("id", memberDTO, new Household());
+        Member member = memberDTO.toMember("id", new Household());
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
@@ -164,9 +163,10 @@ public class DTOTests {
 
     @Test
     public void memberDTOCreateTest4() {
-        Member member = new Member("id", "name", Optional.empty(), Optional.empty(), new Household());
+        Member member = new Member("id", "name", Optional.empty(), Optional.empty(), "1", "1");
         MemberDTO memberDTO = MemberDTO.create(member);
 
+        assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
         assertEquals("", memberDTO.getDateOfBirth());
@@ -176,23 +176,23 @@ public class DTOTests {
     @Test
     public void memberDTOCreateTest5() {
         MemberDTO memberDTO = new MemberDTO("id", "name", null, null);
-        Member member = MemberDTO.create(memberDTO, new Household());
+        Member member = memberDTO.toMember(new Household());
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
-        assertEquals(null, member.getDateOfBirth());
-        assertEquals(null, member.getGender());
+        assertNull(member.getDateOfBirth());
+        assertNull(member.getGender());
     }
 
     @Test
     public void memberDTOCreateTest6() {
         MemberDTO memberDTO = new MemberDTO("id", "name", null, null);
-        Member member = MemberDTO.create("id", memberDTO, new Household());
+        Member member = memberDTO.toMember("id", new Household());
 
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
-        assertEquals(null, member.getDateOfBirth());
-        assertEquals(null, member.getGender());
+        assertNull(member.getDateOfBirth());
+        assertNull(member.getGender());
     }
 
     @Test
@@ -214,7 +214,7 @@ public class DTOTests {
     @Test
     public void updateUserDTOCreateTest() {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO("email", "password", "name", LocalDate.of(2000, 4, 4).toString(), "männlich");
-        User user = UpdateUserDTO.create("id", updateUserDTO, Role.USER, new Household());
+        User user = updateUserDTO.toUser("id", Role.USER, new Household());
 
         assertEquals(user.getDateOfBirth().toString(), updateUserDTO.getDateOfBirth());
         assertEquals(user.getGender().getName(), updateUserDTO.getGender());
@@ -246,7 +246,7 @@ public class DTOTests {
     @Test
     public void userDTOCreateTest() {
         UserDTO userDTO = new UserDTO("email", "password", "Admin", "name", LocalDate.of(1990, 4, 4).toString(), "männlich");
-        User user = UserDTO.create(userDTO, new Household());
+        User user = userDTO.toUser(new Household());
 
         assertEquals(user.getDateOfBirth().toString(), userDTO.getDateOfBirth());
         assertEquals(user.getGender().getName(), userDTO.getGender());
@@ -258,7 +258,7 @@ public class DTOTests {
 
     @Test
     public void userDTOCreateTest2() {
-        User user = new User("id", "password", Role.ADMIN, "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), new Household());
+        User user = new User("id", "password", Role.ADMIN, "name", Optional.of(LocalDate.of(2000, 1, 1)), Optional.of(Gender.DIVERSE), "1", "1");
         UserDTO userDTO = UserDTO.create(user);
 
         assertEquals(user.getDateOfBirth().toString(), userDTO.getDateOfBirth());

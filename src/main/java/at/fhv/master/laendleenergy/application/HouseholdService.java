@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 
 public interface HouseholdService {
-    String createHousehold(CreateHouseholdDTO householdDTO);
+    String createHousehold(CreateHouseholdDTO householdDTO) throws JsonProcessingException;
     void deleteHousehold(String householdId) throws HouseholdNotFoundException;
     void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException, JsonProcessingException;
     HouseholdDTO getHouseholdById(String householdId) throws HouseholdNotFoundException;

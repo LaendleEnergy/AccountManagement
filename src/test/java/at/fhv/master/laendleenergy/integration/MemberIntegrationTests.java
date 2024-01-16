@@ -16,6 +16,7 @@ import org.hibernate.query.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import static io.restassured.RestAssured.given;
@@ -54,10 +55,12 @@ public class MemberIntegrationTests {
 
     @BeforeEach
     public void setup() {
-        member = new Member(memberId, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), null);
+        member = new Member(memberId, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), "", "");
         memberDTO = MemberDTO.create(member);
-        household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, List.of(MemberDTO.create(memberDTO, household)));
-        member.setHousehold(household);
+        household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
+        household.setMembers(List.of(memberDTO.toMember(household)));
+        member.setHouseholdId(household.getId());
+        member.setDeviceId(household.getDeviceId());
 
         Mockito.when(entityManager.find(Household.class, householdId)).thenReturn(household);
         Mockito.when(entityManager.find(Member.class, memberId)).thenReturn(member);

@@ -3,6 +3,8 @@ package at.fhv.master.laendleenergy.view.DTOs;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.User;
+
 import java.util.List;
 
 public class HouseholdDTO {
@@ -19,24 +21,24 @@ public class HouseholdDTO {
         this.supplier = supplier;
     }
 
-    public static Household create(String id, HouseholdDTO household, List<Member> members) {
+    public Household toHousehold(String id, List<Member> members) {
         return new Household(
                 id,
-                household.getDeviceId(),
-                ElectricityPricingPlan.get(household.getPricingPlan()),
+                this.getDeviceId(),
+                ElectricityPricingPlan.get(this.getPricingPlan()),
                 members);
+    }
+
+    public Household toHousehold(List<Member> members) {
+        return new Household(
+                this.getDeviceId(),
+                ElectricityPricingPlan.get(this.getPricingPlan()),
+                members
+        );
     }
 
     public static HouseholdDTO create(Household household) {
         return new HouseholdDTO(household.getDeviceId(), household.getPricingPlan().getName(), household.getPricingPlan().getSupplier().getName());
-    }
-
-    public static Household create(HouseholdDTO householdDTO, List<Member> members) {
-        return new Household(
-                householdDTO.getDeviceId(),
-                ElectricityPricingPlan.get(householdDTO.getPricingPlan()),
-                members
-        );
     }
 
     public String getPricingPlan() {

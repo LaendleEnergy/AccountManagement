@@ -60,7 +60,6 @@ public class HouseholdController {
                 householdService.updateHousehold(householdId, householdDTO);
                 return Response.ok(true).build();
             } catch (HouseholdNotFoundException e) {
-                System.out.println(householdId);
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (JsonProcessingException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

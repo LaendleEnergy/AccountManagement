@@ -11,7 +11,7 @@ services:
       context: .
       dockerfile: src/main/docker/Dockerfile
     ports:
-      - 8081:9000
+      - "8080:9000"
     networks:
       - front-tier
       - back-tier
@@ -45,6 +45,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
+  redis-stack:
+    container_name: redis-stack
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    restart: on-failure
 
 networks:
   front-tier:

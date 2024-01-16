@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import static io.restassured.RestAssured.given;
@@ -35,10 +36,12 @@ public class UserIntegrationTests {
 
     @BeforeEach
     public void setup() {
-        user = new User(userId, "email", "pw", Role.ADMIN, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), null);
+        user = new User(userId, "email", "pw", Role.ADMIN, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), "", "");
         userDTO = UserDTO.create(user);
-        household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, List.of(UserDTO.create(userDTO, household)));
-        user.setHousehold(household);
+        household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT,  new LinkedList<>());
+        household.setMembers(List.of(userDTO.toUser(household)));
+        user.setHouseholdId(household.getId());
+        user.setDeviceId(household.getDeviceId());
 
         Mockito.when(entityManager.find(Household.class, householdId)).thenReturn(household);
         Mockito.when(entityManager.find(User.class, userId)).thenReturn(user);

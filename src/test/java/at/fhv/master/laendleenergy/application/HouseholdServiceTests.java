@@ -6,7 +6,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
-import at.fhv.master.laendleenergy.streams.publisher.HouseholdUpdatedEventPublisher;
+import at.fhv.master.laendleenergy.application.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
@@ -15,7 +15,6 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -55,7 +54,7 @@ public class HouseholdServiceTests {
     }
 
     @Test
-    public void createHouseholdTest() {
+    public void createHouseholdTest() throws JsonProcessingException {
         Mockito.when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
 
         CreateHouseholdDTO householdDTO = new CreateHouseholdDTO();
@@ -100,7 +99,7 @@ public class HouseholdServiceTests {
 
     @Test
     public void getUsersOfHousehold() throws HouseholdNotFoundException {
-        User expectedUser = new User("id", "email", "pw", Role.USER, "name", Optional.of(LocalDate.of(2000, 1,1)), Optional.of(Gender.FEMALE), household);
+        User expectedUser = new User("id", "email", "pw", Role.USER, "name", Optional.of(LocalDate.of(2000, 1,1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
         List<Member> members = List.of(expectedUser, new Member(), new Member());
         Mockito.when(memberRepository.getAllMembersOfHousehold(householdId)).thenReturn(members);
         List<UserDTO> actualUsers = service.getUsersOfHousehold(householdId);

@@ -1,11 +1,10 @@
 package at.fhv.master.laendleenergy.persistence;
 
-import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
-import at.fhv.master.laendleenergy.domain.Gender;
-import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.Member;
+import at.fhv.master.laendleenergy.domain.*;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
+import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -42,7 +41,7 @@ public class MemberRepositoryTests {
     @BeforeEach
     void setUp() {
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, List.of(new Member()));
-        member = new Member(memberId, "Testperson", Optional.of(LocalDate.of(1980, 1, 1)), Optional.of(Gender.FEMALE), household);
+        member = new Member(memberId, "Testperson", Optional.of(LocalDate.of(1980, 1, 1)), Optional.of(Gender.FEMALE), household.getId(), household.getDeviceId());
     }
 
     @Test

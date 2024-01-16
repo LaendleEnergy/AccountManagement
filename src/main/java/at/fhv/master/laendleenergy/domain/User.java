@@ -2,7 +2,6 @@ package at.fhv.master.laendleenergy.domain;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 
 @Entity
@@ -20,15 +19,15 @@ public class User extends Member {
         super();
     }
 
-    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
-        super(name, dateOfBirth, gender, household);
+    public User(String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId, String deviceId) {
+        super(name, dateOfBirth, gender, householdId, deviceId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;
     }
 
-    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
-        super(id, name, dateOfBirth, gender, household);
+    public User(String id, String emailAddress, String password, Role role, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId, String deviceId) {
+        super(id, name, dateOfBirth, gender, householdId, deviceId);
         this.emailAddress = emailAddress;
         this.password = password;
         this.role = role;

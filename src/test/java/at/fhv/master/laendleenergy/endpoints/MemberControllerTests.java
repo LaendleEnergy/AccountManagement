@@ -4,6 +4,7 @@ import at.fhv.master.laendleenergy.application.MemberService;
 import at.fhv.master.laendleenergy.domain.Gender;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.MemberNotFoundException;
+import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.DTOs.MemberDTO;
 import at.fhv.master.laendleenergy.view.MemberController;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -102,7 +103,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         given()
                 .pathParam("memberId", memberDTO.getId())
                 .header("Authorization", "Bearer " + validJwtToken)
@@ -124,7 +125,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(memberService).removeHouseholdMember(anyString(), anyString());
 
         given()
@@ -136,7 +137,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testRemoveHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testRemoveHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         Mockito.doThrow(NullPointerException.class).when(memberService).removeHouseholdMember(anyString(), anyString());
 
         given()
@@ -148,7 +149,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testUpdateHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
         given()
                 .contentType(ContentType.JSON)
                 .body(memberDTOJSONString)
@@ -172,7 +173,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testUpdateHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(memberService).updateMember(any(), anyString());
 
         given()
@@ -185,7 +186,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void testUpdateHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
         Mockito.doThrow(NullPointerException.class).when(memberService).updateMember(any(), anyString());
 
         given()

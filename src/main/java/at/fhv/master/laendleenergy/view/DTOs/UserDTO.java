@@ -29,15 +29,16 @@ public class UserDTO {
         this.gender = gender;
     }
 
-    public static User create(UserDTO userDTO, Household household) {
+    public User toUser(Household household) {
         return new User(
-                userDTO.getEmailAddress(),
-                userDTO.getPassword(),
-                Role.get(userDTO.getRole()),
-                userDTO.getName(),
-                !Objects.equals(userDTO.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(userDTO.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(userDTO.getGender(), "") ? Optional.of(Gender.get(userDTO.getGender())) : Optional.empty(),
-                household
+                this.getEmailAddress(),
+                this.getPassword(),
+                Role.get(this.getRole()),
+                this.getName(),
+                !Objects.equals(this.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(this.getGender(), "") ? Optional.of(Gender.get(this.getGender())) : Optional.empty(),
+                household.getId(),
+                household.getDeviceId()
         );
     }
 

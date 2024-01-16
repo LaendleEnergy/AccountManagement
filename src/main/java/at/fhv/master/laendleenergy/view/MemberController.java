@@ -44,6 +44,7 @@ public class MemberController {
             } catch (HouseholdNotFoundException e) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             } catch (Exception e) {
+                e.printStackTrace();
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
             }
         }
@@ -101,7 +102,7 @@ public class MemberController {
         Principal caller = ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
+        if (hasJWT && jwt.containsClaim("memberId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String memberId = jwt.getClaim("memberId");
             try {
                 return Response.ok(memberService.getMemberById(memberId)).build();
@@ -123,7 +124,7 @@ public class MemberController {
         Principal caller = ctx.getUserPrincipal();
         String name = caller == null ? "anonymous" : caller.getName();
 
-        if (hasJWT && jwt.containsClaim("memberId") && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
+        if (hasJWT && jwt.containsClaim("householdId") && authenticationService.verifiedCaller(name, jwt.getName())) {
             String householdId = jwt.getClaim("householdId");
             try {
                 memberService.updateMember(memberDTO, householdId);

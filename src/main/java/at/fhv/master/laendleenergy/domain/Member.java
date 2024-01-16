@@ -1,7 +1,6 @@
 package at.fhv.master.laendleenergy.domain;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import jakarta.persistence.*;
@@ -20,28 +19,31 @@ public class Member {
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @ManyToOne
-    @JoinColumn(name = "household_id")
-    private Household household;
+    @Column(name = "household_id")
+    private String householdId;
+    @Column(name = "device_id")
+    private String deviceId;
 
     public Member() {
 
     }
 
-    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
+    public Member(String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId, String deviceId) {
         this.id =  UUID.randomUUID().toString();
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.household = household;
+        this.householdId = householdId;
+        this.deviceId = deviceId;
     }
 
-    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, Household household) {
+    public Member(String id, String name, Optional<LocalDate> dateOfBirth, Optional<Gender> gender, String householdId, String deviceId) {
         this.id =  id;
         this.name = name;
         this.dateOfBirth = dateOfBirth.orElse(null);
         this.gender = gender.orElse(null);
-        this.household = household;
+        this.householdId = householdId;
+        this.deviceId = deviceId;
     }
 
     public String getName() {
@@ -72,11 +74,22 @@ public class Member {
         return id;
     }
 
-    public Household getHousehold() {
-        return household;
+    public String getHouseholdId() {
+        return householdId;
     }
 
-    public void setHousehold(Household household) {
-        this.household = household;
+    public void setHouseholdId(String householdId) {
+        this.householdId = householdId;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

@@ -2,21 +2,19 @@ package at.fhv.master.laendleenergy.domain.events;
 
 import java.time.LocalDateTime;
 
-public class HouseholdUpdatedEvent {
+public class MemberRemovedEvent {
     private String eventId;
+    private String memberId;
     private String householdId;
     private LocalDateTime timestamp;
 
-    public HouseholdUpdatedEvent() {}
+    public MemberRemovedEvent() {}
 
-    public HouseholdUpdatedEvent(String eventId, String householdId, LocalDateTime timestamp) {
+    public MemberRemovedEvent(String eventId, String memberId, String householdId, LocalDateTime timestamp) {
         this.eventId = eventId;
+        this.memberId = memberId;
         this.householdId = householdId;
         this.timestamp = timestamp;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
     }
 
     public String getEventId() {
@@ -27,8 +25,12 @@ public class HouseholdUpdatedEvent {
         this.eventId = eventId;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
     public String getHouseholdId() {
@@ -37,5 +39,13 @@ public class HouseholdUpdatedEvent {
 
     public void setHouseholdId(String householdId) {
         this.householdId = householdId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -39,6 +39,6 @@ public class HouseholdRepositoryImpl implements HouseholdRepository {
         Household household = entityManager.find(Household.class, householdId);
         if(household == null) throw new HouseholdNotFoundException();
 
-        return  household;
+        return household;
     }
 }

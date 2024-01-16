@@ -5,6 +5,7 @@ import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.Member;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MemberDTO {
     private String id;
@@ -13,7 +14,7 @@ public class MemberDTO {
     private String gender;
 
     public MemberDTO() {
-
+        id = UUID.randomUUID().toString();
     }
 
     public MemberDTO(String id, String name, String dateOfBirth, String gender) {
@@ -32,23 +33,25 @@ public class MemberDTO {
     }
 
 
-    public static Member create(MemberDTO memberDTO, Household household) {
+    public Member toMember(Household household) {
         return new Member(
-                memberDTO.getId(),
-                memberDTO.getName(),
-                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
-                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                household
+                this.getId(),
+                this.getName(),
+                Optional.ofNullable(this.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(this.getGender()).isPresent() ? Optional.of(Gender.get(this.getGender())) : Optional.empty(),
+                household.getId(),
+                household.getDeviceId()
         );
     }
 
-    public static Member create(String memberId, MemberDTO memberDTO, Household household) {
+    public Member toMember(String memberId, Household household) {
         return new Member(
                 memberId,
-                memberDTO.getName(),
-                Optional.ofNullable(memberDTO.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(memberDTO.getDateOfBirth())) : Optional.empty(),
-                Optional.ofNullable(memberDTO.getGender()).isPresent() ? Optional.of(Gender.get(memberDTO.getGender())) : Optional.empty(),
-                household
+                this.getName(),
+                Optional.ofNullable(this.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
+                Optional.ofNullable(this.getGender()).isPresent() ? Optional.of(Gender.get(this.getGender())) : Optional.empty(),
+                household.getId(),
+                household.getDeviceId()
         );
     }
 
