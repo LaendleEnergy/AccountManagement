@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
     public void addHouseholdMember(MemberDTO memberDTO, String householdId) throws HouseholdNotFoundException, JsonProcessingException {
         Household household = householdRepository.getHouseholdById(householdId);
         String id = UUID.randomUUID().toString();
-        memberRepository.addHouseholdMember(MemberDTO.create(id, memberDTO, household));
+        memberRepository.addHouseholdMember(memberDTO.toMember(id, household));
 
         MemberAddedEvent event = new MemberAddedEvent(UUID.randomUUID().toString(), id, memberDTO.getName(), householdId, LocalDateTime.now());
         memberAddedEventPublisher.publishMessage(MemberAddedSerializer.parse(event));
@@ -78,6 +78,6 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateMember(MemberDTO memberDTO, String householdId) throws MemberNotFoundException, HouseholdNotFoundException {
         Household household = householdRepository.getHouseholdById(householdId);
-        memberRepository.updateMember(MemberDTO.create(memberDTO, household));
+        memberRepository.updateMember(memberDTO.toMember(household));
     }
 }

@@ -39,7 +39,7 @@ public class UserIntegrationTests {
         user = new User(userId, "email", "pw", Role.ADMIN, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), "", "");
         userDTO = UserDTO.create(user);
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT,  new LinkedList<>());
-        household.setMembers(List.of(UserDTO.create(userDTO, household)));
+        household.setMembers(List.of(userDTO.toUser(household)));
         user.setHouseholdId(household.getId());
         user.setDeviceId(household.getDeviceId());
 

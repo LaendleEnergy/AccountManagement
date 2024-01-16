@@ -66,7 +66,7 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     @Transactional
     public void updateHousehold(String householdId, HouseholdDTO householdDTO) throws HouseholdNotFoundException, JsonProcessingException {
-        Household household = HouseholdDTO.create(householdId, householdDTO, memberRepository.getAllMembersOfHousehold(householdId));
+        Household household = householdDTO.toHousehold(householdId, memberRepository.getAllMembersOfHousehold(householdId));
         householdRepository.updateHousehold(household);
 
         HouseholdUpdatedEvent event = new HouseholdUpdatedEvent(UUID.randomUUID().toString(), household.getId(), LocalDateTime.now());

@@ -53,7 +53,8 @@ public class HouseholdIntegrationTests {
     @BeforeEach
     public void setup() {
         household = new Household(householdId, "D1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        household.setMembers(List.of(UserDTO.create(new UserDTO("email", "password", Role.USER.getName(), "name", LocalDate.of(2000, 2,2).toString(), Gender.FEMALE.getName()), household)));
+        UserDTO userDTO =  new UserDTO("email", "password", Role.USER.getName(), "name", LocalDate.of(2000, 2,2).toString(), Gender.FEMALE.getName());
+        household.setMembers(List.of(userDTO.toUser(household)));
         householdDTO = HouseholdDTO.create(household);
         Mockito.when(entityManager.find(Household.class, householdId)).thenReturn(household);
     }

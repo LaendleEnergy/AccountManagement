@@ -58,7 +58,7 @@ public class MemberIntegrationTests {
         member = new Member(memberId, "Alice", Optional.of(LocalDate.of(2000, 10, 10)), Optional.of(Gender.FEMALE), "", "");
         memberDTO = MemberDTO.create(member);
         household = new Household(householdId, "d1", ElectricityPricingPlan.DAYNIGHT, new LinkedList<>());
-        household.setMembers(List.of(MemberDTO.create(memberDTO, household)));
+        household.setMembers(List.of(memberDTO.toMember(household)));
         member.setHouseholdId(household.getId());
         member.setDeviceId(household.getDeviceId());
 

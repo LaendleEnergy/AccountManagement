@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public void createUser(CreateUserDTO createUserDTO, String householdId) throws HouseholdNotFoundException {
         UserDTO userDTO = new UserDTO(createUserDTO.getEmailAddress(), passwordEncoder.encode(createUserDTO.getPassword()), "User", createUserDTO.getName(), "", "");
         Household household = householdRepository.getHouseholdById(householdId);
-        userRepository.addUser(UserDTO.create(userDTO, household));
+        userRepository.addUser(userDTO.toUser(household));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UpdateUserDTO userDTO, String memberId, String householdId) throws UserNotFoundException, HouseholdNotFoundException {
         User userData = userRepository.getUserById(memberId);
         Household household = householdRepository.getHouseholdById(householdId);
-        User user = UpdateUserDTO.create(memberId, userDTO, userData.getRole(), household);
+        User user = userDTO.toUser(memberId, userData.getRole(), household);
         userRepository.updateUser(user);
     }
 
