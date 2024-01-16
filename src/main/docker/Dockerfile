@@ -1,4 +1,4 @@
-FROM gradle:8.1.1-jdk17-alpine AS build
+FROM gradle:8.3-jdk17-alpine AS build
 COPY --chown=gradle:gradle . /app
 WORKDIR /app
 USER gradle
