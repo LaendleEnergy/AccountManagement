@@ -3,6 +3,8 @@ COPY --chown=gradle:gradle . /app
 WORKDIR /app
 USER gradle
 
+RUN ls -lh
+
 RUN gradle clean build -x test --no-daemon
 
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.17
