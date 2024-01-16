@@ -52,4 +52,4 @@ stages:
                   command: 'buildAndPush'
                   dockerfile: ${{ file.file }}
                   tags: '${{ parameters.imagetag }}'
-                  buildContext: $(Build.SourcesDirectory)
+                  buildContext: $(Build.SourcesDirectory)/
