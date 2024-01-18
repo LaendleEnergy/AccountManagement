@@ -6,7 +6,7 @@ import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.persistence.HouseholdRepository;
 import at.fhv.master.laendleenergy.persistence.MemberRepository;
 import at.fhv.master.laendleenergy.persistence.UserRepository;
-import at.fhv.master.laendleenergy.application.publisher.HouseholdUpdatedEventPublisher;
+import at.fhv.master.laendleenergy.application.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.view.DTOs.CreateHouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.HouseholdDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;

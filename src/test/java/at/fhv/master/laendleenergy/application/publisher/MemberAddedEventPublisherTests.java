@@ -1,5 +1,6 @@
 package at.fhv.master.laendleenergy.application.publisher;
 
+import at.fhv.master.laendleenergy.application.streams.publisher.MemberAddedEventPublisher;
 import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
 import at.fhv.master.laendleenergy.domain.serializer.MemberAddedSerializer;
 import com.fasterxml.jackson.core.JsonProcessingException;

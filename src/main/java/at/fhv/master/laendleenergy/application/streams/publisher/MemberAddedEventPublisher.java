@@ -1,4 +1,4 @@
-package at.fhv.master.laendleenergy.application.publisher;
+package at.fhv.master.laendleenergy.application.streams.publisher;
 
 import io.quarkus.runtime.Startup;
 import io.quarkus.redis.client.RedisClient;

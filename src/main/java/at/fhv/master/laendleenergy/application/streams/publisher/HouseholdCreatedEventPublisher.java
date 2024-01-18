@@ -1,19 +1,19 @@
-package at.fhv.master.laendleenergy.application.publisher;
+package at.fhv.master.laendleenergy.application.streams.publisher;
 
-import io.quarkus.runtime.Startup;
 import io.quarkus.redis.client.RedisClient;
+import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 @Startup
-public class HouseholdUpdatedEventPublisher {
+public class HouseholdCreatedEventPublisher {
     @Inject
     RedisClient redisClient;
-    @ConfigProperty(name = "redis-household-updated-key")  private String KEY;
+    @ConfigProperty(name = "redis-household-created-key")  private String KEY;
 
-    public HouseholdUpdatedEventPublisher(){}
+    public HouseholdCreatedEventPublisher(){}
 
     public void publishMessage(String message) {
         redisClient.publish(KEY, message);

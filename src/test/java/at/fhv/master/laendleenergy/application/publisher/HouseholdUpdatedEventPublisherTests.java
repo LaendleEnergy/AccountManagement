@@ -1,5 +1,6 @@
 package at.fhv.master.laendleenergy.application.publisher;
 
+import at.fhv.master.laendleenergy.application.streams.publisher.HouseholdUpdatedEventPublisher;
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
 import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
