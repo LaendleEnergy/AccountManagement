@@ -2,10 +2,7 @@ package at.fhv.master.laendleenergy.unit;
 
 import at.fhv.master.laendleenergy.domain.ElectricityPricingPlan;
 import at.fhv.master.laendleenergy.domain.Household;
-import at.fhv.master.laendleenergy.domain.events.HouseholdCreatedEvent;
-import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
-import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
-import at.fhv.master.laendleenergy.domain.events.MemberRemovedEvent;
+import at.fhv.master.laendleenergy.domain.events.*;
 import at.fhv.master.laendleenergy.domain.serializer.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.junit.QuarkusTest;
@@ -55,12 +52,23 @@ public class SerializerTests {
         assertEquals(expected, actual);
     }
 
+
+
     @Test
-    public void testMemberSerializer() throws JsonProcessingException {
+    public void testMemberAddedSerializer() throws JsonProcessingException {
         MemberAddedEvent event = new MemberAddedEvent("event1", "m1", "name", "h1", LocalDateTime.of(2020, 1,1,1,1));
 
         String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
         String actual = MemberAddedSerializer.parse(event);
+
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void testMemberUpdatedSerializer() throws JsonProcessingException {
+        MemberUpdatedEvent event = new MemberUpdatedEvent("event1", "m1", "name", "h1", LocalDateTime.of(2020, 1,1,1,1));
+
+        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String actual = MemberUpdatedSerializer.parse(event);
 
         assertEquals(expected, actual);
     }

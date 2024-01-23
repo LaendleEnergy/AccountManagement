@@ -108,7 +108,7 @@ public class MemberServiceTests {
     }
 
     @Test
-    public void updateMemberTest() throws HouseholdNotFoundException, MemberNotFoundException {
+    public void updateMemberTest() throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException {
         Mockito.when(householdRepository.getHouseholdById(householdId)).thenReturn(household);
 
         Member updatedMember = member;

@@ -12,5 +12,5 @@ public interface MemberService {
     void removeHouseholdMember(String memberId, String householdId) throws HouseholdNotFoundException, MemberNotFoundException, JsonProcessingException;
     List<MemberDTO> getAllMembersOfHousehold(String householdId) throws HouseholdNotFoundException;
     MemberDTO getMemberById(String memberId) throws MemberNotFoundException, HouseholdNotFoundException;
-    void updateMember(MemberDTO memberDTO, String householdId) throws MemberNotFoundException, HouseholdNotFoundException;
+    void updateMember(MemberDTO memberDTO, String householdId) throws MemberNotFoundException, HouseholdNotFoundException, JsonProcessingException;
 }

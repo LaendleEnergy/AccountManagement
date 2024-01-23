@@ -1,10 +1,7 @@
 package at.fhv.master.laendleenergy.unit;
 
 import at.fhv.master.laendleenergy.domain.*;
-import at.fhv.master.laendleenergy.domain.events.HouseholdCreatedEvent;
-import at.fhv.master.laendleenergy.domain.events.HouseholdUpdatedEvent;
-import at.fhv.master.laendleenergy.domain.events.MemberAddedEvent;
-import at.fhv.master.laendleenergy.domain.events.MemberRemovedEvent;
+import at.fhv.master.laendleenergy.domain.events.*;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -85,6 +82,22 @@ public class DomainTests {
     @Test
     public void memberAddedEventTest() {
         MemberAddedEvent event = new MemberAddedEvent("event1", "m1", "name", "h1", LocalDateTime.now());
+        event.setEventId("new");
+        event.setMemberId("memberid");
+        event.setHouseholdId("householdid");
+        event.setName("newname");
+        event.setTimestamp(LocalDateTime.of(2000, 2,2,2,2));
+
+        assertEquals("new", event.getEventId());
+        assertEquals("memberid", event.getMemberId());
+        assertEquals("householdid", event.getHouseholdId());
+        assertEquals("newname", event.getName());
+        assertEquals(LocalDateTime.of(2000, 2,2,2,2), event.getTimestamp());
+    }
+
+    @Test
+    public void memberUpdatedEventTest() {
+        MemberUpdatedEvent event = new MemberUpdatedEvent("event1", "m1", "name", "h1", LocalDateTime.now());
         event.setEventId("new");
         event.setMemberId("memberid");
         event.setHouseholdId("householdid");

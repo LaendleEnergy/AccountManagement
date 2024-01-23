@@ -149,7 +149,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
+    public void testUpdateHouseholdMember() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException, JsonProcessingException {
         given()
                 .contentType(ContentType.JSON)
                 .body(memberDTOJSONString)
@@ -173,7 +173,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
+    public void testUpdateHouseholdMember_NotFoundException() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException, JsonProcessingException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(memberService).updateMember(any(), anyString());
 
         given()
@@ -186,7 +186,7 @@ public class MemberControllerTests {
     }
 
     @Test
-    public void testUpdateHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException {
+    public void testUpdateHouseholdMember_InternalServerError() throws HouseholdNotFoundException, MemberNotFoundException, UserNotFoundException, JsonProcessingException {
         Mockito.doThrow(NullPointerException.class).when(memberService).updateMember(any(), anyString());
 
         given()
