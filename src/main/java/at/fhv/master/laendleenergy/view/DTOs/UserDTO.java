@@ -36,7 +36,7 @@ public class UserDTO {
                 Role.get(this.getRole()),
                 this.getName(),
                 !Objects.equals(this.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
-                !Objects.equals(this.getGender(), "") ? Optional.of(Gender.get(this.getGender())) : Optional.empty(),
+                !Objects.equals(this.getGender(), "") ? Optional.of(Gender.get(this.getGender())) : Optional.of(Gender.NONE),
                 household.getId(),
                 household.getDeviceId()
         );

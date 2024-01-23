@@ -6,7 +6,8 @@ import java.util.Map;
 public enum Gender {
     MALE("männlich"),
     FEMALE("weiblich"),
-    DIVERSE("divers");
+    DIVERSE("divers"),
+    NONE("");
 
     private final String name;
 

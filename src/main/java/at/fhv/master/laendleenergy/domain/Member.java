@@ -3,6 +3,8 @@ package at.fhv.master.laendleenergy.domain;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
+
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 @Entity

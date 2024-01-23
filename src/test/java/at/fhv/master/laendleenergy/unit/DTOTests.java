@@ -192,7 +192,7 @@ public class DTOTests {
         assertEquals(member.getId(), memberDTO.getId());
         assertEquals(member.getName(), memberDTO.getName());
         assertNull(member.getDateOfBirth());
-        assertNull(member.getGender());
+        assertEquals(Gender.NONE, member.getGender());
     }
 
     @Test
@@ -224,6 +224,21 @@ public class DTOTests {
         assertEquals(user.getRole(), Role.USER);
         assertEquals(user.getId(), "id");
     }
+
+    @Test
+    public void updateUserDTOCreateNoGenderTest() {
+        UpdateUserDTO updateUserDTO = new UpdateUserDTO("email", "password", "name", LocalDate.of(2000, 4, 4).toString(), "");
+        User user = updateUserDTO.toUser("id", Role.USER, new Household());
+
+        assertEquals(user.getDateOfBirth().toString(), updateUserDTO.getDateOfBirth());
+        assertEquals(user.getGender().getName(), updateUserDTO.getGender());
+        assertEquals(user.getName(), updateUserDTO.getName());
+        assertEquals(user.getEmailAddress(), updateUserDTO.getEmailAddress());
+        assertEquals(user.getPassword(), updateUserDTO.getPassword());
+        assertEquals(user.getRole(), Role.USER);
+        assertEquals(user.getId(), "id");
+    }
+
 
     @Test
     public void userDTOTest() {

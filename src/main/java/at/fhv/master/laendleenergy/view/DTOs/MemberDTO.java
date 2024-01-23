@@ -49,7 +49,7 @@ public class MemberDTO {
                 memberId,
                 this.getName(),
                 Optional.ofNullable(this.getDateOfBirth()).isPresent() ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
-                Optional.ofNullable(this.getGender()).isPresent() ? Optional.of(Gender.get(this.getGender())) : Optional.empty(),
+                Optional.ofNullable(this.getGender()).isPresent() ? Optional.of(Gender.get(this.getGender())) : Optional.of(Gender.NONE),
                 household.getId(),
                 household.getDeviceId()
         );
