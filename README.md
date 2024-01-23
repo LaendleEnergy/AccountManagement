@@ -42,10 +42,12 @@ If you want to build an _über-jar_, execute the following command:
 The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
 
 ## Testing
+Make sure, Docker is running.
+
 Start Redis:
 `docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest`
 
-You can run the tests via the `quarkus test` command
+You can run the tests via the `quarkus test` command. Alternatively you can right-click on `src/test` and click on `Run tests in account-management`.
 
 The Jacoco report is available at: `build/jacoco-report/index.html`
 The test report can be found at: `build/reports/tests/test/index.html`
@@ -60,6 +62,12 @@ Then, build the image with:
 
 Then run the container using:
 `docker run -i --rm -p 8080:8080 quarkus/account-management-jvm`
+
+For developers of this project only:
+Publish docker image:
+- `./gradlew build`
+- `docker build -f src/main/docker/Dockerfile.jvm -t bianca907/account-management .`
+- `docker push bianca907/account-management`
 
 ## OpenAPI
 The Swagger OpenAPI definition for this application is available at:
