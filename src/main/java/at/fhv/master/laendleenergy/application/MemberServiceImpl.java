@@ -87,6 +87,5 @@ public class MemberServiceImpl implements MemberService {
 
         MemberUpdatedEvent event = new MemberUpdatedEvent(UUID.randomUUID().toString(), memberDTO.getId(), memberDTO.getName(), householdId, LocalDateTime.now());
         memberUpdatedEventPublisher.publishMessage(MemberUpdatedSerializer.parse(event));
-
     }
 }

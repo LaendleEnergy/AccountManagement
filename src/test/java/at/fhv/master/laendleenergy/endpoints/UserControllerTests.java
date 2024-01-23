@@ -4,6 +4,7 @@ import at.fhv.master.laendleenergy.application.UserService;
 import at.fhv.master.laendleenergy.domain.exceptions.HouseholdNotFoundException;
 import at.fhv.master.laendleenergy.domain.exceptions.UserNotFoundException;
 import at.fhv.master.laendleenergy.view.UserController;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -134,7 +135,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testUpdateUser() throws HouseholdNotFoundException, UserNotFoundException {
+    public void testUpdateUser() throws HouseholdNotFoundException, UserNotFoundException, JsonProcessingException {
         given()
                 .contentType(ContentType.JSON)
                 .body(updateUserDTOJSONString)
@@ -158,7 +159,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testUpdateUser_NotFoundException() throws HouseholdNotFoundException, UserNotFoundException {
+    public void testUpdateUser_NotFoundException() throws HouseholdNotFoundException, UserNotFoundException, JsonProcessingException {
         Mockito.doThrow(HouseholdNotFoundException.class).when(userService).updateUser(any(), anyString(), anyString());
 
         given()
@@ -171,7 +172,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testUpdateUser_InternalServerError() throws HouseholdNotFoundException, UserNotFoundException {
+    public void testUpdateUser_InternalServerError() throws HouseholdNotFoundException, UserNotFoundException, JsonProcessingException {
         Mockito.doThrow(NullPointerException.class).when(userService).updateUser(any(), anyString(), anyString());
         given()
                 .contentType(ContentType.JSON)

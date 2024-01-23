@@ -9,6 +9,7 @@ import at.fhv.master.laendleenergy.persistence.UserRepository;
 import at.fhv.master.laendleenergy.view.DTOs.CreateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UpdateUserDTO;
 import at.fhv.master.laendleenergy.view.DTOs.UserDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -62,13 +63,11 @@ public class UserServiceTests {
     }
 
     @Test
-    public void updateUserTest() throws UserNotFoundException, HouseholdNotFoundException {
+    public void updateUserTest() throws UserNotFoundException, HouseholdNotFoundException, JsonProcessingException {
         Mockito.when(userRepository.getUserById(userId)).thenReturn(user);
         Mockito.when(householdRepository.getHouseholdById(householdId)).thenReturn(household);
 
         UpdateUserDTO updateUserDTO = new UpdateUserDTO(user.getEmailAddress(), user.getPassword(), "newName", user.getDateOfBirth().toString(), user.getGender().getName());
-        System.out.println(updateUserDTO.getGender());
-        System.out.println(updateUserDTO.getDateOfBirth());
         service.updateUser(updateUserDTO, userId, householdId);
 
         Mockito.verify(userRepository, times(1)).updateUser(any());
