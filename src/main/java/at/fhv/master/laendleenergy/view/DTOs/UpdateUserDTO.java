@@ -35,7 +35,7 @@ public class UpdateUserDTO {
                 this.getPassword(),
                 role,
                 this.getName(),
-                !Objects.equals(this.getDateOfBirth(), "") ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
+                !Objects.equals(this.getDateOfBirth(), null) ? Optional.of(LocalDate.parse(this.getDateOfBirth())) : Optional.empty(),
                 Optional.ofNullable(this.getGender()).isPresent() ? Optional.of(Gender.get(this.getGender())) : Optional.of(Gender.NONE),
                 household.getId(),
                 household.getDeviceId()
