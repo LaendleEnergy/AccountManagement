@@ -30,7 +30,7 @@ public class SerializerTests {
     public void testHouseholdCreatedSerializer() throws JsonProcessingException {
         HouseholdCreatedEvent event = new HouseholdCreatedEvent("event1", "m1", "name", "h1", LocalDateTime.of(2020, 1,1,1,1));
 
-        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String expected = "{\"eventId\":\"event1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1],\"memberId\":\"m1\",\"name\":\"name\"}";
         String actual = HouseholdCreatedSerializer.parse(event);
 
         assertEquals(expected, actual);
@@ -58,7 +58,7 @@ public class SerializerTests {
     public void testMemberAddedSerializer() throws JsonProcessingException {
         MemberAddedEvent event = new MemberAddedEvent("event1", "m1", "name", "h1", LocalDateTime.of(2020, 1,1,1,1));
 
-        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String expected = "{\"eventId\":\"event1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1],\"memberId\":\"m1\",\"name\":\"name\"}";
         String actual = MemberAddedSerializer.parse(event);
 
         assertEquals(expected, actual);
@@ -67,7 +67,7 @@ public class SerializerTests {
     public void testMemberUpdatedSerializer() throws JsonProcessingException {
         MemberUpdatedEvent event = new MemberUpdatedEvent("event1", "m1", "name", "h1", LocalDateTime.of(2020, 1,1,1,1));
 
-        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"name\":\"name\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String expected = "{\"eventId\":\"event1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1],\"memberId\":\"m1\",\"name\":\"name\"}";
         String actual = MemberUpdatedSerializer.parse(event);
 
         assertEquals(expected, actual);
@@ -77,7 +77,7 @@ public class SerializerTests {
     public void testMemberRemovedSerializer() throws JsonProcessingException {
         MemberRemovedEvent event = new MemberRemovedEvent("event1", "m1", "h1", LocalDateTime.of(2020, 1,1,1,1));
 
-        String expected = "{\"eventId\":\"event1\",\"memberId\":\"m1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1]}";
+        String expected = "{\"eventId\":\"event1\",\"householdId\":\"h1\",\"timestamp\":[2020,1,1,1,1],\"memberId\":\"m1\"}";
         String actual = MemberRemovedSerializer.parse(event);
 
         assertEquals(expected, actual);
