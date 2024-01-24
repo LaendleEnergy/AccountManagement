@@ -31,7 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 try {
                     return new AuthResponse(TokenUtils.generateToken(u.getEmailAddress(), u.getRole().getName(), u.getId(), u.getHouseholdId(), u.getDeviceId(), duration, issuer));
                 } catch (Exception e) {
-                    e.printStackTrace();
                     throw new UnauthorizedException();
                 }
             }
